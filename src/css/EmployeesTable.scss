@@ -1,0 +1,13 @@
+@import "./colors.scss";
+@import "./fonts.scss";
+@import "./table.scss";
+
+.EmployeesTable {
+    padding: 20px;
+
+    .MuiDataGrid-root {
+        .MuiDataGrid-toolbarContainer {
+            background-color: var(--banana);
+        }
+    }
+}

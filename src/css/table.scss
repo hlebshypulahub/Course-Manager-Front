@@ -1,0 +1,27 @@
+.table {
+    height: 700px;
+
+    .MuiDataGrid-row:nth-child(odd) {
+        background-color: var(--row2);
+    }
+
+    .MuiDataGrid-row:nth-child(even) {
+        background-color: var(--row1);
+    }
+
+    .MuiDataGrid-row {
+        font-family: "Yantramanav", sans-serif;
+        font-size: 22px;
+        font-weight: 400;
+    }
+
+    .MuiDataGrid-main,
+    .MuiDataGrid-footerContainer {
+        background-color: var(--banana);
+
+        .MuiDataGrid-columnHeaders {
+            font-family: "Yantramanav", sans-serif;
+            font-size: 24px;
+        }
+    }
+}

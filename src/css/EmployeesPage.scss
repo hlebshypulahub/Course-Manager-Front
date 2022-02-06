@@ -1,0 +1,32 @@
+.EmployeesPage {
+    padding: 10px;
+    background-color: white;
+    height: 890px;
+
+    font-family: "Quicksand", sans-serif;
+
+    .upload-btn {
+        padding-left: 20px;
+        padding-top: 10px;
+
+        .value-text {
+            padding-left: 10px;
+            font-size: 18px;
+            font-weight: 700;
+        }
+    }
+
+    // .plan-btn {
+    //     padding-left: 20px;
+    //     padding-top: 10px;
+    // }
+
+    .top-btns {
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-top: 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}

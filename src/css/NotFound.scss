@@ -1,0 +1,12 @@
+.NotFound {
+    position: relative;
+
+    .not-found-img {
+        position: absolute;
+        max-width: fit-content;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        top: 100px;
+    }
+}

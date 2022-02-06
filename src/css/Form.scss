@@ -1,0 +1,34 @@
+@import "./fonts.scss";
+
+.Form {
+    width: 900px;
+    padding: 20px;
+    margin: 10px auto;
+
+    font-family: "Quicksand", sans-serif;
+
+    .header-label {
+        display: block;
+        padding-bottom: 5px;
+        font-size: 26px;
+        font-weight: 700;
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    .card {
+        .text-field {
+            width: 750px;
+            margin: 0 auto;
+            margin-top: 25px;
+            margin-bottom: 40px;
+        }
+
+        .buttons {
+            width: 750px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: flex-end;
+        }
+    }
+}

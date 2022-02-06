@@ -1,0 +1,26 @@
+.Dashboard {
+    height: 100vh;
+
+    header {
+        background: rgb(0, 0, 65);
+        padding: 10px;
+        height: 40px;
+        position: relative;
+
+        a {
+            font-family: "Quicksand", sans-serif;
+            font-weight: bold;
+            color: #f9fff5;
+            font-size: 25px;
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            float: left;
+        }
+
+        .buttons {
+            float: right;
+        }
+    }
+}
