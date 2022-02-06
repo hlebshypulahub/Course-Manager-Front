@@ -161,16 +161,16 @@ const EmployeeView = (props) => {
         <div>
             {toggleActiveAlertShown && (
                 <MyAlert
-                    question={`Czy na pewno zmienić stan pracownika ${
+                    question={`Вы уверенны, что хотите изменить состояние сотрудника ${
                         employee.fullName
-                    } na ${!employee.active ? "'Aktywny'" : "'Nieaktywny'"} ?`}
+                    } на ${!employee.active ? "'Активный'" : "'Неактивный'"} ?`}
                     cancelFunc={toggleActiveAlert}
                     submitFunc={handleToggleEmployeeStateSubmit}
                 />
             )}
             {okAlertShown && (
                 <OkAlert
-                    message="Brak połączenia z serwerem..."
+                    message="Отсутствует соединение с сервером..."
                     func={() => {
                         setOkAlertShown(false);
                         history.push("/employees");
@@ -210,10 +210,10 @@ const EmployeeView = (props) => {
                             >
                                 <div className="card-label">
                                     <span className="header-label">
-                                        Dane osobowe
+                                        Персональные данные
                                     </span>
                                     <Tooltip
-                                        title="Kliknij, aby zmienić stan"
+                                        title="Нажмите, чтобы изменить состояние сотрудника"
                                         placement="top"
                                     >
                                         <span
@@ -231,22 +231,20 @@ const EmployeeView = (props) => {
                                             onClick={toggleActiveAlert}
                                         >
                                             {employee.active
-                                                ? "Aktywny"
-                                                : "Nieaktywny"}
+                                                ? "Активный"
+                                                : "Неактивный"}
                                         </span>
                                     </Tooltip>
                                 </div>
                                 <div>
-                                    <span className="label-text">
-                                        Imię i nazwisko:
-                                    </span>
+                                    <span className="label-text">ФИО:</span>
                                     <span className="value-text">
                                         {employee.fullName}
                                     </span>
                                 </div>
                                 <div>
                                     <span className="label-text">
-                                        Data zatrudnienia:
+                                        Дата приема на работу:
                                     </span>
                                     <span className="value-text">
                                         {employee.hiringDate}
@@ -254,7 +252,7 @@ const EmployeeView = (props) => {
                                 </div>
                                 <div>
                                     <span className="label-text">
-                                        Miejsce pracy:
+                                        Место работы:
                                     </span>
                                     <span className="value-text">
                                         {employee.jobFacility}
@@ -262,7 +260,7 @@ const EmployeeView = (props) => {
                                 </div>
                                 <div>
                                     <span className="label-text">
-                                        Stanowisko:
+                                        Должность:
                                     </span>
                                     <span className="value-text">
                                         {employee.position}
@@ -279,7 +277,7 @@ const EmployeeView = (props) => {
                             >
                                 <div className="card-label">
                                     <span className="header-label">
-                                        Kategoria
+                                        Категория
                                     </span>
                                     <span
                                         className="pin"
@@ -294,13 +292,13 @@ const EmployeeView = (props) => {
                                         }
                                     >
                                         {!employee.category
-                                            ? "Należy podać"
+                                            ? "Необходимо указать"
                                             : employee.category.label}
                                     </span>
                                 </div>
                                 <div>
                                     <span className="label-text-large">
-                                        Kwalifikacja:
+                                        Квалификация:
                                     </span>
                                     <span className="value-text">
                                         {employee.qualification}
@@ -308,7 +306,7 @@ const EmployeeView = (props) => {
                                 </div>
                                 <div>
                                     <span className="label-text-large">
-                                        Kategoria:
+                                        Категория:
                                     </span>
                                     <span className="value-text">
                                         {employee
@@ -320,7 +318,7 @@ const EmployeeView = (props) => {
                                 </div>
                                 <div>
                                     <span className="label-text-large">
-                                        Numer:
+                                        Номер:
                                     </span>
                                     <span className="value-text">
                                         {employee.categoryNumber}
@@ -328,7 +326,7 @@ const EmployeeView = (props) => {
                                 </div>
                                 <div>
                                     <span className="label-text-large">
-                                        Data nadania:
+                                        Дата получения:
                                     </span>
                                     <span className="value-text">
                                         {employee.categoryAssignmentDate}
@@ -336,7 +334,7 @@ const EmployeeView = (props) => {
                                 </div>
                                 <div>
                                     <span className="label-text-large">
-                                        Termin potwierdzenia:
+                                        Срок подтверждения:
                                     </span>
                                     <span className="value-text">
                                         {
@@ -346,7 +344,7 @@ const EmployeeView = (props) => {
                                 </div>
                                 <div>
                                     <span className="label-text-large">
-                                        Termin dostarczenia dokumentów:
+                                        Срок подачи документов:
                                     </span>
                                     <span className="value-text">
                                         {employee.docsSubmitDeadlineDate}
@@ -354,7 +352,7 @@ const EmployeeView = (props) => {
                                 </div>
                                 <div>
                                     <span className="label-text-large">
-                                        Możliwe nadanie kolejnej kategorii:
+                                        Возможное повышение категории после:
                                     </span>
                                     <span className="value-text">
                                         {employee.categoryPossiblePromotionDate}
@@ -364,9 +362,9 @@ const EmployeeView = (props) => {
                                     <Tooltip
                                         title={
                                             employee.exemptioned
-                                                ? "Pracownik jest zwolniony"
+                                                ? "Сотрудник освобождён"
                                                 : !educationIsValid
-                                                ? "Najpierw należy podać wykształcenie"
+                                                ? "Необходимо указать образование"
                                                 : ""
                                         }
                                         placement="right"
@@ -389,8 +387,8 @@ const EmployeeView = (props) => {
                                                 }}
                                             >
                                                 {categoryIsValid
-                                                    ? "Edutyj"
-                                                    : "Podaj"}
+                                                    ? "Изменить"
+                                                    : "Указать"}
                                             </Button>
                                         </div>
                                     </Tooltip>
@@ -399,7 +397,7 @@ const EmployeeView = (props) => {
                                             title={
                                                 clickCounter < 2 &&
                                                 !employee.exemptioned
-                                                    ? "Kliknij 2 razy, aby ręcznie edytować termin potwierdzenia kategorii"
+                                                    ? "Нажмите 2 раза, чтобы вручную указать срок подтверждения категории"
                                                     : ""
                                             }
                                             placement="right"
@@ -427,7 +425,7 @@ const EmployeeView = (props) => {
                                                         );
                                                     }}
                                                 >
-                                                    Edytuj ręcznie
+                                                    Указать вручную
                                                 </Button>
                                             </div>
                                         </Tooltip>
@@ -450,12 +448,12 @@ const EmployeeView = (props) => {
                                     </span>
                                 </div>
                                 <div className="course-label">
-                                    <span>Pozostała ilość godzin</span>
+                                    <span>Необходимый объем часов</span>
                                 </div>
                                 <div className="course-date-label">
                                     <span>
                                         {employee.categoryAssignmentDeadlineDate
-                                            ? "do " +
+                                            ? "до " +
                                               employee.categoryAssignmentDeadlineDate
                                             : ""}
                                     </span>
@@ -481,7 +479,7 @@ const EmployeeView = (props) => {
                                             });
                                         }}
                                     >
-                                        Dodaj kurs
+                                        Добавить курс
                                     </Button>
                                 </div>
                                 {/* </Tooltip>
@@ -492,7 +490,9 @@ const EmployeeView = (props) => {
                     <div className="second-row">
                         <Tooltip
                             title={
-                                shownEducation ? "" : "Kliknuj, aby rozwinąć"
+                                shownEducation
+                                    ? ""
+                                    : "Нажмите, чтобы развернуть"
                             }
                             followCursor
                         >
@@ -510,7 +510,7 @@ const EmployeeView = (props) => {
                                 >
                                     <div className="card-label">
                                         <span className="header-label">
-                                            Wykształcenie
+                                            Образование
                                         </span>
                                         <span
                                             className="pin"
@@ -526,14 +526,14 @@ const EmployeeView = (props) => {
                                             }
                                         >
                                             {!employee.education
-                                                ? "Należy podać"
+                                                ? "Необходимо указать"
                                                 : employee.education.label}
                                         </span>
                                     </div>
                                     <Collapse in={shownEducation} timeout={500}>
                                         <div className="info-row">
                                             <span className="label-text">
-                                                Rodzaj:
+                                                Уровень:
                                             </span>
                                             <span className="value-text">
                                                 {employee
@@ -546,7 +546,7 @@ const EmployeeView = (props) => {
                                         </div>
                                         <div className="info-row">
                                             <span className="label-text">
-                                                Szkoła:
+                                                УЗ:
                                             </span>
                                             <span className="value-text">
                                                 {employee.eduName}
@@ -554,7 +554,7 @@ const EmployeeView = (props) => {
                                         </div>
                                         <div className="info-row">
                                             <span className="label-text">
-                                                Data zakończenia:
+                                                Дата окончания:
                                             </span>
                                             <span className="value-text">
                                                 {employee.eduGraduationDate}
@@ -574,8 +574,8 @@ const EmployeeView = (props) => {
                                                 }}
                                             >
                                                 {educationIsValid
-                                                    ? "Edytuj"
-                                                    : "Podaj"}
+                                                    ? "Изменить"
+                                                    : "Указать"}
                                             </Button>
                                         </CardActions>
                                     </Collapse>
@@ -584,7 +584,9 @@ const EmployeeView = (props) => {
                         </Tooltip>
                         <Tooltip
                             title={
-                                shownExemption ? "" : "Kliknuj, aby rozwinąć"
+                                shownExemption
+                                    ? ""
+                                    : "Нажмите, чтобы развернуть"
                             }
                             followCursor
                         >
@@ -602,7 +604,7 @@ const EmployeeView = (props) => {
                                 >
                                     <div className="card-label">
                                         <span className="header-label">
-                                            Zwolnienie
+                                            Освобождение
                                         </span>
                                         <span
                                             className="pin"
@@ -618,8 +620,8 @@ const EmployeeView = (props) => {
                                             }
                                         >
                                             {employee.exemptioned
-                                                ? "Zwolniony"
-                                                : "Brak"}
+                                                ? "Освобождён"
+                                                : "Нет"}
                                         </span>
                                     </div>
                                     <Collapse in={shownExemption} timeout={500}>
@@ -627,7 +629,7 @@ const EmployeeView = (props) => {
                                             <div>
                                                 <div className="info-row">
                                                     <span className="label-text">
-                                                        Przyczyna:
+                                                        Причина:
                                                     </span>
                                                     <span className="value-text">
                                                         {employee
@@ -641,7 +643,7 @@ const EmployeeView = (props) => {
                                                 </div>
                                                 <div className="info-row">
                                                     <span className="label-text">
-                                                        Data początku:
+                                                        Дата начала:
                                                     </span>
                                                     <span className="value-text">
                                                         {
@@ -651,7 +653,7 @@ const EmployeeView = (props) => {
                                                 </div>
                                                 <div className="info-row">
                                                     <span className="label-text">
-                                                        Data zakończenia:
+                                                        Дата окончания:
                                                     </span>
                                                     <span className="value-text">
                                                         {
@@ -665,7 +667,7 @@ const EmployeeView = (props) => {
                                             <Tooltip
                                                 title={
                                                     !categoryIsValid
-                                                        ? "Najpierw należy podać kategorię"
+                                                        ? "Необходимо указать категорию"
                                                         : ""
                                                 }
                                                 placement="right"
@@ -687,8 +689,8 @@ const EmployeeView = (props) => {
                                                         }}
                                                     >
                                                         {employee.exemptioned
-                                                            ? "Edytuj"
-                                                            : "Podaj"}
+                                                            ? "Изменить"
+                                                            : "Указать"}
                                                     </Button>
                                                 </div>
                                             </Tooltip>
@@ -702,7 +704,7 @@ const EmployeeView = (props) => {
                                                     size="large"
                                                     onClick={deleteExemption}
                                                 >
-                                                    Usuń
+                                                    Удалить
                                                 </Button>
                                             )}
                                         </CardActions>

@@ -113,7 +113,7 @@ const EmployeesPage = (props) => {
         <div>
             {okAlertShown && (
                 <OkAlert
-                    message="Brak połączenia z serwerem..."
+                    message="Отсутствует соединение с сервером..."
                     func={() => {
                         setOkAlertShown(false);
                         window.location.reload();
@@ -136,7 +136,7 @@ const EmployeesPage = (props) => {
                             }}
                             onClick={fetchEmployeesForCoursePlan}
                         >
-                            Zaplanuj kursy
+                            План сертификации
                         </Button>
                         <Button
                             disabled={employeeId < 1}
@@ -152,7 +152,7 @@ const EmployeesPage = (props) => {
                             }}
                             onClick={goToEmployeeView}
                         >
-                            Pokaż dane
+                            Показать
                         </Button>
                     </div>
                     <EmployeesTable
@@ -177,7 +177,7 @@ const EmployeesPage = (props) => {
                                 }}
                                 onClick={onFileUpload}
                             >
-                                Wyślij
+                                Отправить
                             </Button>
                         ) : (
                             <label htmlFor="contained-button-file">
@@ -199,14 +199,14 @@ const EmployeesPage = (props) => {
                                         width: "120px",
                                     }}
                                 >
-                                    Dodaj
+                                    Добавить
                                 </Button>
                             </label>
                         )}
                         <span className="value-text">
                             {isFilePicked && file && file.name
-                                ? "Wybrano plik: " + file.name
-                                : "Prześlij plik .csv, pobrany z aplikacji księgowej"}
+                                ? "Выбран файл: " + file.name
+                                : "Вышлите файл .csv, импортированный с 1С"}
                         </span>
                     </div>
                 </div>

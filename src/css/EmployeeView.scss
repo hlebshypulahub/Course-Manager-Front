@@ -6,7 +6,7 @@
 
     background-color: white;
 
-    font-family: "Quicksand", sans-serif;
+    font-family: 'Fira Sans', sans-serif;
 
     .header-label {
         display: inline-block;
@@ -29,7 +29,7 @@
     .pin {
         color: white;
         font-size: 22px;
-        font-weight: 700;
+        font-weight: 500;
         border-radius: 5px;
         padding: 5px;
         display: inline-block;
@@ -47,23 +47,23 @@
             width: calc(33.33% - 20px);
             margin: 10px;
 
-            .label-text {
-                display: inline-block;
-                width: 150px;
-                font-size: 18px;
-                font-weight: 500;
-            }
+            // .label-text {
+            //     display: inline-block;
+            //     width: 300px;
+            //     font-size: 18px;
+            //     font-weight: 500;
+            // }
 
             .label-text-large {
                 display: inline-block;
                 width: 250px;
                 font-size: 18px;
-                font-weight: 500;
+                font-weight: 400;
             }
 
             .value-text {
                 font-size: 18px;
-                font-weight: 700;
+                font-weight: 600;
             }
 
             .card-content {
@@ -104,14 +104,14 @@
             }
 
             .course-label {
-                width: 255px;
+                width: 310px;
                 font-size: 24px;
                 left: 50%;
                 top: 40%;
             }
 
             .course-date-label {
-                width: 165px;
+                width: 150px;
                 font-size: 24px;
                 left: 50%;
                 top: 50%;
@@ -123,12 +123,12 @@
                 display: inline-block;
                 width: 180px;
                 font-size: 22px;
-                font-weight: 500;
+                font-weight: 400;
             }
 
             .value-text {
                 font-size: 22px;
-                font-weight: 700;
+                font-weight: 600;
             }
         }
     }
@@ -149,19 +149,19 @@
                 display: inline-block;
                 width: 150px;
                 font-size: 18px;
-                font-weight: 500;
+                font-weight: 400;
             }
 
             .label-text-large {
                 display: inline-block;
                 width: 250px;
                 font-size: 18px;
-                font-weight: 500;
+                font-weight: 400;
             }
 
             .value-text {
                 font-size: 18px;
-                font-weight: 700;
+                font-weight: 600;
             }
 
             .card-content {
