@@ -56,7 +56,7 @@ const LoginForm = (props) => {
 
     return (
         <div className="LoginForm">
-            <h3 className="label">A U T O R Y Z A C J A</h3>
+            <h3 className="label">А В Т О Р И З А Ц И Я</h3>
             {message && (
                 <div className="error">
                     <span>{message}</span>
@@ -66,14 +66,14 @@ const LoginForm = (props) => {
                 <TextField
                     className="input"
                     id="outlined-basic"
-                    label="Nazwa użytkownika"
+                    label="Имя пользователя"
                     variant="outlined"
                     onChange={onChangeUsername}
                 />
                 <TextField
                     className="input"
                     id="outlined-password-input"
-                    label="Hasło"
+                    label="Пароль"
                     type="password"
                     autoComplete="current-password"
                     onChange={onChangePassword}
@@ -83,8 +83,13 @@ const LoginForm = (props) => {
                     className="button"
                     variant="contained"
                     color="success"
+                    style={{
+                        fontFamily: "'Roboto', sans-serif",
+                        color: "white",
+                        fontWeight: "600",
+                    }}
                 >
-                    Zaloguj
+                    Войти
                 </Button>
             </form>
         </div>

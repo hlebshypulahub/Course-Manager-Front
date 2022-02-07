@@ -43,7 +43,7 @@ const EditCategoryDeadline = (props) => {
             categoryAssignmentDeadlineDate
         )
             ? ""
-            : "Należy podać datę terminu potwierdzenia kategorii";
+            : "Необходимо указать срок подтверждения";
 
         setErrors(tempErrors);
 
@@ -78,9 +78,12 @@ const EditCategoryDeadline = (props) => {
                 };
 
                 patchEmployeeCategoryAssignmentDeadlineDate(id, patch).then(
-                    () => {
-                        history.push(`/employees/${id}`);
-                    }
+                   history.push({
+                        pathname: `/employees/${id}`,
+                        state: {
+                            snackMessage: `Срок подтверждения категории изменён`,
+                        },
+                    })
                 );
             }
         },
@@ -98,7 +101,7 @@ const EditCategoryDeadline = (props) => {
             setErrors({
                 ...errors,
                 categoryAssignmentDeadlineDate:
-                    "Należy podać datę ukończenia stodiów",
+                    "Необходимо указать срок подтверждения",
             });
         }
         setCategoryAssignmentDeadlineDate(newCategoryAssignmentDeadlineDate);
@@ -123,14 +126,14 @@ const EditCategoryDeadline = (props) => {
                 >
                     <div className="card-label">
                         <span className="header-label">
-                            Edytuj termin potwierdzenia kategorii ręcznie
+                            Изменить срок подтверждения категории вручную
                         </span>
                     </div>
                     <form className="form" onSubmit={handleSubmit}>
                         <div className="input text-field">
                             <MyTextField
                                 disabled
-                                label="Imię i nazwisko"
+                                label="ФИО"
                                 value={fullName ? fullName : ""}
                             />
                         </div>
@@ -143,7 +146,7 @@ const EditCategoryDeadline = (props) => {
                                 helperText={
                                     errors.categoryAssignmentDeadlineDate
                                 }
-                                label="Data terminu potwierdzenia kategorii"
+                                label="Срок подтверждения"
                                 value={categoryAssignmentDeadlineDate}
                                 onChange={
                                     onChangeCategoryAssignmentDeadlineDate

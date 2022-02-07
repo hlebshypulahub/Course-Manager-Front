@@ -103,7 +103,7 @@ const EditCategory = (props) => {
                     history.push({
                         pathname: `/employees/${id}`,
                         state: {
-                            snackMessage: `Kategoria została zmieniona`,
+                            snackMessage: `Категория изменена`,
                         },
                     });
                 });
@@ -146,7 +146,7 @@ const EditCategory = (props) => {
         if (!newCategoryAssignmentDate) {
             setErrors({
                 ...errors,
-                eduGraduationDate: "Należy podać datę ukończenia stodiów",
+                categoryAssignmentDate: "Необходимо указать дату получения",
             });
         }
         setCategoryAssignmentDate(newCategoryAssignmentDate);
@@ -170,13 +170,13 @@ const EditCategory = (props) => {
                     }}
                 >
                     <div className="card-label">
-                        <span className="header-label">Edytuj kategorię</span>
+                        <span className="header-label">Изменить категорию</span>
                     </div>
                     <form className="form" onSubmit={handleSubmit}>
                         <div className="input text-field">
                             <MyTextField
                                 disabled
-                                label="Imię i nazwisko"
+                                label="ФИО"
                                 value={fullName ? fullName : ""}
                             />
                         </div>
@@ -184,7 +184,7 @@ const EditCategory = (props) => {
                             <MyTextField
                                 error={errors.qualification.length > 0}
                                 helperText={errors.qualification}
-                                label="Kwalifikacja"
+                                label="Квалификация"
                                 value={qualification ? qualification : ""}
                                 onChange={onChangeQualification}
                             />
@@ -195,7 +195,7 @@ const EditCategory = (props) => {
                                 helperText={errors.category}
                                 value={category ? category.label : ""}
                                 select
-                                label="Rodzaj"
+                                label="Категория"
                                 onChange={onChangeCategory}
                             >
                                 {categories.map((c) => {
@@ -212,7 +212,7 @@ const EditCategory = (props) => {
                                 disabled={category && category.name === "NONE"}
                                 error={errors.categoryNumber.length > 0}
                                 helperText={errors.categoryNumber}
-                                label="Numer"
+                                label="Номер"
                                 value={categoryNumber ? categoryNumber : ""}
                                 onChange={onChangeCategoryNumber}
                             />
@@ -222,7 +222,7 @@ const EditCategory = (props) => {
                                 disabled={category && category.name === "NONE"}
                                 error={errors.categoryAssignmentDate.length > 0}
                                 helperText={errors.categoryAssignmentDate.toString()}
-                                label="Data nadania"
+                                label="Дата получения"
                                 value={categoryAssignmentDate}
                                 onChange={onChangeCategoryAssignmentDate}
                             />

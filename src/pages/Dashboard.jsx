@@ -43,12 +43,12 @@ export const Dashboard = (props) => {
                             style={{
                                 backgroundColor: yellow,
                                 color: "black",
-                                fontWeight: "bold",
+                                fontWeight: "600",
                                 height: "40px",
                             }}
                             onClick={toEmployeesPage}
                         >
-                            Pracownicy
+                            Сотрудники
                         </Button>
                     </div>
                 )}

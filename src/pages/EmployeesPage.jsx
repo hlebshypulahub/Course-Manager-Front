@@ -130,9 +130,9 @@ const EmployeesPage = (props) => {
                             style={{
                                 backgroundColor: pink,
                                 color: "white",
-                                fontWeight: "bold",
+                                fontWeight: "600",
                                 height: "40px",
-                                width: "200px",
+                                width: "250px",
                             }}
                             onClick={fetchEmployeesForCoursePlan}
                         >
@@ -146,7 +146,7 @@ const EmployeesPage = (props) => {
                             style={{
                                 backgroundColor: employeeId < 1 ? grey : green,
                                 color: "white",
-                                fontWeight: "bold",
+                                fontWeight: "600",
                                 height: "40px",
                                 width: "160px",
                             }}
@@ -173,7 +173,7 @@ const EmployeesPage = (props) => {
                                     color: "white",
                                     fontWeight: "bold",
                                     height: "40px",
-                                    width: "120px",
+                                    width: "150px",
                                 }}
                                 onClick={onFileUpload}
                             >
@@ -192,11 +192,12 @@ const EmployeesPage = (props) => {
                                     component="span"
                                     startIcon={<UploadFileIcon />}
                                     style={{
+                                        fontFamily: "'Roboto', sans-serif",
                                         backgroundColor: sky_blue,
                                         color: "black",
                                         fontWeight: "bold",
                                         height: "40px",
-                                        width: "120px",
+                                        width: "150px",
                                     }}
                                 >
                                     Добавить
@@ -206,7 +207,7 @@ const EmployeesPage = (props) => {
                         <span className="value-text">
                             {isFilePicked && file && file.name
                                 ? "Выбран файл: " + file.name
-                                : "Вышлите файл .csv, импортированный с 1С"}
+                                : "Отправьте файл .csv, импортированный из 1С"}
                         </span>
                     </div>
                 </div>

@@ -22,16 +22,16 @@ const CoursesTable = (props) => {
     }, [employeeId]);
 
     const columns = [
-        { field: "name", headerName: "Nazwa", width: 200 },
+        { field: "name", headerName: "Название", width: 200 },
         {
             field: "description",
-            headerName: "Opis",
+            headerName: "Описание",
             flex: 1,
             minWidth: 200,
         },
         {
             field: "hours",
-            headerName: "Ilość godzin",
+            headerName: "Количество часов",
             type: "number",
             headerAlign: "left",
             align: "left",
@@ -41,14 +41,14 @@ const CoursesTable = (props) => {
         {
             field: "startDate",
             type: "date",
-            headerName: "Data początku",
+            headerName: "Дата начала",
             flex: 1,
             minWidth: 200,
         },
         {
             field: "endDate",
             type: "date",
-            headerName: "Data końca",
+            headerName: "Дата окончания",
             flex: 1,
             minWidth: 200,
         },

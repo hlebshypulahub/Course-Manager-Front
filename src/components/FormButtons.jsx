@@ -28,7 +28,7 @@ const FormButtons = (props) => {
                           }
                 }
             >
-                {props.cancelText ? props.cancelText : "Anuluj"}
+                {props.cancelText ? props.cancelText : "Отменить"}
             </Button>
             <Button
                 variant="contained"
@@ -37,12 +37,12 @@ const FormButtons = (props) => {
                     marginLeft: "30px",
                     backgroundColor: green,
                     color: "white",
-                    fontWeight: "bold",
+                    fontWeight: "600",
                     height: "40px",
                 }}
                 type="submit"
             >
-                {props.acceptText ? props.acceptText : "Zatwierdź"}
+                {props.acceptText ? props.acceptText : "Подтвердить"}
             </Button>
         </>
     );

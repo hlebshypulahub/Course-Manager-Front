@@ -38,22 +38,22 @@ const AddCourse = (props) => {
 
     const validate = useCallback(() => {
         let tempErrors = {};
-        tempErrors.name = name ? "" : "Należy podać nazwę kursu";
+        tempErrors.name = name ? "" : "Необходимо указать название курса";
         tempErrors.description = "";
         tempErrors.hours =
             Number.isInteger(Number(hours)) && Number(hours) > 0
                 ? ""
-                : "Należy podać ilość godzin jako liczbę całkowitą większą od 0";
+                : "Необходимо указать количество часов";
         tempErrors.startDate = validator.isDate(startDate)
             ? ""
-            : "Należy podać datę początku kursu";
+            : "Необходимо указать дату начала";
         tempErrors.endDate = validator.isDate(endDate)
             ? ""
-            : "Należy podać datę końca kursu";
+            : "Необходимо указать дату окончания";
 
         if (endDate < startDate) {
             tempErrors.endDate =
-                "Data końca kursu powinna być wcześniej niż data początku";
+                "Дата окончания должна быть позднее даты начала";
         }
 
         setErrors(tempErrors);
@@ -78,7 +78,7 @@ const AddCourse = (props) => {
                     history.push({
                         pathname: `/employees/${employeeId}`,
                         state: {
-                            snackMessage: `Kurs został dodany`,
+                            snackMessage: `Курс добавлен`,
                         },
                     });
                 });
@@ -115,7 +115,7 @@ const AddCourse = (props) => {
         if (!newStartDate) {
             setErrors({
                 ...errors,
-                startDate: "Należy podać datę początku kursu",
+                startDate: "Необходимо указать дату начала",
             });
         }
         setStartDate(newStartDate);
@@ -125,7 +125,7 @@ const AddCourse = (props) => {
         if (!newEndDate) {
             setErrors({
                 ...errors,
-                endDate: "Należy podać datę końca kursu",
+                endDate: "Необходимо указать дату окончания",
             });
         }
         setEndDate(newEndDate);
@@ -145,13 +145,13 @@ const AddCourse = (props) => {
                     }}
                 >
                     <div className="card-label">
-                        <span className="header-label">Dodaj kurs</span>
+                        <span className="header-label">Добавить курс</span>
                     </div>
                     <form className="form" onSubmit={handleSubmit}>
                         <div className="input text-field">
                             <MyTextField
                                 disabled
-                                label="Imię i nazwisko"
+                                label="ФИО"
                                 value={employeeFullName ? employeeFullName : ""}
                             />
                         </div>
@@ -159,7 +159,7 @@ const AddCourse = (props) => {
                             <MyTextField
                                 error={errors.name.length > 0}
                                 helperText={errors.name}
-                                label="Nazwa"
+                                label="Название"
                                 value={name}
                                 onChange={onChangeName}
                             />
@@ -168,7 +168,7 @@ const AddCourse = (props) => {
                             <MyTextField
                                 error={errors.description.length > 0}
                                 helperText={errors.description}
-                                label="Opis"
+                                label="Описание"
                                 value={description}
                                 onChange={onChangeDescription}
                             />
@@ -178,7 +178,7 @@ const AddCourse = (props) => {
                                 error={errors.hours.length > 0}
                                 helperText={errors.hours}
                                 pattern="[0-9]*"
-                                label="Ilość godzin"
+                                label="Количество часов"
                                 value={hours}
                                 onChange={onChangeHours}
                             />
@@ -187,7 +187,7 @@ const AddCourse = (props) => {
                             <MyDatePicker
                                 error={errors.startDate.length > 0}
                                 helperText={errors.startDate}
-                                label="Data początku"
+                                label="Дата начала"
                                 value={startDate}
                                 onChange={onChangeStartDate}
                             />
@@ -196,7 +196,7 @@ const AddCourse = (props) => {
                             <MyDatePicker
                                 error={errors.endDate.length > 0}
                                 helperText={errors.endDate}
-                                label="Data końca"
+                                label="Дата окончания"
                                 value={endDate}
                                 onChange={onChangeEndDate}
                             />

@@ -8,21 +8,21 @@ export const CategoryValidator = (
     categoryAssignmentDate
 ) => {
     let tempErrors = {};
-    tempErrors.qualification = qualification ? "" : "Należy podać kwalifikację";
+    tempErrors.qualification = qualification ? "" : "Необходимо указать квалификацию";
     tempErrors.category = !isFalseObject(category)
         ? ""
-        : "Należy podać kategorię";
+        : "Необходимо указать категорию";
     tempErrors.categoryNumber =
         !isFalseObject(category) && category.name !== "NONE"
             ? categoryNumber
                 ? ""
-                : "Należy podać numer kategorii"
+                : "Необходимо указать номер"
             : "";
     tempErrors.categoryAssignmentDate =
         !isFalseObject(category) && category.name !== "NONE"
             ? validator.isDate(categoryAssignmentDate)
                 ? ""
-                : "Należy podać datę nadania kategorii"
+                : "Необходимо указать дату получения"
             : "";
 
     return tempErrors;

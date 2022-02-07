@@ -9,10 +9,10 @@ export const ExemptionValidator = (
     let tempErrors = {};
     tempErrors.exemption = !isFalseObject(exemption)
         ? ""
-        : "Należy podać przyczynę zwolnienia";
+        : "Необходимо указать причину";
     tempErrors.exemptionStartDate = validator.isDate(exemptionStartDate)
         ? ""
-        : "Należy podać datę początku zwolnienia";
+        : "Необходимо указать дату начала";
     tempErrors.exemptionEndDate = "";
 
     return tempErrors;

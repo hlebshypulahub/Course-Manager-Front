@@ -15,7 +15,7 @@ export const login = (username, password) => (dispatch) => {
         })
         .catch((error) => {
             if (error.message === "401") {
-                const message = "Zła nazwa użytkownika lub hasło";
+                const message = "Неверное имя пользователя или пароль";
 
                 localStorage.removeItem("user");
 

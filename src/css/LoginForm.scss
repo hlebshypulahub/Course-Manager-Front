@@ -12,7 +12,7 @@
     padding: 0 10px 20px 10px;
 
     .label {
-        font-family: "Quicksand", sans-serif;
+        font-family: 'Exo 2', sans-serif;
         font-size: 20px;
         text-align: center;
     }
@@ -41,8 +41,9 @@
         background-color: #f6d9d8;
 
         span {
-            font-family: "Quicksand", sans-serif;
-            font-weight: bold;
+            font-family: 'Exo 2', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
             color: var(--blood);
         }
     }

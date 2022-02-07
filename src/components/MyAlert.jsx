@@ -27,8 +27,8 @@ const MyAlert = (props) => {
                     >
                         <div className="buttons">
                             <FormButtons
-                                acceptText="Tak"
-                                cancelText="Nie"
+                                acceptText="Да"
+                                cancelText="Нет"
                                 cancelFunc={props.cancelFunc}
                             />
                         </div>

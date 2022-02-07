@@ -5,11 +5,11 @@ export const EducationValidator = (education, eduName, eduGraduationDate) => {
     let tempErrors = {};
     tempErrors.education = !isFalseObject(education)
         ? ""
-        : "Należy podać rodzaj wykształcenia";
-    tempErrors.eduName = eduName ? "" : "Należy podać nazwę szkoły";
+        : "Необходимо указать уровень";
+    tempErrors.eduName = eduName ? "" : "Необходимо указать название УЗ";
     tempErrors.eduGraduationDate = validator.isDate(eduGraduationDate)
         ? ""
-        : "Należy podać datę ukończenia stodiów";
+        : "Необходимо указать дату окончания";
 
     return tempErrors;
 };

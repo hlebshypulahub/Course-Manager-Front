@@ -109,7 +109,7 @@ const EditExemption = (props) => {
                     history.push({
                         pathname: `/employees/${id}`,
                         state: {
-                            snackMessage: `Zwolnienie zostało zmienione`,
+                            snackMessage: `Освобождение изменено`,
                         },
                     });
                 });
@@ -136,7 +136,7 @@ const EditExemption = (props) => {
         if (!newExemptionStartDate) {
             setErrors({
                 ...errors,
-                exemptionStartDate: "Należy podać datę początku zwolnienia",
+                exemptionStartDate: "Необходимо указать дату начала",
             });
 
             return;
@@ -184,14 +184,14 @@ const EditExemption = (props) => {
                 >
                     <div className="card-label">
                         <span className="header-label">
-                            Edytuj przyczynę zwolnienia
+                            Изменить освобождение
                         </span>
                     </div>
                     <form className="form" onSubmit={handleSubmit}>
                         <div className="input text-field">
                             <MyTextField
                                 disabled
-                                label="Imię i nazwisko"
+                                label="ФИО"
                                 value={fullName ? fullName : ""}
                             />
                         </div>
@@ -201,7 +201,7 @@ const EditExemption = (props) => {
                                 helperText={errors.exemption}
                                 select
                                 value={exemption ? exemption.label : ""}
-                                label="Przyczyna"
+                                label="Причина"
                                 onChange={onChangeExemption}
                             >
                                 {exemptions.map((type) => {
@@ -220,7 +220,7 @@ const EditExemption = (props) => {
                             <MyDatePicker
                                 error={errors.exemptionStartDate.length > 0}
                                 helperText={errors.exemptionStartDate.toString()}
-                                label="Data początku"
+                                label="Дата начала"
                                 value={exemptionStartDate}
                                 onChange={onChangeExemptionStartDate}
                             />
@@ -229,7 +229,7 @@ const EditExemption = (props) => {
                             <MyDatePicker
                                 error={errors.exemptionEndDate.length > 0}
                                 helperText={errors.exemptionEndDate.toString()}
-                                label="Data końca"
+                                label="Дата окончания"
                                 value={exemptionEndDate}
                                 onChange={onChangeExemptionEndDate}
                             />

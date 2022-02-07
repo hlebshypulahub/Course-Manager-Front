@@ -33,7 +33,7 @@ const OkAlert = (props) => {
                             }}
                             onClick={props.func}
                         >
-                            OK
+                            Ок
                         </Button>
                     </div>
                 </CardActions>

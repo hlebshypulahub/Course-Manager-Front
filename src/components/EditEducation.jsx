@@ -103,7 +103,7 @@ const EditEducation = (props) => {
                     history.push({
                         pathname: `/employees/${id}`,
                         state: {
-                            snackMessage: `Wykształcenie zostało zmienione`,
+                            snackMessage: `Образование изменено`,
                         },
                     });
                 });
@@ -133,7 +133,7 @@ const EditEducation = (props) => {
         if (!newEduGraduationDate) {
             setErrors({
                 ...errors,
-                eduGraduationDate: "Należy podać datę ukończenia stodiów",
+                eduGraduationDate: "Необходимо указать дату окончания",
             });
         }
         setEduGraduationDate(newEduGraduationDate);
@@ -158,14 +158,14 @@ const EditEducation = (props) => {
                 >
                     <div className="card-label">
                         <span className="header-label">
-                            Edytuj wykształcenie
+                            Изменить образование
                         </span>
                     </div>
                     <form className="form" onSubmit={handleSubmit}>
                         <div className="input text-field">
                             <MyTextField
                                 disabled
-                                label="Imię i nazwisko"
+                                label="ФИО"
                                 value={fullName ? fullName : ""}
                             />
                         </div>
@@ -175,7 +175,7 @@ const EditEducation = (props) => {
                                 helperText={errors.education}
                                 select
                                 value={education ? education.label : ""}
-                                label="Rodzaj"
+                                label="Уровень"
                                 onChange={onChangeEducation}
                             >
                                 {educations.map((type) => {
@@ -194,7 +194,7 @@ const EditEducation = (props) => {
                             <MyTextField
                                 error={errors.eduName.length > 0}
                                 helperText={errors.eduName}
-                                label="Nazwa szkoły"
+                                label="Учебное заведение"
                                 value={eduName ? eduName : ""}
                                 onChange={onChangeEduName}
                             />
@@ -203,7 +203,7 @@ const EditEducation = (props) => {
                             <MyDatePicker
                                 error={errors.eduGraduationDate.length > 0}
                                 helperText={errors.eduGraduationDate.toString()}
-                                label="Data zakończenia"
+                                label="Дата окончания"
                                 value={eduGraduationDate}
                                 onChange={onChangeEduGraduationDate}
                             />
