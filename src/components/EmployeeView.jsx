@@ -24,6 +24,8 @@ import CoursesTable from "./CoursesTable";
 import MyAlert from "./MyAlert";
 import OkAlert from "./OkAlert";
 import { banana_color, green, red, sky_blue, pink } from "../helpers/color";
+import CategoryCard from "./CategoryCard";
+import PersonalCard from "./PersonalCard";
 
 import "../css/EmployeeView.scss";
 import "../css/DarkMode.scss";
@@ -201,238 +203,17 @@ const EmployeeView = (props) => {
                         </Alert>
                     </Snackbar>
                     <div className="first-row">
-                        <Card className="card main-info">
-                            <CardContent
-                                className="card-content"
-                                style={{
-                                    backgroundColor: banana_color,
-                                }}
-                            >
-                                <div className="card-label">
-                                    <span className="header-label">
-                                        Персональные данные
-                                    </span>
-                                    <Tooltip
-                                        title="Нажмите, чтобы изменить состояние сотрудника"
-                                        placement="top"
-                                    >
-                                        <span
-                                            className="pin"
-                                            style={
-                                                employee.active
-                                                    ? {
-                                                          backgroundColor:
-                                                              green,
-                                                      }
-                                                    : {
-                                                          backgroundColor: red,
-                                                      }
-                                            }
-                                            onClick={toggleActiveAlert}
-                                        >
-                                            {employee.active
-                                                ? "Активный"
-                                                : "Неактивный"}
-                                        </span>
-                                    </Tooltip>
-                                </div>
-                                <div>
-                                    <span className="label-text">ФИО:</span>
-                                    <span className="value-text">
-                                        {employee.fullName}
-                                    </span>
-                                </div>
-                                <div>
-                                    <span className="label-text">
-                                        Дата приема на работу:
-                                    </span>
-                                    <span className="value-text">
-                                        {employee.hiringDate}
-                                    </span>
-                                </div>
-                                <div>
-                                    <span className="label-text">
-                                        Место работы:
-                                    </span>
-                                    <span className="value-text">
-                                        {employee.jobFacility}
-                                    </span>
-                                </div>
-                                <div>
-                                    <span className="label-text">
-                                        Должность:
-                                    </span>
-                                    <span className="value-text">
-                                        {employee.position}
-                                    </span>
-                                </div>
-                            </CardContent>
-                        </Card>
-                        <Card className="card">
-                            <CardContent
-                                className="card-content"
-                                style={{
-                                    backgroundColor: banana_color,
-                                }}
-                            >
-                                <div className="card-label">
-                                    <span className="header-label">
-                                        Категория
-                                    </span>
-                                    <span
-                                        className="pin"
-                                        style={
-                                            !employee.category
-                                                ? {
-                                                      backgroundColor: red,
-                                                  }
-                                                : {
-                                                      backgroundColor: green,
-                                                  }
-                                        }
-                                    >
-                                        {!employee.category
-                                            ? "Необходимо указать"
-                                            : employee.category.label}
-                                    </span>
-                                </div>
-                                <div>
-                                    <span className="label-text-large">
-                                        Квалификация:
-                                    </span>
-                                    <span className="value-text">
-                                        {employee.qualification}
-                                    </span>
-                                </div>
-                                <div>
-                                    <span className="label-text-large">
-                                        Категория:
-                                    </span>
-                                    <span className="value-text">
-                                        {employee
-                                            ? employee.category
-                                                ? employee.category.label
-                                                : ""
-                                            : ""}
-                                    </span>
-                                </div>
-                                <div>
-                                    <span className="label-text-large">
-                                        Номер:
-                                    </span>
-                                    <span className="value-text">
-                                        {employee.categoryNumber}
-                                    </span>
-                                </div>
-                                <div>
-                                    <span className="label-text-large">
-                                        Дата получения:
-                                    </span>
-                                    <span className="value-text">
-                                        {employee.categoryAssignmentDate}
-                                    </span>
-                                </div>
-                                <div>
-                                    <span className="label-text-large">
-                                        Срок подтверждения:
-                                    </span>
-                                    <span className="value-text">
-                                        {
-                                            employee.categoryAssignmentDeadlineDate
-                                        }
-                                    </span>
-                                </div>
-                                <div>
-                                    <span className="label-text-large">
-                                        Срок подачи документов:
-                                    </span>
-                                    <span className="value-text">
-                                        {employee.docsSubmitDeadlineDate}
-                                    </span>
-                                </div>
-                                <div>
-                                    <span className="label-text-large">
-                                        Возможное повышение категории после:
-                                    </span>
-                                    <span className="value-text">
-                                        {employee.categoryPossiblePromotionDate}
-                                    </span>
-                                </div>
-                                <CardActions className="card-actions">
-                                    <Tooltip
-                                        title={
-                                            employee.exemptioned
-                                                ? "Сотрудник освобождён"
-                                                : !educationIsValid
-                                                ? "Необходимо указать образование"
-                                                : ""
-                                        }
-                                        placement="right"
-                                    >
-                                        <div>
-                                            <Button
-                                                disabled={
-                                                    !educationIsValid ||
-                                                    employee.exemptioned
-                                                }
-                                                variant="outlined"
-                                                style={{
-                                                    fontWeight: "bold",
-                                                }}
-                                                size="large"
-                                                onClick={() => {
-                                                    history.push(
-                                                        `/employees/${employee.id}/edit-category`
-                                                    );
-                                                }}
-                                            >
-                                                {categoryIsValid
-                                                    ? "Изменить"
-                                                    : "Указать"}
-                                            </Button>
-                                        </div>
-                                    </Tooltip>
-                                    {categoryIsValid && (
-                                        <Tooltip
-                                            title={
-                                                clickCounter < 2 &&
-                                                !employee.exemptioned
-                                                    ? "Нажмите 2 раза, чтобы вручную указать срок подтверждения категории"
-                                                    : ""
-                                            }
-                                            placement="right"
-                                        >
-                                            <div
-                                                onClick={() => {
-                                                    setClickCounter(
-                                                        clickCounter + 1
-                                                    );
-                                                }}
-                                            >
-                                                <Button
-                                                    disabled={
-                                                        clickCounter < 1 ||
-                                                        employee.exemptioned
-                                                    }
-                                                    variant="outlined"
-                                                    style={{
-                                                        fontWeight: "bold",
-                                                    }}
-                                                    size="large"
-                                                    onClick={() => {
-                                                        history.push(
-                                                            `/employees/${employee.id}/edit-category-deadline`
-                                                        );
-                                                    }}
-                                                >
-                                                    Указать вручную
-                                                </Button>
-                                            </div>
-                                        </Tooltip>
-                                    )}
-                                </CardActions>
-                            </CardContent>
-                        </Card>
+                        <PersonalCard
+                            employee={employee}
+                            toggleActiveAlert={toggleActiveAlert}
+                            showCardActions={true}
+                        />
+                        <CategoryCard
+                            employee={employee}
+                            categoryIsValid={categoryIsValid}
+                            educationIsValid={educationIsValid}
+                            showCardActions={true}
+                        />
                         <Card className="card">
                             <CardContent
                                 className="card-content"
@@ -508,8 +289,8 @@ const EmployeeView = (props) => {
                                         backgroundColor: banana_color,
                                     }}
                                 >
-                                    <div className="card-label">
-                                        <span className="header-label">
+                                    <div className="card-label-card">
+                                        <span className="header-label-card">
                                             Образование
                                         </span>
                                         <span
@@ -602,8 +383,8 @@ const EmployeeView = (props) => {
                                         backgroundColor: banana_color,
                                     }}
                                 >
-                                    <div className="card-label">
-                                        <span className="header-label">
+                                    <div className="card-label-card">
+                                        <span className="header-label-card">
                                             Освобождение
                                         </span>
                                         <span

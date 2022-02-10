@@ -11,6 +11,34 @@ export const getEmployeesForCoursePlan = () => {
     return get(API_BASE_URL + "/for-course-plan");
 };
 
+export const getDocumentForEmployee = (id, dto, documentType) => {
+    return fetch(API_BASE_URL + "/" + id + "/documents/" + documentType, {
+        method: "POST",
+        body: JSON.stringify(dto),
+        headers: Object.assign(
+            {},
+            { "Content-type": "application/json" },
+            authHeader()
+        ),
+    }).then((response) => {
+        if (response.ok) {
+            const filename = response.headers
+                .get("Content-Disposition")
+                .split("filename=")[1];
+            response.blob().then((blob) => {
+                let url = window.URL.createObjectURL(blob);
+                let a = document.createElement("a");
+                a.href = url;
+                a.download = filename;
+                window.open(url, "_blank").focus();
+                a.click();
+            });
+        } else {
+            throw new Error(response.status, response.message);
+        }
+    });
+};
+
 const get = (url) => {
     return fetch(url, {
         method: "GET",

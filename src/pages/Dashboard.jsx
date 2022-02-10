@@ -8,6 +8,7 @@ import EditCategory from "../components/EditCategory";
 import EditCategoryDeadline from "../components/EditCategoryDeadline";
 import AddCourse from "../components/AddCourse";
 import EditExemption from "../components/EditExemption";
+import EmployeeDocuments from "../components/EmployeeDocuments";
 import NotFound from "../components/NotFound";
 import "../css/Dashboard.scss";
 import Button from "@mui/material/Button";
@@ -75,6 +76,10 @@ export const Dashboard = (props) => {
                 <Route
                     path="/employees/:id/edit-exemption"
                     component={EditExemption}
+                />
+                <Route
+                    path="/employees/:id/documents"
+                    component={EmployeeDocuments}
                 />
                 <Route component={NotFound} />
             </Switch>

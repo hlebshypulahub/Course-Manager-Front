@@ -1,18 +1,25 @@
-@import "./fonts.scss";
-
-.EmployeeView {
+.EmployeeDocuments {
     padding: 20px;
     position: relative;
 
     background-color: white;
 
-    font-family: "Exo 2", sans-serif;
+    .type-btns {
+        width: 840px;
+        margin: 0 auto;
 
-    .header-label-card {
+        .type-btn {
+            width: 280px;
+        }
+    }
+
+    .pin {
+        color: white;
+        font-size: 22px;
+        font-weight: 500;
+        border-radius: 5px;
+        padding: 5px;
         display: inline-block;
-        padding-bottom: 5px;
-        font-size: 26px;
-        font-weight: 700;
     }
 
     .card-label-card {
@@ -26,25 +33,24 @@
         }
     }
 
-    .pin {
-        color: white;
-        font-size: 22px;
-        font-weight: 500;
-        border-radius: 5px;
-        padding: 5px;
+    .header-label-card {
         display: inline-block;
+        padding-bottom: 5px;
+        font-size: 26px;
+        font-weight: 700;
     }
 
-    .first-row {
+    .cards-row {
         display: flex;
         align-items: stretch;
         flex-wrap: wrap;
         height: auto;
         width: 100%;
+        padding-bottom: 20px;
 
         .card {
             position: relative;
-            width: calc(33.33% - 20px);
+            width: calc(50% - 20px);
             margin: 10px;
 
             .label-text-large {
@@ -129,54 +135,6 @@
             .value-text {
                 font-size: 22px;
                 font-weight: 600;
-            }
-        }
-    }
-
-    .second-row {
-        display: flex;
-        align-items: stretch;
-        flex-wrap: wrap;
-        width: 100%;
-
-        .card {
-            position: relative;
-            height: max-content;
-            width: calc(50% - 20px);
-            margin: 10px;
-
-            .label-text {
-                display: inline-block;
-                width: 150px;
-                font-size: 18px;
-                font-weight: 400;
-            }
-
-            .label-text-large {
-                display: inline-block;
-                width: 250px;
-                font-size: 18px;
-                font-weight: 400;
-            }
-
-            .value-text {
-                font-size: 18px;
-                font-weight: 600;
-            }
-
-            .card-content {
-                height: calc(100% - 40px);
-
-                .info-row {
-                    padding-top: 4px;
-                    padding-bottom: 4px;
-                }
-
-                .card-actions {
-                    padding-top: 15px;
-                    padding-bottom: 0px;
-                    padding-left: 0px;
-                }
             }
         }
     }
