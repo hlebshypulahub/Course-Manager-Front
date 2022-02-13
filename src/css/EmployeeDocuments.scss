@@ -1,3 +1,5 @@
+@import "./colors.scss";
+
 .EmployeeDocuments {
     padding: 20px;
     position: relative;
@@ -11,6 +13,11 @@
         .type-btn {
             width: 280px;
         }
+    }
+
+    .css-d9c359-MuiButtonBase-root-MuiToggleButton-root.Mui-selected {
+        background-color: var(--lightBlue);
+        color: rgb(65, 39, 126);
     }
 
     .pin {

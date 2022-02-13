@@ -11,7 +11,7 @@ export const getEmployeesForCoursePlan = () => {
     return get(API_BASE_URL + "/for-course-plan");
 };
 
-export const getDocumentForEmployee = (id, dto, documentType) => {
+export const getDocumentForEmployee = (id, dto, documentType, filename) => {
     return fetch(API_BASE_URL + "/" + id + "/documents/" + documentType, {
         method: "POST",
         body: JSON.stringify(dto),
@@ -22,16 +22,18 @@ export const getDocumentForEmployee = (id, dto, documentType) => {
         ),
     }).then((response) => {
         if (response.ok) {
-            const filename = response.headers
-                .get("Content-Disposition")
-                .split("filename=")[1];
             response.blob().then((blob) => {
                 let url = window.URL.createObjectURL(blob);
-                let a = document.createElement("a");
-                a.href = url;
-                a.download = filename;
-                window.open(url, "_blank").focus();
-                a.click();
+                let iframe = document.createElement("iframe");
+                document.body.appendChild(iframe);
+                iframe.style.display = "none";
+                iframe.src = url;
+                iframe.onload = function () {
+                    setTimeout(function () {
+                        iframe.focus();
+                        iframe.contentWindow.print();
+                    }, 1);
+                };
             });
         } else {
             throw new Error(response.status, response.message);

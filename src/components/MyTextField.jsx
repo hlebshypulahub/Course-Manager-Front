@@ -1,5 +1,6 @@
 import { styled } from "@mui/material/styles";
 import { TextField } from "@mui/material";
+import CustomTextField from "./CustomTextField";
 
 const StyledTextField = styled(TextField)({
     "& label": {
@@ -35,6 +36,7 @@ const MyTextField = (params) => {
         ...params,
         id: "custom-css-outlined-input",
         variant: "outlined",
+        width: "750px",
     };
 
     return params.disabled ? (

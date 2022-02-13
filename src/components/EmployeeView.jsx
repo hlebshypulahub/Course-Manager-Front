@@ -32,7 +32,6 @@ import "../css/DarkMode.scss";
 
 const EmployeeView = (props) => {
     const id = props.match.params.id;
-    const [clickCounter, setClickCounter] = useState(0);
     const [employee, setEmployee] = useState({});
     const [isLoading, setLoading] = useState(true);
     const [shownEducation, setShownEducation] = useState(false);
@@ -207,6 +206,7 @@ const EmployeeView = (props) => {
                             employee={employee}
                             toggleActiveAlert={toggleActiveAlert}
                             showCardActions={true}
+                            categoryIsValid={categoryIsValid}
                         />
                         <CategoryCard
                             employee={employee}

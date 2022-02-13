@@ -13,7 +13,6 @@ import { DateParser as parse } from "../helpers/DateParser";
 const PersonalCard = (props) => {
     const employee = props.employee;
     const categoryIsValid = props.categoryIsValid;
-    const educationIsValid = props.educationIsValid;
     const showCardActions = props.showCardActions
         ? props.showCardActions
         : false;
@@ -71,20 +70,34 @@ const PersonalCard = (props) => {
                 </div>
                 {showCardActions && (
                     <CardActions className="card-actions documents-btn">
-                        <Button
-                            variant="outlined"
-                            style={{
-                                fontWeight: "bold",
-                            }}
-                            size="large"
-                            onClick={() => {
-                                history.push(
-                                    `/employees/${employee.id}/documents`
-                                );
-                            }}
+                        <Tooltip
+                            title={
+                                employee.exemptioned
+                                    ? "Сотрудник освобождён"
+                                    : !categoryIsValid
+                                    ? "Необходимо указать категорию"
+                                    : ""
+                            }
+                            placement="right"
                         >
-                            Документы
-                        </Button>
+                            <div>
+                                <Button
+                                    disabled={!categoryIsValid}
+                                    variant="outlined"
+                                    style={{
+                                        fontWeight: "bold",
+                                    }}
+                                    size="large"
+                                    onClick={() => {
+                                        history.push(
+                                            `/employees/${employee.id}/documents`
+                                        );
+                                    }}
+                                >
+                                    Документы
+                                </Button>
+                            </div>
+                        </Tooltip>
                     </CardActions>
                 )}
             </CardContent>

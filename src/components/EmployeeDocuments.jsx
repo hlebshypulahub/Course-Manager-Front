@@ -14,6 +14,8 @@ import {
     getDocumentForEmployee,
 } from "../services/employee.service";
 
+import { getCategories } from "../services/category.service";
+
 import { getDocumentTypes } from "../services/documentType.service";
 import { getPrincipalCompany } from "../services/principal.service";
 
@@ -30,20 +32,21 @@ const EmployeeDocuments = (props) => {
     const [documentTypes, setDocumentTypes] = useState([]);
     const [documentName, setDocumentName] = useState("");
     const [principalCompany, setPrincipalCompany] = useState("");
+    const [categories, setCategories] = useState([]);
+    const [categoriesLoaded, setCategoriesLoaded] = useState(false);
 
     const history = useHistory();
 
-    const fetchDocument = () => {
-        setLoading(true);
-        getDocumentForEmployee(id, {}, alignment)
-            .then((data) => {
-                setLoading(false);
-            })
-            .catch((error) => {
-                setLoading(false);
-                setOkAlertShown(true);
+    useEffect(() => {
+        const fetchCategories = () => {
+            getCategories().then((data) => {
+                setCategories(data.filter((c) => c.name !== "NONE"));
+                setCategoriesLoaded(true);
             });
-    };
+        };
+
+        fetchCategories();
+    }, []);
 
     const fetchData = useCallback(() => {
         getEmployeeById(id)
@@ -86,7 +89,10 @@ const EmployeeDocuments = (props) => {
     }, []);
 
     const handleDocumentTypeChange = (event, newAlignment) => {
-        console.log(newAlignment);
+        if (!newAlignment) {
+            return;
+        }
+
         setAlignment(newAlignment);
 
         var documentType = documentTypes.find((type) => {
@@ -96,7 +102,12 @@ const EmployeeDocuments = (props) => {
         setDocumentName(documentType.label);
     };
 
-    if (isLoading || !documentTypesLoaded || !principalCompanyLoaded) {
+    if (
+        isLoading ||
+        !documentTypesLoaded ||
+        !principalCompanyLoaded ||
+        !categoriesLoaded
+    ) {
         return <Spinner />;
     }
 
@@ -139,19 +150,9 @@ const EmployeeDocuments = (props) => {
             <RepresentationForm
                 employee={employee}
                 principalCompany={principalCompany}
-                handleSubmit={fetchDocument}
                 documentName={documentName}
+                categories={categories}
             />
-            {/* <Button
-                variant="outlined"
-                style={{
-                    fontWeight: "bold",
-                }}
-                size="large"
-                onClick={fetchDocument}
-            >
-                СКАЧАТЬ
-            </Button> */}
         </div>
     );
 };

@@ -9,27 +9,29 @@ const FormButtons = (props) => {
 
     return (
         <>
-            <Button
-                variant="contained"
-                endIcon={<CancelIcon />}
-                style={{
-                    backgroundColor: red,
-                    color: "white",
-                    fontWeight: "bold",
-                    height: "40px",
-                }}
-                onClick={
-                    props.cancelFunc
-                        ? () => {
-                              props.cancelFunc();
-                          }
-                        : () => {
-                              history.goBack();
-                          }
-                }
-            >
-                {props.cancelText ? props.cancelText : "Отменить"}
-            </Button>
+            {!props.onlySubmit && (
+                <Button
+                    variant="contained"
+                    endIcon={<CancelIcon />}
+                    style={{
+                        backgroundColor: red,
+                        color: "white",
+                        fontWeight: "bold",
+                        height: "40px",
+                    }}
+                    onClick={
+                        props.cancelFunc
+                            ? () => {
+                                  props.cancelFunc();
+                              }
+                            : () => {
+                                  history.goBack();
+                              }
+                    }
+                >
+                    {props.cancelText ? props.cancelText : "Отменить"}
+                </Button>
+            )}
             <Button
                 variant="contained"
                 endIcon={<CheckCircleIcon />}

@@ -5,7 +5,7 @@
     padding: 20px;
     margin: 10px auto;
 
-    font-family: 'Exo 2', sans-serif;
+    font-family: "Exo 2", sans-serif;
 
     .header-label {
         display: block;
@@ -17,16 +17,31 @@
     }
 
     .card {
-        .text-field {
+        .text-field,
+        .combined-row {
             width: 750px;
             margin: 0 auto;
             margin-top: 25px;
-            margin-bottom: 40px;
+
+            .text1 {
+                font-size: 20px;
+                font-weight: 500;
+                position: relative;
+                top: 15px;
+            }
+
+            .input {
+                display: inline;
+                width: 200px;
+                margin-top: 25px;
+                margin-bottom: 40px;
+            }
         }
 
         .buttons {
             width: 750px;
             margin: 0 auto;
+            margin-top: 25px;
             display: flex;
             justify-content: flex-end;
         }
