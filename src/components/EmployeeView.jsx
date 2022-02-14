@@ -327,7 +327,7 @@ const EmployeeView = (props) => {
                                         </div>
                                         <div className="info-row">
                                             <span className="label-text">
-                                                УЗ:
+                                                УО:
                                             </span>
                                             <span className="value-text">
                                                 {employee.eduName}

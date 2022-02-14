@@ -194,7 +194,7 @@ const EditEducation = (props) => {
                             <MyTextField
                                 error={errors.eduName.length > 0}
                                 helperText={errors.eduName}
-                                label="Учебное заведение"
+                                label="Учреждение образования"
                                 value={eduName ? eduName : ""}
                                 onChange={onChangeEduName}
                             />

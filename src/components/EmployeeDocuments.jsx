@@ -8,6 +8,7 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import CategoryCard from "./CategoryCard";
 import PersonalCard from "./PersonalCard";
 import RepresentationForm from "./RepresentationForm";
+import QualificationSheetForm from "./QualificationSheetForm";
 
 import {
     getEmployeeById,
@@ -26,11 +27,10 @@ const EmployeeDocuments = (props) => {
     const [employee, setEmployee] = useState({});
     const [isLoading, setLoading] = useState(false);
     const [okAlertShown, setOkAlertShown] = useState(false);
-    const [alignment, setAlignment] = useState("representation");
+    const [alignment, setAlignment] = useState("REPRESENTATION");
     const [documentTypesLoaded, setDocumentTypesLoaded] = useState(false);
     const [principalCompanyLoaded, setPrincipalCompanyLoaded] = useState(false);
     const [documentTypes, setDocumentTypes] = useState([]);
-    const [documentName, setDocumentName] = useState("");
     const [principalCompany, setPrincipalCompany] = useState("");
     const [categories, setCategories] = useState([]);
     const [categoriesLoaded, setCategoriesLoaded] = useState(false);
@@ -69,7 +69,6 @@ const EmployeeDocuments = (props) => {
             getDocumentTypes().then((data) => {
                 setDocumentTypes(data);
                 setAlignment(data[0].name);
-                setDocumentName(data[0].label);
                 setDocumentTypesLoaded(true);
             });
         };
@@ -94,12 +93,6 @@ const EmployeeDocuments = (props) => {
         }
 
         setAlignment(newAlignment);
-
-        var documentType = documentTypes.find((type) => {
-            return type.name === newAlignment;
-        });
-
-        setDocumentName(documentType.label);
     };
 
     if (
@@ -147,12 +140,20 @@ const EmployeeDocuments = (props) => {
                         })}
                 </ToggleButtonGroup>
             </div>
-            <RepresentationForm
-                employee={employee}
-                principalCompany={principalCompany}
-                documentName={documentName}
-                categories={categories}
-            />
+            {alignment === "REPRESENTATION" && (
+                <RepresentationForm
+                    employee={employee}
+                    principalCompany={principalCompany}
+                    categories={categories}
+                />
+            )}
+            {alignment === "QUALIFICATION_SHEET" && (
+                <QualificationSheetForm
+                    employee={employee}
+                    principalCompany={principalCompany}
+                    categories={categories}
+                />
+            )}
         </div>
     );
 };
