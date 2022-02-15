@@ -68,7 +68,7 @@ const EmployeeDocuments = (props) => {
         const fetchDocumentTypes = () => {
             getDocumentTypes().then((data) => {
                 setDocumentTypes(data);
-                setAlignment(data[0].name);
+                setAlignment(data[1].name);
                 setDocumentTypesLoaded(true);
             });
         };

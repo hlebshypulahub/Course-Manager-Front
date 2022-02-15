@@ -16,10 +16,12 @@ import MyDatePicker from "./MyDatePicker";
 import validator from "validator";
 import { DateParser as parse } from "../helpers/DateParser";
 import { DateFormatter as format } from "../helpers/DateFormatter";
+import PastJobFields from "./PastJobFields";
 
 import "../css/Form.scss";
 
 const QualificationSheetForm = (props) => {
+    const uuidv4 = require("uuid/v4");
     const employee = props.employee;
     const [principalCompany, setPrincipalCompany] = useState(
         props.principalCompany
@@ -40,6 +42,48 @@ const QualificationSheetForm = (props) => {
     const [dob, setDob] = useState({});
     const [diplomaNumber, setDiplomaNumber] = useState("");
     const [diplomaQualification, setDiplomaQualification] = useState("");
+    const [pastJobs, setPastJobs] = useState(
+        new Map([
+            [
+                uuidv4(),
+                {
+                    pastJob: "A",
+                    startDate: new Date(2020, 5, 1),
+                    endDate: new Date(2020, 6, 2),
+                },
+            ],
+            [
+                uuidv4(),
+                {
+                    pastJob: "B",
+                    startDate: new Date(2020, 5, 3),
+                    endDate: new Date(2020, 6, 4),
+                },
+            ],
+            [
+                uuidv4(),
+                {
+                    pastJob: "C",
+                    startDate: new Date(2020, 5, 5),
+                    endDate: new Date(2020, 6, 6),
+                },
+            ],
+        ])
+    );
+    // const [startDates, setStartDates] = useState([
+    //     new Map([
+    //         [uuidv4(), new Date(2020, 5, 5)],
+    //         [uuidv4(), new Date(2020, 5, 5)],
+    //         [uuidv4(), new Date(2020, 5, 5)],
+    //     ]),
+    // ]);
+    // const [endDates, setEndDates] = useState([
+    //     new Map([
+    //         [uuidv4(), new Date(2020, 6, 6)],
+    //         [uuidv4(), new Date(2020, 6, 6)],
+    //         [uuidv4(), new Date(2020, 6, 6)],
+    //     ]),
+    // ]);
 
     const fetchDocument = useCallback(
         (e, documentDto) => {
@@ -49,7 +93,8 @@ const QualificationSheetForm = (props) => {
                 employee.id,
                 documentDto,
                 "representation",
-                employee.fullName.replace(" ", "_") + "_представление.pdf"
+                employee.fullName.replace(" ", "_") +
+                    "_квалификационный_лист.pdf"
             )
                 .then((data) => {
                     setDocumentLoading(false);
@@ -71,9 +116,89 @@ const QualificationSheetForm = (props) => {
         }
     }, [props.employee, props.employee.category, categories]);
 
-    const onChangeOverallWorkExperience = (e) => {
-        const newOverallWorkExperience = e.target.value;
-        setOverallWorkExperience(newOverallWorkExperience);
+    const onChangePastJob = (e, key) => {
+        const newPastJob = e.target.value;
+        if (pastJobs.get(key)) {
+            let tempPastJobs = new Map(pastJobs);
+            tempPastJobs.set(key, {
+                ...tempPastJobs.get(key),
+                pastJob: newPastJob,
+            });
+            setPastJobs(tempPastJobs);
+        } else {
+            setPastJobs([...pastJobs, [uuidv4(), { pastJob: newPastJob }]]);
+        }
+    };
+
+    const onChangeStartDate = (newStartDate, key) => {
+        if (pastJobs.get(key)) {
+            let tempPastJobs = new Map(pastJobs);
+            tempPastJobs.set(key, {
+                ...tempPastJobs.get(key),
+                startDate: newStartDate,
+            });
+            setPastJobs(tempPastJobs);
+        } else {
+            setPastJobs([...pastJobs, [uuidv4(), { startDate: newStartDate }]]);
+        }
+    };
+
+    const onChangeEndDate = (newEndDate, key) => {
+        if (pastJobs.get(key)) {
+            let tempPastJobs = new Map(pastJobs);
+            tempPastJobs.set(key, {
+                ...tempPastJobs.get(key),
+                endDate: newEndDate,
+            });
+            setPastJobs(tempPastJobs);
+        } else {
+            setPastJobs([...pastJobs, [uuidv4(), { endDate: newEndDate }]]);
+        }
+    };
+
+    // const onChangeEndDate = (newEndDate, index) => {
+    //     if (index < endDates.length) {
+    //         let tempEndDates = [...endDates];
+    //         tempEndDates[index] = newEndDate;
+    //         setEndDates(tempEndDates);
+    //     } else {
+    //         setEndDates([...endDates, newEndDate]);
+    //     }
+    // };
+
+    // const onChangePastJob = (e, index) => {
+    //     const newPastJob = e.target.value;
+    //     if (index < pastJobs.length) {
+    //         let tempPastJobs = [...pastJobs];
+    //         tempPastJobs[index] = newPastJob;
+    //         setPastJobs(tempPastJobs);
+    //     } else {
+    //         setPastJobs([...pastJobs, newPastJob]);
+    //     }
+    // };
+
+    // const onChangeStartDate = (newStartDate, index) => {
+    //     if (index < startDates.length) {
+    //         let tempStartDates = [...startDates];
+    //         tempStartDates[index] = newStartDate;
+    //         setStartDates(tempStartDates);
+    //     } else {
+    //         setStartDates([...startDates, newStartDate]);
+    //     }
+    // };
+
+    // const onChangeEndDate = (newEndDate, index) => {
+    //     if (index < endDates.length) {
+    //         let tempEndDates = [...endDates];
+    //         tempEndDates[index] = newEndDate;
+    //         setEndDates(tempEndDates);
+    //     } else {
+    //         setEndDates([...endDates, newEndDate]);
+    //     }
+    // };
+
+    const extendPastJobs = () => {
+        setPastJobs([...pastJobs, {}]);
     };
 
     const onChangeDiplomaNumber = (e) => {
@@ -87,12 +212,6 @@ const QualificationSheetForm = (props) => {
     };
 
     const onChangeDob = (newDob) => {
-        // if (!newCategoryAssignmentDate) {
-        //     setErrors({
-        //         ...errors,
-        //         categoryAssignmentDate: "Необходимо указать дату получения",
-        //     });
-        // }
         setDob(newDob);
     };
 
@@ -204,6 +323,7 @@ const QualificationSheetForm = (props) => {
                             Квалификационный лист
                         </span>
                     </div>
+
                     <form className="form" onSubmit={handleSubmit}>
                         <div className="text-field">
                             <MyTextField
@@ -212,6 +332,7 @@ const QualificationSheetForm = (props) => {
                                 value={employee.fullName}
                             />
                         </div>
+
                         <div className="text-field">
                             <MyTextField
                                 label="2. Должность служащего, организация, индивидуальный предприниматель"
@@ -222,6 +343,7 @@ const QualificationSheetForm = (props) => {
                                 }
                             />
                         </div>
+
                         <div className="text-field">
                             <MyDatePicker
                                 label="3. Дата и год рождения"
@@ -238,13 +360,16 @@ const QualificationSheetForm = (props) => {
                                 }
                             />
                         </div>
+
                         <div className="text-field">
                             <MyDatePicker
                                 label="4. Год окончания учреждения образования"
                                 value={parse(employee.eduGraduationDate)}
                                 disabled
+                                onChange={() => {}}
                             />
                         </div>
+
                         <div className="text-field">
                             <MyTextField
                                 label="5. Наименование учреждения образования"
@@ -252,6 +377,7 @@ const QualificationSheetForm = (props) => {
                                 disabled
                             />
                         </div>
+
                         <div className="text-field">
                             <MyTextField
                                 label="6. Номер диплома"
@@ -259,6 +385,7 @@ const QualificationSheetForm = (props) => {
                                 onChange={onChangeDiplomaNumber}
                             />
                         </div>
+
                         <div className="text-field">
                             <MyTextField
                                 label="7. Квалификация по диплому"
@@ -272,103 +399,47 @@ const QualificationSheetForm = (props) => {
                                 style={{ marginRight: "14px" }}
                                 className="text1"
                             >
-                                Для
-                            </span>
-                            <div
-                                style={{ marginRight: "20px" }}
-                                className="input"
-                            >
-                                <CustomTextField
-                                    select
-                                    value={reason}
-                                    label=""
-                                    onChange={onChangeReason}
-                                    width={"200px"}
-                                >
-                                    {" "}
-                                    <MenuItem
-                                        key={"confirmation"}
-                                        value={"confirmation"}
-                                    >
-                                        {"Подтверждения"}
-                                    </MenuItem>{" "}
-                                    <MenuItem
-                                        key={"assignment"}
-                                        value={"assignment"}
-                                    >
-                                        {"Присвоения"}
-                                    </MenuItem>{" "}
-                                </CustomTextField>
-                            </div>
-                            <div
-                                style={{ marginRight: "14px" }}
-                                className="input"
-                            >
-                                <CustomTextField
-                                    select
-                                    value={category.representationLabel}
-                                    label=""
-                                    onChange={onChangeCategory}
-                                    width={"170px"}
-                                >
-                                    {categories.map((c) => {
-                                        return (
-                                            <MenuItem
-                                                key={c.name}
-                                                value={c.representationLabel}
-                                            >
-                                                {c.representationLabel}
-                                            </MenuItem>
-                                        );
-                                    })}
-                                </CustomTextField>
-                            </div>
-                            <span className="text1">
-                                квалификационной категории
+                                8. Работа по окончании учреждения образования:
                             </span>
                         </div>
-                        <div className="text-field">
-                            <MyTextField
-                                label="По квалификации"
-                                value={qualification}
-                                onChange={onChangeQualification}
-                            />
-                        </div>
-                        <div className="text-field">
-                            <MyTextField
-                                label="Общий стаж работы"
-                                value={overallWorkExperience}
-                                onChange={onChangeOverallWorkExperience}
-                            />
-                        </div>
-                        <div className="text-field">
-                            <MyTextField
-                                label="Стаж работы в последней должности служащего"
-                                value={lastPositionWorkExperience}
-                                onChange={onChangeLastPositionWorkExperience}
-                            />
-                        </div>
-                        <div className="text-field">
-                            <MyTextField
-                                label="В работе себя зарекомендовал(а)"
-                                value={recommendation}
-                                onChange={onChangeRecommendation}
-                            />
-                        </div>
-                        <div className="text-field">
-                            <MyTextField
-                                label="Недостатки в работе, дисциплинарные взыскания, обоснованные жалобы"
-                                value={showing}
-                                onChange={onChangeShowing}
-                            />
-                        </div>
-                        <div className="text-field">
-                            <MyTextField
-                                label="Недостатки в работе, дисциплинарные взыскания, обоснованные жалобы"
-                                value={flaws}
-                                onChange={onChangeFlaws}
-                            />
-                        </div>
+
+                        {/* {pastJobs.map((job, index) => {
+                            const key = uuidv4();
+                            console.log(key);
+                            return (
+                                <PastJobFields
+                                    key={key}
+                                    index={index}
+                                    pastJob={job}
+                                    // startDate={startDates[index]}
+                                    // endDate={endDates[index]}
+                                    onChangePastJob={onChangePastJob}
+                                    // onChangeStartDate={onChangeStartDate}
+                                    // onChangeEndDate={onChangeEndDate}
+                                    isLast={index === pastJobs.length - 1}
+                                    extend={extendPastJobs}
+                                />
+                            );
+                        })} */}
+
+                        {Array.from(pastJobs).map(([key, value], index) => {
+                            return (
+                                <PastJobFields
+                                    key={key}
+                                    uniqueKey={key}
+                                    //  index={index}
+                                    pastJob={value.pastJob}
+                                    startDate={value.startDate}
+                                    endDate={value.endDate}
+                                    onChangePastJob={onChangePastJob}
+                                    onChangeStartDate={onChangeStartDate}
+                                    onChangeEndDate={onChangeEndDate}
+                                    isLast={index === pastJobs.length - 1}
+                                    extend={extendPastJobs}
+                                />
+                            );
+                        })}
+
                         <div className="buttons">
                             <FormButtons onlySubmit={true} />
                         </div>
