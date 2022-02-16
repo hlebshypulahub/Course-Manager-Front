@@ -31,13 +31,13 @@ const RepresentationForm = (props) => {
     const fetchDocument = useCallback((e, documentDto) => {
         e.preventDefault();
         setDocumentLoading(true);
-        getDocumentForEmployee(employee.id, documentDto, "representation", employee.fullName.replace(" ", "_") + "_представление.pdf")
+        getDocumentForEmployee(employee.id, documentDto, "representation")
             .then((data) => {
                 setDocumentLoading(false);
             })
             .catch((error) => {
             });
-    }, [employee.id, employee.fullName]);
+    }, [employee.id]);
 
     useEffect(() => {
         if (props.employee.category && props.employee.category.name === "NONE" && categories) {
@@ -168,7 +168,7 @@ const RepresentationForm = (props) => {
                                 Для
                             </span>
                     <div
-                        style={{marginRight: "20px"}}
+                        style={{marginRight: "14px"}}
                         className="input"
                     >
                         <CustomTextField

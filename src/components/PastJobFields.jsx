@@ -37,8 +37,8 @@ const PastJobFields = (props) => {
                     style={{ marginRight: "14px" }}
                 >
                     <MyDatePicker
+                        small={true}
                         key={index}
-                        width={"200px"}
                         label=""
                         value={props.startDate}
                         onChange={(newStartDate) =>
@@ -63,7 +63,7 @@ const PastJobFields = (props) => {
 
                 <div className="input text-field">
                     <MyDatePicker
-                        width={"200px"}
+                        small={true}
                         label=""
                         value={props.endDate}
                         onChange={(newEndDate) =>

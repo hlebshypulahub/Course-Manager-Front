@@ -1,13 +1,12 @@
 import { styled } from "@mui/material/styles";
 import { TextField } from "@mui/material";
-import CustomTextField from "./CustomTextField";
 
 const StyledTextField = styled(TextField)({
     "& label": {
         color: "black",
     },
     "& .MuiOutlinedInput-root": {
-        width: "750px",
+        width: "200px",
 
         "& fieldset": {
             border: "2px solid #A7A7FF",
@@ -23,7 +22,7 @@ const StyledTextField = styled(TextField)({
 
 const StyledTextFieldDisabled = styled(TextField)({
     "& .MuiOutlinedInput-root": {
-        width: "750px",
+        width: "200px",
 
         "& fieldset": {
             border: "2px solid",
@@ -31,7 +30,7 @@ const StyledTextFieldDisabled = styled(TextField)({
     },
 });
 
-const MyTextField = (params) => {
+const MyTextFieldSmall = (params) => {
     params = {
         ...params,
         id: "custom-css-outlined-input",
@@ -45,4 +44,4 @@ const MyTextField = (params) => {
     );
 };
 
-export default MyTextField;
+export default MyTextFieldSmall;

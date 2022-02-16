@@ -11,10 +11,12 @@ export const getEmployeesForCoursePlan = () => {
     return get(API_BASE_URL + "/for-course-plan");
 };
 
-export const getDocumentForEmployee = (id, dto, documentType, filename) => {
+export const getDocumentForEmployee = (id, dto, documentType) => {
+    let body = JSON.stringify(dto);
+    body = body.replace('"Invalid Date"', "null");
     return fetch(API_BASE_URL + "/" + id + "/documents/" + documentType, {
         method: "POST",
-        body: JSON.stringify(dto),
+        body,
         headers: Object.assign(
             {},
             { "Content-type": "application/json" },

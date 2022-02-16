@@ -1,13 +1,11 @@
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
-// import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import MyTextField from "./MyTextField";
-import CustomTextField from "./CustomTextField";
+import MyTextFieldSmall from "./MyTextFieldSmall";
 
 const MyDatePicker = ({ error, helperText, ...params }) => {
-    const width = params.width;
-
+    const small = params.small;
     return (
         <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DesktopDatePicker
@@ -19,10 +17,9 @@ const MyDatePicker = ({ error, helperText, ...params }) => {
                     helpertext: helperText,
                     iserror: error ? "true" : undefined,
                 }}
-                renderInput={(params) =>
-                    width ? (
-                        <CustomTextField
-                            width={width}
+                renderInput={(params) => {
+                    return small ? (
+                        <MyTextFieldSmall
                             {...params}
                             helperText={params.inputProps.helpertext}
                             error={params.inputProps.iserror === "true"}
@@ -39,8 +36,8 @@ const MyDatePicker = ({ error, helperText, ...params }) => {
                                 event.target.select();
                             }}
                         />
-                    )
-                }
+                    );
+                }}
             />
         </LocalizationProvider>
     );

@@ -17,27 +17,18 @@ import validator from "validator";
 import { DateParser as parse } from "../helpers/DateParser";
 import { DateFormatter as format } from "../helpers/DateFormatter";
 import PastJobFields from "./PastJobFields";
+import { MapToArray as mapToArray } from "../helpers/MapToArray";
 
 import "../css/Form.scss";
 
 const QualificationSheetForm = (props) => {
     const uuidv4 = require("uuid/v4");
     const employee = props.employee;
-    const [principalCompany, setPrincipalCompany] = useState(
-        props.principalCompany
-    );
     const categories = props.categories;
     const [category, setCategory] = useState({});
-    const [reason, setReason] = useState("confirmation");
     const [qualification, setQualification] = useState(
         props.employee.qualification
     );
-    const [overallWorkExperience, setOverallWorkExperience] = useState("");
-    const [lastPositionWorkExperience, setLastPositionWorkExperience] =
-        useState("");
-    const [recommendation, setRecommendation] = useState("");
-    const [showing, setShowing] = useState("");
-    const [flaws, setFlaws] = useState("");
     const [isDocumentLoading, setDocumentLoading] = useState(false);
     const [dob, setDob] = useState({});
     const [diplomaNumber, setDiplomaNumber] = useState("");
@@ -47,61 +38,44 @@ const QualificationSheetForm = (props) => {
             [
                 uuidv4(),
                 {
-                    pastJob: "A",
-                    startDate: new Date(2020, 5, 1),
-                    endDate: new Date(2020, 6, 2),
-                },
-            ],
-            [
-                uuidv4(),
-                {
-                    pastJob: "B",
-                    startDate: new Date(2020, 5, 3),
-                    endDate: new Date(2020, 6, 4),
-                },
-            ],
-            [
-                uuidv4(),
-                {
-                    pastJob: "C",
-                    startDate: new Date(2020, 5, 5),
-                    endDate: new Date(2020, 6, 6),
+                    pastJob: "",
+                    startDate: null,
+                    endDate: null,
                 },
             ],
         ])
     );
-    // const [startDates, setStartDates] = useState([
-    //     new Map([
-    //         [uuidv4(), new Date(2020, 5, 5)],
-    //         [uuidv4(), new Date(2020, 5, 5)],
-    //         [uuidv4(), new Date(2020, 5, 5)],
-    //     ]),
-    // ]);
-    // const [endDates, setEndDates] = useState([
-    //     new Map([
-    //         [uuidv4(), new Date(2020, 6, 6)],
-    //         [uuidv4(), new Date(2020, 6, 6)],
-    //         [uuidv4(), new Date(2020, 6, 6)],
-    //     ]),
-    // ]);
+    const [professionalTraining, setProfessionalTraining] = useState("");
+    const [academicDegree, setAcademicDegree] = useState("");
+    const [academicTitle, setAcademicTitle] = useState("");
+    const [honoraryTitle, setHonoraryTitle] = useState("");
+    const [language, setLanguage] = useState("");
+    const [clubs, setClubs] = useState("");
+    const [thesises, setThesises] = useState("");
+    const [inventions, setInventions] = useState("");
+    const [positionAndPrincipalCompany, setPositionAndPrincipalCompany] =
+        useState("");
 
     const fetchDocument = useCallback(
         (e, documentDto) => {
+            // console.log(pastJobs);
+            // console.log(mapToArray(pastJobs));
+            // console.log(JSON.stringify(mapToArray(pastJobs)));
+            // console.log(documentDto);
+            documentDto = { ...documentDto, pastJobs: mapToArray(pastJobs) };
             e.preventDefault();
             setDocumentLoading(true);
             getDocumentForEmployee(
                 employee.id,
                 documentDto,
-                "representation",
-                employee.fullName.replace(" ", "_") +
-                    "_квалификационный_лист.pdf"
+                "qualification-sheet"
             )
                 .then((data) => {
                     setDocumentLoading(false);
                 })
                 .catch((error) => {});
         },
-        [employee.id, employee.fullName]
+        [employee.id, pastJobs]
     );
 
     useEffect(() => {
@@ -115,6 +89,12 @@ const QualificationSheetForm = (props) => {
             setCategory(props.employee.category);
         }
     }, [props.employee, props.employee.category, categories]);
+
+    useEffect(() => {
+        setPositionAndPrincipalCompany(
+            employee.position + ", " + props.principalCompany
+        );
+    }, [employee.position, props.principalCompany]);
 
     const onChangePastJob = (e, key) => {
         const newPastJob = e.target.value;
@@ -135,11 +115,14 @@ const QualificationSheetForm = (props) => {
             let tempPastJobs = new Map(pastJobs);
             tempPastJobs.set(key, {
                 ...tempPastJobs.get(key),
-                startDate: newStartDate,
+                startDate: format(newStartDate),
             });
             setPastJobs(tempPastJobs);
         } else {
-            setPastJobs([...pastJobs, [uuidv4(), { startDate: newStartDate }]]);
+            setPastJobs([
+                ...pastJobs,
+                [uuidv4(), { startDate: format(newStartDate) }],
+            ]);
         }
     };
 
@@ -148,62 +131,75 @@ const QualificationSheetForm = (props) => {
             let tempPastJobs = new Map(pastJobs);
             tempPastJobs.set(key, {
                 ...tempPastJobs.get(key),
-                endDate: newEndDate,
+                endDate: format(newEndDate),
             });
             setPastJobs(tempPastJobs);
         } else {
-            setPastJobs([...pastJobs, [uuidv4(), { endDate: newEndDate }]]);
+            setPastJobs([
+                ...pastJobs,
+                [uuidv4(), { endDate: format(newEndDate) }],
+            ]);
         }
     };
 
-    // const onChangeEndDate = (newEndDate, index) => {
-    //     if (index < endDates.length) {
-    //         let tempEndDates = [...endDates];
-    //         tempEndDates[index] = newEndDate;
-    //         setEndDates(tempEndDates);
-    //     } else {
-    //         setEndDates([...endDates, newEndDate]);
-    //     }
-    // };
-
-    // const onChangePastJob = (e, index) => {
-    //     const newPastJob = e.target.value;
-    //     if (index < pastJobs.length) {
-    //         let tempPastJobs = [...pastJobs];
-    //         tempPastJobs[index] = newPastJob;
-    //         setPastJobs(tempPastJobs);
-    //     } else {
-    //         setPastJobs([...pastJobs, newPastJob]);
-    //     }
-    // };
-
-    // const onChangeStartDate = (newStartDate, index) => {
-    //     if (index < startDates.length) {
-    //         let tempStartDates = [...startDates];
-    //         tempStartDates[index] = newStartDate;
-    //         setStartDates(tempStartDates);
-    //     } else {
-    //         setStartDates([...startDates, newStartDate]);
-    //     }
-    // };
-
-    // const onChangeEndDate = (newEndDate, index) => {
-    //     if (index < endDates.length) {
-    //         let tempEndDates = [...endDates];
-    //         tempEndDates[index] = newEndDate;
-    //         setEndDates(tempEndDates);
-    //     } else {
-    //         setEndDates([...endDates, newEndDate]);
-    //     }
-    // };
-
     const extendPastJobs = () => {
-        setPastJobs([...pastJobs, {}]);
+        let tempPastJobs = new Map(pastJobs);
+        tempPastJobs.set(uuidv4(), {
+            pastJob: "",
+            startDate: null,
+            endDate: null,
+        });
+        setPastJobs(tempPastJobs);
     };
 
     const onChangeDiplomaNumber = (e) => {
         const newDiplomaNumber = e.target.value;
         setDiplomaNumber(newDiplomaNumber);
+    };
+
+    const onChangePositionAndPrincipalCompany = (e) => {
+        const newPositionAndPrincipalCompany = e.target.value;
+        setPositionAndPrincipalCompany(newPositionAndPrincipalCompany);
+    };
+
+    const onChangeClubs = (e) => {
+        const newClubs = e.target.value;
+        setClubs(newClubs);
+    };
+
+    const onChangeThesises = (e) => {
+        const newThesises = e.target.value;
+        setThesises(newThesises);
+    };
+
+    const onChangeInventions = (e) => {
+        const newInventions = e.target.value;
+        setInventions(newInventions);
+    };
+
+    const onChangeAcademicDegree = (e) => {
+        const newAcademicDegree = e.target.value;
+        setAcademicDegree(newAcademicDegree);
+    };
+
+    const onChangeAcademicTitle = (e) => {
+        const newAcademicTitle = e.target.value;
+        setAcademicTitle(newAcademicTitle);
+    };
+
+    const onChangeHonoraryTitle = (e) => {
+        const newHonoraryTitle = e.target.value;
+        setHonoraryTitle(newHonoraryTitle);
+    };
+
+    const onChangeLanguage = (e) => {
+        const newLanguage = e.target.value;
+        setLanguage(newLanguage);
+    };
+
+    const onChangeProfessionalTraining = (e) => {
+        const newProfessionalTraining = e.target.value;
+        setProfessionalTraining(newProfessionalTraining);
     };
 
     const onChangeDiplomaQualification = (e) => {
@@ -215,58 +211,16 @@ const QualificationSheetForm = (props) => {
         setDob(newDob);
     };
 
-    const onChangeFlaws = (e) => {
-        let newFlaws = e.target.value;
-        if (newFlaws.length > 230) {
-            newFlaws = newFlaws.slice(0, -1);
-        }
-        setFlaws(newFlaws);
-    };
-
-    const onChangeShowing = (e) => {
-        let newShowing = e.target.value;
-        if (newShowing.length > 240) {
-            newShowing = newShowing.slice(0, -1);
-        }
-        setShowing(newShowing);
-    };
-
-    const onChangeRecommendation = (e) => {
-        let newRecommendation = e.target.value;
-        if (newRecommendation.length > 270) {
-            newRecommendation = newRecommendation.slice(0, -1);
-        }
-        setRecommendation(newRecommendation);
-    };
-
-    const onChangeLastPositionWorkExperience = (e) => {
-        const newLastPositionWorkExperience = e.target.value;
-        setLastPositionWorkExperience(newLastPositionWorkExperience);
-    };
-
-    const onChangePrincipalCompany = (e) => {
-        const newPrincipalCompany = e.target.value;
-        setPrincipalCompany(newPrincipalCompany);
-    };
-
     const onChangeQualification = (e) => {
         const newQualification = e.target.value;
         setQualification(newQualification);
     };
 
-    const onChangeReason = (e) => {
-        const newReason = e.target.value;
-        if (newReason === "assignment") {
-            setReason("assignment");
-        } else if (newReason === "confirmation") {
-            setReason("confirmation");
-        }
-    };
-
     const onChangeCategory = (e) => {
-        const newCategoryRepresentationLabel = e.target.value;
+        const newCategoryQualificationSheetLabel = e.target.value;
         const newCategory = categories.find(
-            (c) => c.representationLabel === newCategoryRepresentationLabel
+            (c) =>
+                c.qualificationSheetLabel === newCategoryQualificationSheetLabel
         );
         setCategory(!isFalseObject(newCategory) ? newCategory : {});
     };
@@ -274,33 +228,42 @@ const QualificationSheetForm = (props) => {
     const handleSubmit = useCallback(
         (e) => {
             const documentDto = {
-                principalCompany,
-                ...(reason === "assignment" && { categoryAssignment: true }),
-                ...(reason === "confirmation" && {
-                    categoryConfirmation: true,
-                }),
                 category: category.name,
                 qualification,
-                overallWorkExperience,
-                lastPositionWorkExperience,
-                recommendation,
-                showing,
-                flaws,
+                dob: format(dob),
+                diplomaNumber,
+                diplomaQualification,
+                pastJobs,
+                professionalTraining,
+                academicDegree,
+                academicTitle,
+                honoraryTitle,
+                language,
+                clubs,
+                thesises,
+                inventions,
+                positionAndPrincipalCompany,
             };
 
             fetchDocument(e, documentDto);
         },
         [
             fetchDocument,
-            principalCompany,
-            reason,
             category,
             qualification,
-            overallWorkExperience,
-            lastPositionWorkExperience,
-            recommendation,
-            showing,
-            flaws,
+            dob,
+            diplomaNumber,
+            diplomaQualification,
+            pastJobs,
+            professionalTraining,
+            academicDegree,
+            academicTitle,
+            honoraryTitle,
+            language,
+            clubs,
+            thesises,
+            inventions,
+            positionAndPrincipalCompany,
         ]
     );
 
@@ -336,11 +299,8 @@ const QualificationSheetForm = (props) => {
                         <div className="text-field">
                             <MyTextField
                                 label="2. Должность служащего, организация, индивидуальный предприниматель"
-                                value={
-                                    employee.position +
-                                    ", " +
-                                    props.principalCompany
-                                }
+                                value={positionAndPrincipalCompany}
+                                onChange={onChangePositionAndPrincipalCompany}
                             />
                         </div>
 
@@ -403,42 +363,151 @@ const QualificationSheetForm = (props) => {
                             </span>
                         </div>
 
-                        {/* {pastJobs.map((job, index) => {
-                            const key = uuidv4();
-                            console.log(key);
-                            return (
-                                <PastJobFields
-                                    key={key}
-                                    index={index}
-                                    pastJob={job}
-                                    // startDate={startDates[index]}
-                                    // endDate={endDates[index]}
-                                    onChangePastJob={onChangePastJob}
-                                    // onChangeStartDate={onChangeStartDate}
-                                    // onChangeEndDate={onChangeEndDate}
-                                    isLast={index === pastJobs.length - 1}
-                                    extend={extendPastJobs}
-                                />
-                            );
-                        })} */}
-
                         {Array.from(pastJobs).map(([key, value], index) => {
                             return (
                                 <PastJobFields
                                     key={key}
                                     uniqueKey={key}
-                                    //  index={index}
                                     pastJob={value.pastJob}
-                                    startDate={value.startDate}
-                                    endDate={value.endDate}
+                                    startDate={parse(value.startDate)}
+                                    endDate={parse(value.endDate)}
                                     onChangePastJob={onChangePastJob}
                                     onChangeStartDate={onChangeStartDate}
                                     onChangeEndDate={onChangeEndDate}
-                                    isLast={index === pastJobs.length - 1}
+                                    isLast={index === pastJobs.size - 1}
                                     extend={extendPastJobs}
                                 />
                             );
                         })}
+
+                        <div className="text-field">
+                            <MyTextField
+                                label="9. Повышение квалификации, профессиональная подготовка (где, когда, продолжительность)"
+                                value={professionalTraining}
+                                onChange={onChangeProfessionalTraining}
+                                multiline
+                            />
+                        </div>
+
+                        <div className="text-field">
+                            <MyTextField
+                                label="10. Ученая степень"
+                                value={academicDegree}
+                                onChange={onChangeAcademicDegree}
+                            />
+                        </div>
+
+                        <div className="text-field">
+                            <MyTextField
+                                label="11. Ученое звание"
+                                value={academicTitle}
+                                onChange={onChangeAcademicTitle}
+                            />
+                        </div>
+
+                        <div className="text-field">
+                            <MyTextField
+                                label="12. Почетное звание"
+                                value={honoraryTitle}
+                                onChange={onChangeHonoraryTitle}
+                            />
+                        </div>
+
+                        <div className="text-field">
+                            <MyTextField
+                                label="13. Знание языка"
+                                value={language}
+                                onChange={onChangeLanguage}
+                            />
+                        </div>
+
+                        <div className="text-field">
+                            <MyTextField
+                                label="14. Участие в научных медицинских обществах"
+                                value={clubs}
+                                onChange={onChangeClubs}
+                            />
+                        </div>
+
+                        <div className="text-field">
+                            <MyTextField
+                                label="15. Опубликовано работ"
+                                value={thesises}
+                                onChange={onChangeThesises}
+                            />
+                        </div>
+
+                        <div className="text-field">
+                            <MyTextField
+                                label="Изобретения и др."
+                                value={inventions}
+                                onChange={onChangeInventions}
+                            />
+                        </div>
+
+                        <div className="combined-row">
+                            <span
+                                style={{ marginRight: "14px" }}
+                                className="text2"
+                            >
+                                16. Претендует на
+                            </span>
+                            <div
+                                style={{ marginRight: "14px" }}
+                                className="input"
+                            >
+                                <CustomTextField
+                                    select
+                                    value={
+                                        category &&
+                                        category.qualificationSheetLabel
+                                            ? category.qualificationSheetLabel
+                                            : ""
+                                    }
+                                    label=""
+                                    onChange={onChangeCategory}
+                                    width={"120px"}
+                                >
+                                    {categories.map((c) => {
+                                        return (
+                                            <MenuItem
+                                                key={c.name}
+                                                value={
+                                                    c.qualificationSheetLabel
+                                                }
+                                            >
+                                                {c.qualificationSheetLabel}
+                                            </MenuItem>
+                                        );
+                                    })}
+                                </CustomTextField>
+                            </div>
+                            <span
+                                className="text2"
+                                style={{ marginRight: "14px" }}
+                            >
+                                квал. категорию по квал-ции
+                            </span>
+                            <div className="input">
+                                <CustomTextField
+                                    value={qualification}
+                                    label=""
+                                    onChange={onChangeQualification}
+                                    width={"220px"}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="text-field">
+                            <MyDatePicker
+                                label="17. Дата присвоения (подтверждения) предыдущей квалификационной категории"
+                                value={parse(
+                                    props.employee.categoryAssignmentDate
+                                )}
+                                disabled
+                                onChange={() => {}}
+                            />
+                        </div>
 
                         <div className="buttons">
                             <FormButtons onlySubmit={true} />
