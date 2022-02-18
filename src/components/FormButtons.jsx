@@ -13,6 +13,7 @@ const FormButtons = (props) => {
                 <Button
                     variant="contained"
                     endIcon={<CancelIcon />}
+                    type="button"
                     style={{
                         backgroundColor: red,
                         color: "white",

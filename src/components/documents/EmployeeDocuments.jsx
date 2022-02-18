@@ -8,7 +8,7 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import CategoryCard from "./CategoryCard";
 import PersonalCard from "./PersonalCard";
 import RepresentationForm from "./RepresentationForm";
-import QualificationSheetForm from "./QualificationSheetForm";
+import QualificationSheetForm from "../QualificationSheetForm";
 
 import {
     getEmployeeById,
