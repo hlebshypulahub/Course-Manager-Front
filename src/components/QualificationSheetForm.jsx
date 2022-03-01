@@ -4,6 +4,7 @@ import validator from "validator";
 
 //// Components
 import MyTextField from "./MyTextField";
+import MyTextField220 from "./MyTextField220";
 import CustomTextField from "./CustomTextField";
 import FormButtons from "./FormButtons";
 import Spinner from "../components/Spinner";
@@ -212,7 +213,6 @@ const QualificationSheetForm = ({ employee, categories, principalCompany }) => {
     return (
         <div className="Form">
             <Card className="card">
-                {" "}
                 <CardContent
                     className="card-content"
                     style={{
@@ -243,6 +243,7 @@ const QualificationSheetForm = ({ employee, categories, principalCompany }) => {
                                         e.target.value
                                     )
                                 }
+                                multiline
                             />
                         </div>
 
@@ -380,6 +381,7 @@ const QualificationSheetForm = ({ employee, categories, principalCompany }) => {
                                 label="14. Участие в научных медицинских обществах"
                                 value={clubs}
                                 onChange={(e) => setClubs(e.target.value)}
+                                multiline
                             />
                         </div>
 
@@ -396,6 +398,7 @@ const QualificationSheetForm = ({ employee, categories, principalCompany }) => {
                                 label="Изобретения и др."
                                 value={inventions}
                                 onChange={(e) => setInventions(e.target.value)}
+                                multiline
                             />
                         </div>
 
@@ -431,13 +434,12 @@ const QualificationSheetForm = ({ employee, categories, principalCompany }) => {
                                 квал. категорию по квал-ции
                             </span>
                             <div className="input">
-                                <CustomTextField
+                                <MyTextField220
                                     value={qualification}
                                     label=""
                                     onChange={(e) =>
                                         setQualification(e.target.value)
                                     }
-                                    width={"220px"}
                                 />
                             </div>
                         </div>

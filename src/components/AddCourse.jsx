@@ -1,23 +1,30 @@
+//// React
 import React, { useState, useCallback } from "react";
-import MyTextField from "./MyTextField";
-import MyDatePicker from "./MyDatePicker";
 import validator from "validator";
-
 import { useHistory } from "react-router-dom";
-
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import FormButtons from "./FormButtons";
 import { Redirect } from "react-router-dom";
 import { useSelector } from "react-redux";
 
+//// Components
+import MyTextField from "./MyTextField";
+import MyDatePicker from "./MyDatePicker";
+import FormButtons from "./FormButtons";
+
+//// Mui
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+
+//// Functions
 import { addCourseToEmployee } from "../services/course.service";
 import { DateFormatter as format } from "../helpers/DateFormatter";
 
+//// Utils
 import { banana_color } from "../helpers/color";
+
+//// CSS
 import "../css/Form.scss";
 
-const AddCourse = (props) => {
+const AddCourse = ({props}) => {
     const employeeFullName = props.location.state.employeeFullName;
     const employeeId = props.match.params.id;
     const [name, setName] = useState("");
@@ -32,6 +39,7 @@ const AddCourse = (props) => {
         startDate: "",
         endDate: "",
     });
+
     const { user: currentUser } = useSelector((state) => state.auth);
 
     const history = useHistory();

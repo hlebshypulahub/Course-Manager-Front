@@ -76,7 +76,7 @@ const CategoryCard = (props) => {
                 </div>
                 <div>
                     <span className="label-text-large">
-                        Срок подтверждения:
+                        Срок аттестации:
                     </span>
                     <span className="value-text">
                         {employee.categoryAssignmentDeadlineDate}

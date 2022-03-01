@@ -21,6 +21,7 @@ import { getDocumentTypes } from "../services/documentType.service";
 import { getPrincipalCompany } from "../services/principal.service";
 
 import "../css/EmployeeDocuments.scss";
+import ProfessionalReportForm from "./ProfessionalReportForm";
 
 const EmployeeDocuments = (props) => {
     const id = props.match.params.id;
@@ -69,7 +70,7 @@ const EmployeeDocuments = (props) => {
         const fetchDocumentTypes = () => {
             getDocumentTypes().then((data) => {
                 setDocumentTypes(data);
-                setAlignment(data[1].name);
+                setAlignment(data[0].name);
                 setDocumentTypesLoaded(true);
             });
         };
@@ -153,6 +154,12 @@ const EmployeeDocuments = (props) => {
                     employee={employee}
                     principalCompany={principalCompany}
                     categories={categories}
+                />
+            )}
+            {alignment === "PROFESSIONAL_REPORT" && (
+                <ProfessionalReportForm
+                    employee={employee}
+                    principalCompany={principalCompany}
                 />
             )}
         </div>
