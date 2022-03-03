@@ -20,7 +20,7 @@ const login = (username, password) => {
                 return data;
             });
         } else {
-            throw new Error(response.status);
+            throw new Error();
         }
     });
 };

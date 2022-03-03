@@ -24,7 +24,7 @@ import { banana_color } from "../helpers/color";
 //// CSS
 import "../css/Form.scss";
 
-const AddCourse = ({props}) => {
+const AddCourse = (props) => {
     const employeeFullName = props.location.state.employeeFullName;
     const employeeId = props.match.params.id;
     const [name, setName] = useState("");
@@ -75,11 +75,11 @@ const AddCourse = ({props}) => {
 
             if (validate()) {
                 const course = {
-                    ...(name && { name }),
-                    ...(description && { description }),
-                    ...(hours && { hours }),
-                    ...(startDate && { startDate: format(startDate) }),
-                    ...(endDate && { endDate: format(endDate) }),
+                    name,
+                    description,
+                    hours,
+                    startDate: format(startDate),
+                    endDate: format(endDate),
                 };
 
                 addCourseToEmployee(employeeId, course).then(() => {
@@ -104,41 +104,6 @@ const AddCourse = ({props}) => {
         ]
     );
 
-    const onChangeName = (e) => {
-        const newName = e.target.value;
-        setName(newName);
-    };
-
-    const onChangeDescription = (e) => {
-        const newDescription = e.target.value;
-        setDescription(newDescription);
-    };
-
-    const onChangeHours = (e) => {
-        const newHours = e.target.value;
-        setHours(newHours);
-    };
-
-    const onChangeStartDate = (newStartDate) => {
-        if (!newStartDate) {
-            setErrors({
-                ...errors,
-                startDate: "Необходимо указать дату начала",
-            });
-        }
-        setStartDate(newStartDate);
-    };
-
-    const onChangeEndDate = (newEndDate) => {
-        if (!newEndDate) {
-            setErrors({
-                ...errors,
-                endDate: "Необходимо указать дату окончания",
-            });
-        }
-        setEndDate(newEndDate);
-    };
-
     if (!currentUser) {
         return <Redirect to="/login" />;
     }
@@ -155,60 +120,67 @@ const AddCourse = ({props}) => {
                     <div className="card-label">
                         <span className="header-label">Добавить курс</span>
                     </div>
+
                     <form className="form" onSubmit={handleSubmit}>
                         <div className="input text-field">
                             <MyTextField
                                 disabled
                                 label="ФИО"
-                                value={employeeFullName ? employeeFullName : ""}
+                                value={employeeFullName}
                             />
                         </div>
+
                         <div className="input text-field">
                             <MyTextField
                                 error={errors.name.length > 0}
                                 helperText={errors.name}
                                 label="Название"
                                 value={name}
-                                onChange={onChangeName}
+                                onChange={(e) => setName(e.target.value)}
                             />
                         </div>
+
                         <div className="input text-field">
                             <MyTextField
                                 error={errors.description.length > 0}
                                 helperText={errors.description}
                                 label="Описание"
                                 value={description}
-                                onChange={onChangeDescription}
+                                onChange={(e) => setDescription(e.target.value)}
                             />
                         </div>
+
                         <div className="input text-field">
                             <MyTextField
                                 error={errors.hours.length > 0}
                                 helperText={errors.hours}
-                                pattern="[0-9]*"
+                                type="number"
                                 label="Количество часов"
                                 value={hours}
-                                onChange={onChangeHours}
+                                onChange={(e) => setHours(e.target.value)}
                             />
                         </div>
+
                         <div className="input text-field">
                             <MyDatePicker
                                 error={errors.startDate.length > 0}
                                 helperText={errors.startDate}
                                 label="Дата начала"
                                 value={startDate}
-                                onChange={onChangeStartDate}
+                                onChange={(newDate) => setStartDate(newDate)}
                             />
                         </div>
+
                         <div className="input text-field">
                             <MyDatePicker
                                 error={errors.endDate.length > 0}
                                 helperText={errors.endDate}
                                 label="Дата окончания"
                                 value={endDate}
-                                onChange={onChangeEndDate}
+                                onChange={(newDate) => setEndDate(newDate)}
                             />
                         </div>
+
                         <div className="buttons">
                             <FormButtons />
                         </div>

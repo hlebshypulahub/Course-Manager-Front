@@ -8,15 +8,11 @@ export const uploadFile = (formData) => {
         method: "POST",
         body: formData,
         headers: Object.assign({}, authHeader()),
-    })
-        .then((response) => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error(response.status, response.message);
-            }
-        })
-        .catch((error) => {
-            console.log(error.status + " " + error.message);
-        });
+    }).then((response) => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error();
+        }
+    });
 };

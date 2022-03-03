@@ -1,0 +1,40 @@
+@import "./fonts.scss";
+
+.MyModal {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    z-index: 1;
+
+    width: 500px;
+
+    border-style: solid;
+    border-width: 999999px;
+    border-color: rgba(0, 0, 0, 0.424);
+    backdrop-filter: blur(1.2px);
+
+    font-family: "Quicksand", sans-serif;
+
+    .header-label {
+        display: block;
+        padding-bottom: 5px;
+        font-size: 20px;
+        font-weight: 700;
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    .card {
+        padding-bottom: 10px;
+
+        .buttons {
+            width: 424px;
+            padding-left: 30px;
+            padding-right: 30px;
+            display: flex;
+            justify-content: center;
+        }
+    }
+}

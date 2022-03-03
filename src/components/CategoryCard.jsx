@@ -1,22 +1,23 @@
-import React, { useState, useEffect, useCallback } from "react";
+//// React
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+
+//// Mui
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import { banana_color, green, red, sky_blue, pink } from "../helpers/color";
 import Tooltip from "@mui/material/Tooltip";
 import Button from "@mui/material/Button";
-import { Redirect, useLocation, useHistory } from "react-router-dom";
-import { CategoryValidator as validateCategory } from "../helpers/CategoryValidator";
-import { EducationValidator as validateEducation } from "../helpers/EducationValidator";
-import { DateParser as parse } from "../helpers/DateParser";
 
-const CategoryCard = (props) => {
-    const employee = props.employee;
-    const categoryIsValid = props.categoryIsValid;
-    const educationIsValid = props.educationIsValid;
-    const showCardActions = props.showCardActions
-        ? props.showCardActions
-        : false;
+//// Utils
+import { green, red } from "../helpers/color";
+
+const CategoryCard = ({
+    employee,
+    categoryIsValid,
+    educationIsValid,
+    showCardActions,
+}) => {
     const [clickCounter, setClickCounter] = useState(0);
 
     const history = useHistory();
@@ -25,12 +26,10 @@ const CategoryCard = (props) => {
         <Card className="card">
             <CardContent
                 className="card-content"
-                style={{
-                    backgroundColor: banana_color,
-                }}
             >
                 <div className="card-label-card">
                     <span className="header-label-card">Категория</span>
+
                     <span
                         className="pin"
                         style={
@@ -48,40 +47,40 @@ const CategoryCard = (props) => {
                             : employee.category.label}
                     </span>
                 </div>
+
                 <div>
                     <span className="label-text-large">Квалификация:</span>
                     <span className="value-text">{employee.qualification}</span>
                 </div>
+
                 <div>
                     <span className="label-text-large">Категория:</span>
                     <span className="value-text">
-                        {employee
-                            ? employee.category
-                                ? employee.category.label
-                                : ""
-                            : ""}
+                        {employee.category ? employee.category.label : ""}
                     </span>
                 </div>
+
                 <div>
                     <span className="label-text-large">Номер:</span>
                     <span className="value-text">
                         {employee.categoryNumber}
                     </span>
                 </div>
+
                 <div>
                     <span className="label-text-large">Дата получения:</span>
                     <span className="value-text">
                         {employee.categoryAssignmentDate}
                     </span>
                 </div>
+
                 <div>
-                    <span className="label-text-large">
-                        Срок аттестации:
-                    </span>
+                    <span className="label-text-large">Срок аттестации:</span>
                     <span className="value-text">
                         {employee.categoryAssignmentDeadlineDate}
                     </span>
                 </div>
+
                 <div>
                     <span className="label-text-large">
                         Срок подачи документов:
@@ -90,6 +89,7 @@ const CategoryCard = (props) => {
                         {employee.docsSubmitDeadlineDate}
                     </span>
                 </div>
+
                 <div>
                     <span className="label-text-large">
                         Возможное повышение категории после:
@@ -98,6 +98,7 @@ const CategoryCard = (props) => {
                         {employee.categoryPossiblePromotionDate}
                     </span>
                 </div>
+
                 {showCardActions && (
                     <CardActions className="card-actions">
                         <Tooltip
@@ -131,6 +132,7 @@ const CategoryCard = (props) => {
                                 </Button>
                             </div>
                         </Tooltip>
+
                         {categoryIsValid && (
                             <Tooltip
                                 title={

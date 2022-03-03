@@ -1,18 +1,21 @@
+//// React
 import React, { useState, useEffect, useCallback } from "react";
-import MyTextField from "./MyTextField";
-import MyDatePicker from "./MyDatePicker";
-import MenuItem from "@mui/material/MenuItem";
-
 import { useHistory } from "react-router-dom";
-
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import FormButtons from "./FormButtons";
 import { Redirect } from "react-router-dom";
 import { useSelector } from "react-redux";
 
+//// Components
+import MyTextField from "./MyTextField";
+import MyDatePicker from "./MyDatePicker";
+import FormButtons from "./FormButtons";
 import Spinner from "../components/Spinner";
 
+//// Mui
+import MenuItem from "@mui/material/MenuItem";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+
+//// Functions
 import { getCategories } from "../services/category.service";
 import {
     getEmployeeById,
@@ -20,17 +23,20 @@ import {
 } from "../services/employee.service";
 import { DateParser as parse } from "../helpers/DateParser";
 import { DateFormatter as format } from "../helpers/DateFormatter";
-import { FalseObjectChecker as isFalseObject } from "../helpers/FalseObjectChecker";
 import { CategoryValidator as validateCategory } from "../helpers/CategoryValidator";
+import { EmptyErrorTableChecker as isEmpty } from "../helpers/EmptyErrorTableChecker";
 
+//// Utils
 import { banana_color } from "../helpers/color";
+
+//// CSS
 import "../css/Form.scss";
 
 const EditCategory = (props) => {
     const id = props.match.params.id;
     const [qualification, setQualification] = useState("");
     const [category, setCategory] = useState({ label: "", name: "" });
-    const [categories, setCategories] = useState([]);
+    const [categories, setCategories] = useState();
     const [categoryNumber, setCategoryNumber] = useState("");
     const [categoryAssignmentDate, setCategoryAssignmentDate] = useState({});
     const [fullName, setFullName] = useState("");
@@ -42,6 +48,7 @@ const EditCategory = (props) => {
     });
     const [categoryLoaded, setCategoryLoaded] = useState(false);
     const [categoriesLoaded, setCategoriesLoaded] = useState(false);
+
     const { user: currentUser } = useSelector((state) => state.auth);
 
     const history = useHistory();
@@ -67,16 +74,16 @@ const EditCategory = (props) => {
 
         setErrors(tempErrors);
 
-        return Object.values(tempErrors).every((item) => item === "");
+        return isEmpty(tempErrors);
     }, [qualification, category, categoryNumber, categoryAssignmentDate]);
 
     useEffect(() => {
         const fetchEmployee = () => {
             getEmployeeById(id).then((data) => {
                 setFullName(data.fullName);
-                setQualification(data.qualification);
+                setQualification(data.qualification || "");
                 setCategory(data.category);
-                setCategoryNumber(data.categoryNumber);
+                setCategoryNumber(data.categoryNumber || "");
                 setCategoryAssignmentDate(parse(data.categoryAssignmentDate));
                 setCategoryLoaded(true);
             });
@@ -91,8 +98,8 @@ const EditCategory = (props) => {
 
             if (validate()) {
                 const patch = {
-                    ...(qualification && { qualification }),
-                    ...(category && { category: category.name }),
+                    qualification,
+                    category,
                     ...(categoryNumber && { categoryNumber }),
                     ...(categoryAssignmentDate && {
                         categoryAssignmentDate: format(categoryAssignmentDate),
@@ -120,44 +127,20 @@ const EditCategory = (props) => {
         ]
     );
 
-    useEffect(() => {
-        validate();
-    }, [validate]);
-
-    const onChangeQualification = (e) => {
-        const newQualification = e.target.value;
-        setQualification(newQualification);
-    };
-
     const onChangeCategory = (e) => {
         const newCategoryLabel = e.target.value;
         const newCategory = categories.find(
             (c) => c.label === newCategoryLabel
         );
-        setCategory(!isFalseObject(newCategory) ? newCategory : {});
+        setCategory(newCategory);
     };
-
-    const onChangeCategoryNumber = (e) => {
-        const newCategoryNumber = e.target.value;
-        setCategoryNumber(newCategoryNumber);
-    };
-
-    const onChangeCategoryAssignmentDate = (newCategoryAssignmentDate) => {
-        if (!newCategoryAssignmentDate) {
-            setErrors({
-                ...errors,
-                categoryAssignmentDate: "Необходимо указать дату получения",
-            });
-        }
-        setCategoryAssignmentDate(newCategoryAssignmentDate);
-    };
-
-    if (!categoryLoaded || !categoriesLoaded) {
-        return <Spinner />;
-    }
 
     if (!currentUser) {
         return <Redirect to="/login" />;
+    }
+
+    if (!categoryLoaded || !categoriesLoaded) {
+        return <Spinner />;
     }
 
     return (
@@ -172,23 +155,28 @@ const EditCategory = (props) => {
                     <div className="card-label">
                         <span className="header-label">Изменить категорию</span>
                     </div>
+
                     <form className="form" onSubmit={handleSubmit}>
                         <div className="input text-field">
                             <MyTextField
                                 disabled
                                 label="ФИО"
-                                value={fullName ? fullName : ""}
+                                value={fullName}
                             />
                         </div>
+
                         <div className="input text-field">
                             <MyTextField
                                 error={errors.qualification.length > 0}
                                 helperText={errors.qualification}
                                 label="Квалификация"
-                                value={qualification ? qualification : ""}
-                                onChange={onChangeQualification}
+                                value={qualification}
+                                onChange={(e) =>
+                                    setQualification(e.target.value)
+                                }
                             />
                         </div>
+
                         <div className="input text-field">
                             <MyTextField
                                 error={errors.category.length > 0}
@@ -207,26 +195,33 @@ const EditCategory = (props) => {
                                 })}
                             </MyTextField>
                         </div>
+
                         <div className="input text-field">
                             <MyTextField
                                 disabled={category && category.name === "NONE"}
                                 error={errors.categoryNumber.length > 0}
                                 helperText={errors.categoryNumber}
                                 label="Номер"
-                                value={categoryNumber ? categoryNumber : ""}
-                                onChange={onChangeCategoryNumber}
+                                value={categoryNumber}
+                                onChange={(e) =>
+                                    setCategoryNumber(e.target.value)
+                                }
                             />
                         </div>
+
                         <div className="input text-field">
                             <MyDatePicker
                                 disabled={category && category.name === "NONE"}
                                 error={errors.categoryAssignmentDate.length > 0}
-                                helperText={errors.categoryAssignmentDate.toString()}
+                                helperText={errors.categoryAssignmentDate}
                                 label="Дата получения"
                                 value={categoryAssignmentDate}
-                                onChange={onChangeCategoryAssignmentDate}
+                                onChange={(newDate) =>
+                                    setCategoryAssignmentDate(newDate)
+                                }
                             />
                         </div>
+
                         <div className="buttons">
                             <FormButtons />
                         </div>

@@ -1,35 +1,28 @@
 //// React
-import { useState, useEffect, useCallback } from "react";
-import validator from "validator";
+import { useState, useCallback } from "react";
 
 //// Components
 import MyTextField from "./MyTextField";
-import CustomTextField from "./CustomTextField";
 import MyTextField120 from "./MyTextField120";
 import FormButtons from "./FormButtons";
-import Spinner from "../components/Spinner";
-import MyDatePicker from "./MyDatePicker";
-import PastJobFields from "./PastJobFields";
 
 //// Mui
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import MenuItem from "@mui/material/MenuItem";
 
 //// Utils
 import { banana_color } from "../helpers/color";
 
 //// Functions
-import { getDocumentForEmployee } from "../services/employee.service";
-import { DateParser as parse } from "../helpers/DateParser";
-import { FalseObjectChecker as isFalseObject } from "../helpers/FalseObjectChecker";
-import { DateFormatter as format } from "../helpers/DateFormatter";
-import { MapToArray as mapToArray } from "../helpers/MapToArray";
 
 //// CSS
 import "../css/Form.scss";
 
-const ProfessionalReportForm = ({ employee, principalCompany }) => {
+const ProfessionalReportForm = ({
+    employee,
+    principalCompany,
+    fetchDocument,
+}) => {
     const [mainInfo, setMainInfo] = useState(
         employee.fullName + ", " + employee.position + ", " + principalCompany
     );
@@ -37,28 +30,7 @@ const ProfessionalReportForm = ({ employee, principalCompany }) => {
     const [endYear, setEndYear] = useState("");
     const [text, setText] = useState("");
 
-    const [isDocumentLoading, setDocumentLoading] = useState(false);
-
     const customMarginRight = { marginRight: "14px" };
-
-    const fetchDocument = useCallback(
-        (e, documentDto) => {
-            e.preventDefault();
-
-            setDocumentLoading(true);
-
-            getDocumentForEmployee(
-                employee.id,
-                documentDto,
-                "professional-report"
-            )
-                .then(() => {
-                    setDocumentLoading(false);
-                })
-                .catch(() => {});
-        },
-        [employee.id]
-    );
 
     const handleSubmit = useCallback(
         (e) => {
@@ -69,14 +41,10 @@ const ProfessionalReportForm = ({ employee, principalCompany }) => {
                 text,
             };
 
-            fetchDocument(e, documentDto);
+            fetchDocument(e, documentDto, "professional-report");
         },
         [fetchDocument, mainInfo, startYear, endYear, text]
     );
-
-    if (isDocumentLoading) {
-        return <Spinner />;
-    }
 
     return (
         <div className="Form">
@@ -148,11 +116,12 @@ const ProfessionalReportForm = ({ employee, principalCompany }) => {
                             className="combined-row"
                         >
                             <span style={customMarginRight} className="text2">
-                                -В отчете отражаются краткая характеристика места
-                                работы (организации, структурного подразделения,
-                                отделения, кабинета, лаборатории), где работает
-                                данный работник, оснащенность необходимым
-                                оборудованием, режим (график) работы;
+                                -В отчете отражаются краткая характеристика
+                                места работы (организации, структурного
+                                подразделения, отделения, кабинета,
+                                лаборатории), где работает данный работник,
+                                оснащенность необходимым оборудованием, режим
+                                (график) работы;
                                 <br />
                                 -Имеющиеся у работника знания и практические
                                 навыки;

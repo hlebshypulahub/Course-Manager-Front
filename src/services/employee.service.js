@@ -1,14 +1,15 @@
 import authHeader from "./auth-header";
 import { API_BASE_URL as baseUrl } from "./api.base.url";
+import { fetchData } from "./fetch.service";
 
 const API_BASE_URL = baseUrl + "/api/v1/employees";
 
 export const getEmployees = () => {
-    return get(API_BASE_URL);
+    return fetchData(API_BASE_URL);
 };
 
 export const getEmployeesForCoursePlan = () => {
-    return get(API_BASE_URL + "/for-course-plan");
+    return fetchData(API_BASE_URL + "/for-course-plan");
 };
 
 export const getDocumentForEmployee = (id, dto, documentType) => {
@@ -38,43 +39,13 @@ export const getDocumentForEmployee = (id, dto, documentType) => {
                 };
             });
         } else {
-            throw new Error(response.status, response.message);
-        }
-    });
-};
-
-const get = (url) => {
-    return fetch(url, {
-        method: "GET",
-        headers: Object.assign(
-            {},
-            { "Content-type": "application/json" },
-            authHeader()
-        ),
-    }).then((response) => {
-        if (response.ok) {
-            return response.json();
-        } else {
-            throw new Error(response.status, response.message);
+            throw new Error();
         }
     });
 };
 
 export const getEmployeeById = (id) => {
-    return fetch(API_BASE_URL + "/" + id, {
-        method: "GET",
-        headers: Object.assign(
-            {},
-            { "Content-type": "application/json" },
-            authHeader()
-        ),
-    }).then((response) => {
-        if (response.ok) {
-            return response.json();
-        } else {
-            throw new Error();
-        }
-    });
+    return fetchData(API_BASE_URL + "/" + id);
 };
 
 export const patchEmployeeCategory = (id, patch) => {
@@ -98,23 +69,9 @@ export const patchEmployeeEducation = (id, patch) => {
 };
 
 const patchEmployee = (id, patch, path) => {
-    return fetch(API_BASE_URL + "/" + id + path, {
-        method: "PATCH",
-        body: JSON.stringify(patch),
-        headers: Object.assign(
-            {},
-            { "Content-type": "application/merge-patch+json" },
-            authHeader()
-        ),
-    })
-        .then((response) => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error(response.clone().json());
-            }
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+    return fetchData(
+        API_BASE_URL + "/" + id + path,
+        "POST",
+        JSON.stringify(patch)
+    );
 };

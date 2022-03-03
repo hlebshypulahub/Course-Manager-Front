@@ -13,7 +13,10 @@ export const ExemptionValidator = (
     tempErrors.exemptionStartDate = validator.isDate(exemptionStartDate)
         ? ""
         : "Необходимо указать дату начала";
-    tempErrors.exemptionEndDate = "";
+    tempErrors.exemptionEndDate =
+        validator.isDate(exemptionEndDate) || isFalseObject(exemptionEndDate)
+            ? ""
+            : "Необходимо указать дату окончания";
 
     return tempErrors;
 };

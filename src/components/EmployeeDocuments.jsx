@@ -1,49 +1,65 @@
+//// React
 import React, { useState, useEffect, useCallback } from "react";
-import Button from "@mui/material/Button";
-import OkAlert from "./OkAlert";
+import { useHistory } from "react-router-dom";
+
+//// Components
+import MyModal from "./MyModal";
 import Spinner from "../components/Spinner";
-import { Redirect, useLocation, useHistory } from "react-router-dom";
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import CategoryCard from "./CategoryCard";
 import PersonalCard from "./PersonalCard";
 import RepresentationForm from "./RepresentationForm";
 import QualificationSheetForm from "./QualificationSheetForm";
+import ProfessionalReportForm from "./ProfessionalReportForm";
 
-import {
-    getEmployeeById,
-    getDocumentForEmployee,
-} from "../services/employee.service";
+//// Mui
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
+//// Functions
+import { getEmployeeById } from "../services/employee.service";
 import { getCategories } from "../services/category.service";
-
+import { getDocumentForEmployee } from "../services/employee.service";
 import { getDocumentTypes } from "../services/documentType.service";
 import { getPrincipalCompany } from "../services/principal.service";
 
+//// CSS
 import "../css/EmployeeDocuments.scss";
-import ProfessionalReportForm from "./ProfessionalReportForm";
 
 const EmployeeDocuments = (props) => {
     const id = props.match.params.id;
-    const [employee, setEmployee] = useState({});
-    const [isLoading, setLoading] = useState(true);
-    const [okAlertShown, setOkAlertShown] = useState(false);
+    const [employee, setEmployee] = useState();
+    const [isLoading, setLoading] = useState(false);
+    const [modalShown, setModalShown] = useState(false);
     const [alignment, setAlignment] = useState("REPRESENTATION");
     const [documentTypesLoaded, setDocumentTypesLoaded] = useState(false);
     const [principalCompanyLoaded, setPrincipalCompanyLoaded] = useState(false);
-    const [documentTypes, setDocumentTypes] = useState([]);
+    const [documentTypes, setDocumentTypes] = useState();
     const [principalCompany, setPrincipalCompany] = useState("");
-    const [categories, setCategories] = useState([]);
+    const [categories, setCategories] = useState();
     const [categoriesLoaded, setCategoriesLoaded] = useState(false);
 
     const history = useHistory();
 
+    const fetchDocument = useCallback(
+        (e, documentDto, documentType) => {
+            e.preventDefault();
+            getDocumentForEmployee(id, documentDto, documentType).catch(() => {
+                setModalShown(true);
+            });
+        },
+        [id]
+    );
+
     useEffect(() => {
         const fetchCategories = () => {
-            getCategories().then((data) => {
-                setCategories(data.filter((c) => c.name !== "NONE"));
-                setCategoriesLoaded(true);
-            });
+            getCategories()
+                .then((data) => {
+                    setCategories(data.filter((c) => c.name !== "NONE"));
+                    setCategoriesLoaded(true);
+                })
+                .catch(() => {
+                    setModalShown(true);
+                });
         };
 
         fetchCategories();
@@ -56,9 +72,9 @@ const EmployeeDocuments = (props) => {
                     setEmployee(data);
                     setLoading(false);
                 })
-                .catch((error) => {
+                .catch(() => {
                     setLoading(false);
-                    setOkAlertShown(true);
+                    setModalShown(true);
                 });
         };
 
@@ -97,6 +113,17 @@ const EmployeeDocuments = (props) => {
         setAlignment(newAlignment);
     };
 
+    if (modalShown) {
+        return (
+            <MyModal
+                message="Отсутствует соединение с сервером..."
+                func={() => {
+                    history.push("/employees");
+                }}
+            />
+        );
+    }
+
     if (
         isLoading ||
         !documentTypesLoaded ||
@@ -108,12 +135,11 @@ const EmployeeDocuments = (props) => {
 
     return (
         <div className="EmployeeDocuments">
-            {okAlertShown && (
-                <OkAlert
+            {modalShown && (
+                <MyModal
                     message="Отсутствует соединение с сервером..."
                     func={() => {
-                        setOkAlertShown(false);
-                        history.push("/employees");
+                        setModalShown(false);
                     }}
                 />
             )}
@@ -147,6 +173,7 @@ const EmployeeDocuments = (props) => {
                     employee={employee}
                     principalCompany={principalCompany}
                     categories={categories}
+                    fetchDocument={fetchDocument}
                 />
             )}
             {alignment === "QUALIFICATION_SHEET" && (
@@ -154,12 +181,14 @@ const EmployeeDocuments = (props) => {
                     employee={employee}
                     principalCompany={principalCompany}
                     categories={categories}
+                    fetchDocument={fetchDocument}
                 />
             )}
             {alignment === "PROFESSIONAL_REPORT" && (
                 <ProfessionalReportForm
                     employee={employee}
                     principalCompany={principalCompany}
+                    fetchDocument={fetchDocument}
                 />
             )}
         </div>

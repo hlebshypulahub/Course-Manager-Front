@@ -11,15 +11,11 @@ export const getPrincipalCompany = () => {
             { "Content-type": "text/plain" },
             authHeader()
         ),
-    })
-        .then((response) => {
-            if (response.ok) {
-                return response.text();
-            } else {
-                throw new Error(response.status, response.message);
-            }
-        })
-        .catch((error) => {
-            console.log(error.status + " " + error.message);
-        });
+    }).then((response) => {
+        if (response.ok) {
+            return response.text();
+        } else {
+            throw new Error();
+        }
+    });
 };

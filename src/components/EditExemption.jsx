@@ -1,30 +1,35 @@
+//// React
 import React, { useState, useEffect, useCallback } from "react";
-import MyTextField from "./MyTextField";
-import MyDatePicker from "./MyDatePicker";
-import MenuItem from "@mui/material/MenuItem";
 import { Redirect } from "react-router-dom";
 import { useSelector } from "react-redux";
-import validator from "validator";
-
 import { useHistory } from "react-router-dom";
 
+//// Components
+import MyTextField from "./MyTextField";
+import MyDatePicker from "./MyDatePicker";
 import Spinner from "../components/Spinner";
-
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
 import FormButtons from "./FormButtons";
 
+//// Mui
+import MenuItem from "@mui/material/MenuItem";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+
+//// Functions
 import { getExemptions } from "../services/exemption.service";
 import {
     getEmployeeById,
     patchEmployeeExemption,
 } from "../services/employee.service";
 import { ExemptionValidator as validateExemption } from "../helpers/ExemptionValidator";
-import { FalseObjectChecker as isFalseObject } from "../helpers/FalseObjectChecker";
 import { DateParser as parse } from "../helpers/DateParser";
 import { DateFormatter as format } from "../helpers/DateFormatter";
+import { EmptyErrorTableChecker as isEmpty } from "../helpers/EmptyErrorTableChecker";
 
+//// Utils
 import { banana_color } from "../helpers/color";
+
+//// CSS
 import "../css/Form.scss";
 
 const EditExemption = (props) => {
@@ -37,7 +42,7 @@ const EditExemption = (props) => {
         monthsDuration: "",
         monthsOfExemption: "",
     });
-    const [exemptions, setExemptions] = useState([]);
+    const [exemptions, setExemptions] = useState();
     const [exemptionStartDate, setExemptionStartDate] = useState({});
     const [exemptionEndDate, setExemptionEndDate] = useState({});
     const [errors, setErrors] = useState({
@@ -71,15 +76,15 @@ const EditExemption = (props) => {
 
         setErrors(tempErrors);
 
-        return Object.values(tempErrors).every((item) => item === "");
+        return isEmpty(tempErrors);
     }, [exemption, exemptionStartDate, exemptionEndDate]);
 
     useEffect(() => {
         const fetchEmployee = () => {
             getEmployeeById(id).then((data) => {
-                setFullName(data.fullName);
+                setFullName(data.fullName || "");
                 setExemptionStartDate(parse(data.exemptionStartDate));
-                setExemptionEndDate(data.exemptionEndDate);
+                setExemptionEndDate(parse(data.exemptionEndDate));
                 setExemption(data.exemption);
                 setExemptionLoaded(true);
             });
@@ -94,13 +99,9 @@ const EditExemption = (props) => {
 
             if (validate()) {
                 const patch = {
-                    ...(exemption && {
-                        exemption: exemption.name,
-                    }),
-                    ...(exemptionStartDate && {
-                        exemptionStartDate: format(exemptionStartDate),
-                    }),
-                    ...(validator.isDate(exemptionEndDate) && {
+                    exemption: exemption.name,
+                    exemptionStartDate: format(exemptionStartDate),
+                    ...(exemptionEndDate && {
                         exemptionEndDate: format(exemptionEndDate),
                     }),
                 };
@@ -118,10 +119,6 @@ const EditExemption = (props) => {
         [id, exemption, exemptionStartDate, exemptionEndDate, history, validate]
     );
 
-    useEffect(() => {
-        validate();
-    }, [validate]);
-
     const onChangeExemption = (e) => {
         const newExemptionLabel = e.target.value;
 
@@ -129,22 +126,13 @@ const EditExemption = (props) => {
             (ex) => ex.label === newExemptionLabel
         );
 
-        setExemption(!isFalseObject(newExemption) ? newExemption : {});
+        setExemption(newExemption);
     };
 
     const onChangeExemptionStartDate = (newExemptionStartDate) => {
-        if (!newExemptionStartDate) {
-            setErrors({
-                ...errors,
-                exemptionStartDate: "Необходимо указать дату начала",
-            });
-
-            return;
-        }
-
         setExemptionStartDate(newExemptionStartDate);
 
-        if (exemption.name === "LESS_THAN_YEAR_WORK") {
+        if (exemption && exemption.name === "LESS_THAN_YEAR_WORK") {
             let newExemptionEndDate = newExemptionStartDate;
             newExemptionEndDate.setFullYear(
                 newExemptionEndDate.getFullYear() + 1
@@ -156,7 +144,7 @@ const EditExemption = (props) => {
     const onChangeExemptionEndDate = (newExemptionEndDate) => {
         setExemptionEndDate(newExemptionEndDate);
 
-        if (exemption.name === "LESS_THAN_YEAR_WORK") {
+        if (exemption && exemption.name === "LESS_THAN_YEAR_WORK") {
             let newExemptionStartDate = newExemptionEndDate;
             newExemptionStartDate.setFullYear(
                 newExemptionStartDate.getFullYear() - 1
@@ -165,12 +153,12 @@ const EditExemption = (props) => {
         }
     };
 
-    if (!exemptionIsLoaded || !exemptionsIsLoaded) {
-        return <Spinner />;
-    }
-
     if (!currentUser) {
         return <Redirect to="/login" />;
+    }
+
+    if (!exemptionIsLoaded || !exemptionsIsLoaded) {
+        return <Spinner />;
     }
 
     return (
@@ -187,14 +175,16 @@ const EditExemption = (props) => {
                             Изменить освобождение
                         </span>
                     </div>
+
                     <form className="form" onSubmit={handleSubmit}>
                         <div className="input text-field">
                             <MyTextField
                                 disabled
                                 label="ФИО"
-                                value={fullName ? fullName : ""}
+                                value={fullName}
                             />
                         </div>
+
                         <div className="input text-field">
                             <MyTextField
                                 error={errors.exemption.length > 0}
@@ -216,24 +206,27 @@ const EditExemption = (props) => {
                                 })}
                             </MyTextField>
                         </div>
+
                         <div className="input text-field">
                             <MyDatePicker
                                 error={errors.exemptionStartDate.length > 0}
-                                helperText={errors.exemptionStartDate.toString()}
+                                helperText={errors.exemptionStartDate}
                                 label="Дата начала"
                                 value={exemptionStartDate}
                                 onChange={onChangeExemptionStartDate}
                             />
                         </div>
+
                         <div className="input text-field">
                             <MyDatePicker
                                 error={errors.exemptionEndDate.length > 0}
-                                helperText={errors.exemptionEndDate.toString()}
+                                helperText={errors.exemptionEndDate}
                                 label="Дата окончания"
                                 value={exemptionEndDate}
                                 onChange={onChangeExemptionEndDate}
                             />
                         </div>
+
                         <div className="buttons">
                             <FormButtons />
                         </div>

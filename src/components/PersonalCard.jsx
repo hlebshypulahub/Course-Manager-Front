@@ -10,7 +10,7 @@ import { CategoryValidator as validateCategory } from "../helpers/CategoryValida
 import { EducationValidator as validateEducation } from "../helpers/EducationValidator";
 import { DateParser as parse } from "../helpers/DateParser";
 
-const PersonalCard = (props) => {
+const PersonalCard = ({ withActions, ...props }) => {
     const employee = props.employee;
     const categoryIsValid = props.categoryIsValid;
     const showCardActions = props.showCardActions
@@ -19,38 +19,43 @@ const PersonalCard = (props) => {
 
     const history = useHistory();
 
+    const activePin = (
+        <span
+            className="pin"
+            style={
+                employee.active
+                    ? {
+                          backgroundColor: green,
+                      }
+                    : {
+                          backgroundColor: red,
+                      }
+            }
+            onClick={props.toggleActiveAlert}
+        >
+            {employee.active ? "Активный" : "Неактивный"}
+        </span>
+    );
+
     return (
         <Card className="card main-info">
             <CardContent
                 className="card-content"
-                style={{
-                    backgroundColor: banana_color,
-                }}
             >
                 <div className="card-label-card">
                     <span className="header-label-card">
                         Персональные данные
                     </span>
-                    <Tooltip
-                        title="Нажмите, чтобы изменить состояние сотрудника"
-                        placement="top"
-                    >
-                        <span
-                            className="pin"
-                            style={
-                                employee.active
-                                    ? {
-                                          backgroundColor: green,
-                                      }
-                                    : {
-                                          backgroundColor: red,
-                                      }
-                            }
-                            onClick={props.toggleActiveAlert}
+                    {withActions ? (
+                        <Tooltip
+                            title="Нажмите, чтобы изменить состояние сотрудника"
+                            placement="top"
                         >
-                            {employee.active ? "Активный" : "Неактивный"}
-                        </span>
-                    </Tooltip>
+                            {activePin}
+                        </Tooltip>
+                    ) : (
+                        activePin
+                    )}
                 </div>
                 <div>
                     <span className="label-text">ФИО:</span>

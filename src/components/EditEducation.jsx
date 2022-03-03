@@ -1,29 +1,35 @@
+//// React
 import React, { useState, useEffect, useCallback } from "react";
-import MyTextField from "./MyTextField";
-import MyDatePicker from "./MyDatePicker";
-import MenuItem from "@mui/material/MenuItem";
 import { Redirect } from "react-router-dom";
 import { useSelector } from "react-redux";
-
 import { useHistory } from "react-router-dom";
 
+//// Components
+import MyTextField from "./MyTextField";
+import MyDatePicker from "./MyDatePicker";
 import Spinner from "../components/Spinner";
-
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
 import FormButtons from "./FormButtons";
 
+//// Mui
+import MenuItem from "@mui/material/MenuItem";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+
+//// Functions
 import { getEducations } from "../services/education.service";
 import {
     getEmployeeById,
     patchEmployeeEducation,
 } from "../services/employee.service";
 import { EducationValidator as validateEducation } from "../helpers/EducationValidator";
-import { FalseObjectChecker as isFalseObject } from "../helpers/FalseObjectChecker";
 import { DateParser as parse } from "../helpers/DateParser";
 import { DateFormatter as format } from "../helpers/DateFormatter";
+import { EmptyErrorTableChecker as isEmpty } from "../helpers/EmptyErrorTableChecker";
 
+//// Utils
 import { banana_color } from "../helpers/color";
+
+//// CSS
 import "../css/Form.scss";
 
 const EditEducation = (props) => {
@@ -36,7 +42,7 @@ const EditEducation = (props) => {
         requiredHoursNoneCategory: "",
         requiredHours: "",
     });
-    const [educations, setEducations] = useState([]);
+    const [educations, setEducations] = useState();
     const [eduName, setEduName] = useState("");
     const [fullName, setFullName] = useState("");
     const [eduGraduationDate, setEduGraduationDate] = useState({});
@@ -45,6 +51,7 @@ const EditEducation = (props) => {
         eduName: "",
         eduGraduationDate: "",
     });
+
     const { user: currentUser } = useSelector((state) => state.auth);
 
     const history = useHistory();
@@ -69,7 +76,7 @@ const EditEducation = (props) => {
 
         setErrors(tempErrors);
 
-        return Object.values(tempErrors).every((item) => item === "");
+        return isEmpty(tempErrors);
     }, [education, eduName, eduGraduationDate]);
 
     useEffect(() => {
@@ -77,7 +84,7 @@ const EditEducation = (props) => {
             getEmployeeById(id).then((data) => {
                 setFullName(data.fullName);
                 setEduGraduationDate(parse(data.eduGraduationDate));
-                setEduName(data.eduName);
+                setEduName(data.eduName || "");
                 setEducation(data.education);
                 setEducationLoaded(true);
             });
@@ -92,11 +99,9 @@ const EditEducation = (props) => {
 
             if (validate()) {
                 const patch = {
-                    ...(eduName && { eduName }),
-                    ...(eduGraduationDate && {
-                        eduGraduationDate: format(eduGraduationDate),
-                    }),
-                    ...(education && { education: education.name }),
+                    eduName,
+                    eduGraduationDate: format(eduGraduationDate),
+                    education: education.name,
                 };
 
                 patchEmployeeEducation(id, patch).then(() => {
@@ -112,39 +117,20 @@ const EditEducation = (props) => {
         [id, eduName, eduGraduationDate, education, history, validate]
     );
 
-    useEffect(() => {
-        validate();
-    }, [validate]);
-
-    const onChangeEduName = (e) => {
-        const newName = e.target.value;
-        setEduName(newName);
-    };
-
     const onChangeEducation = (e) => {
         const newEducationLabel = e.target.value;
         const newEducation = educations.find(
             (c) => c.label === newEducationLabel
         );
-        setEducation(!isFalseObject(newEducation) ? newEducation : {});
+        setEducation(newEducation);
     };
-
-    const onChangeEduGraduationDate = (newEduGraduationDate) => {
-        if (!newEduGraduationDate) {
-            setErrors({
-                ...errors,
-                eduGraduationDate: "Необходимо указать дату окончания",
-            });
-        }
-        setEduGraduationDate(newEduGraduationDate);
-    };
-
-    if (!educationLoaded || !educationsLoaded) {
-        return <Spinner />;
-    }
 
     if (!currentUser) {
         return <Redirect to="/login" />;
+    }
+
+    if (!educationLoaded || !educationsLoaded) {
+        return <Spinner />;
     }
 
     return (
@@ -161,14 +147,16 @@ const EditEducation = (props) => {
                             Изменить образование
                         </span>
                     </div>
+
                     <form className="form" onSubmit={handleSubmit}>
                         <div className="input text-field">
                             <MyTextField
                                 disabled
                                 label="ФИО"
-                                value={fullName ? fullName : ""}
+                                value={fullName}
                             />
                         </div>
+
                         <div className="input text-field">
                             <MyTextField
                                 error={errors.education.length > 0}
@@ -190,24 +178,29 @@ const EditEducation = (props) => {
                                 })}
                             </MyTextField>
                         </div>
+
                         <div className="input text-field">
                             <MyTextField
                                 error={errors.eduName.length > 0}
                                 helperText={errors.eduName}
                                 label="Учреждение образования"
                                 value={eduName ? eduName : ""}
-                                onChange={onChangeEduName}
+                                onChange={(e) => setEduName(e.target.value)}
                             />
                         </div>
+
                         <div className="input text-field">
                             <MyDatePicker
                                 error={errors.eduGraduationDate.length > 0}
-                                helperText={errors.eduGraduationDate.toString()}
+                                helperText={errors.eduGraduationDate}
                                 label="Дата окончания"
                                 value={eduGraduationDate}
-                                onChange={onChangeEduGraduationDate}
+                                onChange={(newDate) =>
+                                    setEduGraduationDate(newDate)
+                                }
                             />
                         </div>
+
                         <div className="buttons">
                             <FormButtons />
                         </div>

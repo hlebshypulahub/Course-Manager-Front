@@ -7,7 +7,6 @@ import MyTextField from "./MyTextField";
 import MyTextField220 from "./MyTextField220";
 import CustomTextField from "./CustomTextField";
 import FormButtons from "./FormButtons";
-import Spinner from "../components/Spinner";
 import MyDatePicker from "./MyDatePicker";
 import PastJobFields from "./PastJobFields";
 
@@ -20,7 +19,6 @@ import MenuItem from "@mui/material/MenuItem";
 import { banana_color } from "../helpers/color";
 
 //// Functions
-import { getDocumentForEmployee } from "../services/employee.service";
 import { DateParser as parse } from "../helpers/DateParser";
 import { FalseObjectChecker as isFalseObject } from "../helpers/FalseObjectChecker";
 import { DateFormatter as format } from "../helpers/DateFormatter";
@@ -29,7 +27,7 @@ import { MapToArray as mapToArray } from "../helpers/MapToArray";
 //// CSS
 import "../css/Form.scss";
 
-const QualificationSheetForm = ({ employee, categories, principalCompany }) => {
+const QualificationSheetForm = ({ employee, categories, principalCompany, fetchDocument }) => {
     const uuidv4 = require("uuid/v4");
 
     const [category, setCategory] = useState({});
@@ -62,30 +60,7 @@ const QualificationSheetForm = ({ employee, categories, principalCompany }) => {
         ])
     );
 
-    const [isDocumentLoading, setDocumentLoading] = useState(false);
-
     const customMarginRight = { marginRight: "14px" };
-
-    const fetchDocument = useCallback(
-        (e, documentDto) => {
-            e.preventDefault();
-
-            documentDto = { ...documentDto, pastJobs: mapToArray(pastJobs) };
-
-            setDocumentLoading(true);
-
-            getDocumentForEmployee(
-                employee.id,
-                documentDto,
-                "qualification-sheet"
-            )
-                .then(() => {
-                    setDocumentLoading(false);
-                })
-                .catch(() => {});
-        },
-        [employee.id, pastJobs]
-    );
 
     useEffect(() => {
         if (
@@ -166,7 +141,7 @@ const QualificationSheetForm = ({ employee, categories, principalCompany }) => {
 
     const handleSubmit = useCallback(
         (e) => {
-            const documentDto = {
+            let documentDto = {
                 category: category.name,
                 qualification,
                 dob: format(dob),
@@ -184,7 +159,9 @@ const QualificationSheetForm = ({ employee, categories, principalCompany }) => {
                 positionAndPrincipalCompany,
             };
 
-            fetchDocument(e, documentDto);
+            documentDto = { ...documentDto, pastJobs: mapToArray(pastJobs) };
+
+            fetchDocument(e, documentDto, "qualification-sheet");
         },
         [
             fetchDocument,
@@ -205,10 +182,6 @@ const QualificationSheetForm = ({ employee, categories, principalCompany }) => {
             positionAndPrincipalCompany,
         ]
     );
-
-    if (isDocumentLoading) {
-        return <Spinner />;
-    }
 
     return (
         <div className="Form">

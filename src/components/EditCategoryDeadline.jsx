@@ -1,26 +1,32 @@
+//// React
 import React, { useState, useEffect, useCallback } from "react";
-import MyTextField from "./MyTextField";
-import MyDatePicker from "./MyDatePicker";
-
 import { useHistory } from "react-router-dom";
-
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import FormButtons from "./FormButtons";
 import { Redirect } from "react-router-dom";
 import { useSelector } from "react-redux";
+import validator from "validator";
 
+//// Components
+import MyTextField from "./MyTextField";
+import MyDatePicker from "./MyDatePicker";
+import FormButtons from "./FormButtons";
 import Spinner from "../components/Spinner";
 
+//// Mui
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+
+//// Functions
 import {
     getEmployeeById,
     patchEmployeeCategoryAssignmentDeadlineDate,
 } from "../services/employee.service";
 import { DateParser as parse } from "../helpers/DateParser";
 import { DateFormatter as format } from "../helpers/DateFormatter";
-import validator from "validator";
 
+//// Utils
 import { banana_color } from "../helpers/color";
+
+//// CSS
 import "../css/Form.scss";
 
 const EditCategoryDeadline = (props) => {
@@ -31,7 +37,8 @@ const EditCategoryDeadline = (props) => {
     const [errors, setErrors] = useState({
         categoryAssignmentDeadlineDate: "",
     });
-    const [isLoading, setLoading] = useState(true);
+    const [isLoading, setLoading] = useState(false);
+
     const { user: currentUser } = useSelector((state) => state.auth);
 
     const history = useHistory();
@@ -43,7 +50,7 @@ const EditCategoryDeadline = (props) => {
             categoryAssignmentDeadlineDate
         )
             ? ""
-            : "Необходимо указать срок подтверждения";
+            : "Необходимо указать срок аттестации";
 
         setErrors(tempErrors);
 
@@ -61,6 +68,7 @@ const EditCategoryDeadline = (props) => {
             });
         };
 
+        setLoading(true);
         fetchEmployee();
     }, [id]);
 
@@ -70,18 +78,16 @@ const EditCategoryDeadline = (props) => {
 
             if (validate()) {
                 const patch = {
-                    ...(categoryAssignmentDeadlineDate && {
-                        categoryAssignmentDeadlineDate: format(
-                            categoryAssignmentDeadlineDate
-                        ),
-                    }),
+                    categoryAssignmentDeadlineDate: format(
+                        categoryAssignmentDeadlineDate
+                    ),
                 };
 
                 patchEmployeeCategoryAssignmentDeadlineDate(id, patch).then(
-                   history.push({
+                    history.push({
                         pathname: `/employees/${id}`,
                         state: {
-                            snackMessage: `Срок подтверждения категории изменён`,
+                            snackMessage: `Срок аттестации изменён`,
                         },
                     })
                 );
@@ -90,29 +96,12 @@ const EditCategoryDeadline = (props) => {
         [id, categoryAssignmentDeadlineDate, history, validate]
     );
 
-    useEffect(() => {
-        validate();
-    }, [validate]);
-
-    const onChangeCategoryAssignmentDeadlineDate = (
-        newCategoryAssignmentDeadlineDate
-    ) => {
-        if (!newCategoryAssignmentDeadlineDate) {
-            setErrors({
-                ...errors,
-                categoryAssignmentDeadlineDate:
-                    "Необходимо указать срок подтверждения",
-            });
-        }
-        setCategoryAssignmentDeadlineDate(newCategoryAssignmentDeadlineDate);
-    };
+    if (!currentUser) {
+        return <Redirect to="/login" />;
+    }
 
     if (isLoading) {
         return <Spinner />;
-    }
-
-    if (!currentUser) {
-        return <Redirect to="/login" />;
     }
 
     return (
@@ -126,17 +115,19 @@ const EditCategoryDeadline = (props) => {
                 >
                     <div className="card-label">
                         <span className="header-label">
-                            Изменить срок подтверждения категории вручную
+                            Изменить срок аттестации на категорию вручную
                         </span>
                     </div>
+
                     <form className="form" onSubmit={handleSubmit}>
                         <div className="input text-field">
                             <MyTextField
                                 disabled
                                 label="ФИО"
-                                value={fullName ? fullName : ""}
+                                value={fullName}
                             />
                         </div>
+
                         <div className="input text-field">
                             <MyDatePicker
                                 error={
@@ -146,13 +137,14 @@ const EditCategoryDeadline = (props) => {
                                 helperText={
                                     errors.categoryAssignmentDeadlineDate
                                 }
-                                label="Срок подтверждения"
+                                label="Срок аттестации"
                                 value={categoryAssignmentDeadlineDate}
-                                onChange={
-                                    onChangeCategoryAssignmentDeadlineDate
+                                onChange={(newDate) =>
+                                    setCategoryAssignmentDeadlineDate(newDate)
                                 }
                             />
                         </div>
+
                         <div className="buttons">
                             <FormButtons />
                         </div>
