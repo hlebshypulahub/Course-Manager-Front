@@ -5,6 +5,7 @@ import {
     numberFilterProps,
     selectFilterProps,
     DependentProps,
+    everyColumnProps,
 } from "./TableProps";
 import NumberFilter from "@inovua/reactdatagrid-community/NumberFilter";
 
@@ -13,13 +14,19 @@ export class EmployeeColumns {
         this.dependentProps = new DependentProps(employees);
 
         this.columns = [
-            { name: "fullName", header: "ФИО", defaultFlex: 1 },
+            {
+                name: "fullName",
+                header: "ФИО",
+                defaultFlex: 1,
+                ...everyColumnProps,
+            },
             {
                 name: "hiringDate",
                 header: "Дата приема на работу",
                 defaultVisible: false,
                 defaultFlex: 1,
                 ...dateColumnProps,
+                ...everyColumnProps,
             },
             {
                 name: "jobFacility",
@@ -27,30 +34,35 @@ export class EmployeeColumns {
                 defaultVisible: false,
                 defaultFlex: 1,
                 ...this.dependentProps.selectColumnProps("jobFacility"),
+                ...everyColumnProps,
             },
             {
                 name: "position",
                 header: "Должность",
                 defaultFlex: 1,
                 ...this.dependentProps.selectColumnProps("position"),
+                ...everyColumnProps,
             },
             {
                 name: "qualification",
                 header: "Квалификация",
                 defaultFlex: 1,
                 ...this.dependentProps.selectColumnProps("qualification"),
+                ...everyColumnProps,
             },
             {
                 name: "category",
                 header: "Категория",
                 defaultFlex: 1,
                 ...this.dependentProps.selectColumnPropsEnum("category"),
+                ...everyColumnProps,
             },
             {
                 name: "categoryNumber",
                 header: "Номер категории",
                 defaultVisible: false,
                 defaultFlex: 1,
+                ...everyColumnProps,
             },
             {
                 name: "categoryAssignmentDate",
@@ -58,18 +70,21 @@ export class EmployeeColumns {
                 defaultVisible: false,
                 defaultFlex: 1,
                 ...dateColumnProps,
+                ...everyColumnProps,
             },
             {
                 name: "categoryAssignmentDeadlineDate",
                 header: "Срок подтверждения категории",
                 defaultFlex: 1,
                 ...dateColumnProps,
+                ...everyColumnProps,
             },
             {
                 name: "docsSubmitDeadlineDate",
                 header: "Срок подачи документов",
                 defaultFlex: 1,
                 ...dateColumnProps,
+                ...everyColumnProps,
             },
             {
                 name: "categoryPossiblePromotionDate",
@@ -77,6 +92,7 @@ export class EmployeeColumns {
                 defaultVisible: false,
                 defaultFlex: 1,
                 ...dateColumnProps,
+                ...everyColumnProps,
             },
             {
                 name: "courseHoursSum",
@@ -85,6 +101,7 @@ export class EmployeeColumns {
                 defaultVisible: false,
                 defaultFlex: 1,
                 filterEditor: NumberFilter,
+                ...everyColumnProps,
             },
             {
                 name: "courseHoursLeft",
@@ -93,6 +110,7 @@ export class EmployeeColumns {
                 defaultVisible: false,
                 defaultFlex: 1,
                 filterEditor: NumberFilter,
+                ...everyColumnProps,
             },
             {
                 name: "education",
@@ -100,6 +118,7 @@ export class EmployeeColumns {
                 defaultVisible: false,
                 defaultFlex: 1,
                 ...this.dependentProps.selectColumnPropsEnum("education"),
+                ...everyColumnProps,
             },
             {
                 name: "eduName",
@@ -107,6 +126,7 @@ export class EmployeeColumns {
                 defaultVisible: false,
                 defaultFlex: 1,
                 ...this.dependentProps.selectColumnProps("eduName"),
+                ...everyColumnProps,
             },
             {
                 name: "eduGraduationDate",
@@ -114,6 +134,7 @@ export class EmployeeColumns {
                 defaultVisible: false,
                 defaultFlex: 1,
                 ...dateColumnProps,
+                ...everyColumnProps,
             },
         ];
     }
@@ -125,24 +146,28 @@ export const courseColumns = [
         name: "description",
         header: "Описание",
         defaultFlex: 1,
+        ...everyColumnProps,
     },
     {
         name: "hours",
         header: "Количество часов",
         defaultFlex: 1,
         filterEditor: NumberFilter,
+        ...everyColumnProps,
     },
     {
         name: "startDate",
         header: "Дата начала",
         defaultFlex: 1,
         ...dateColumnProps,
+        ...everyColumnProps,
     },
     {
         name: "endDate",
         header: "Дата окончания",
         defaultFlex: 1,
         ...dateColumnProps,
+        ...everyColumnProps,
     },
 ];
 

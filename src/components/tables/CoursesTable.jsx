@@ -1,11 +1,16 @@
-import React, {useEffect, useState} from "react";
-import "./CoursesTable.scss";
+//// React
+import React from "react";
 import moment from "moment";
+
+//// CSS
+import "./CoursesTable.scss";
+
+//// Functions
 import { DateParser as parse } from "../../helpers/DateParser";
 import {scrollProps, i18n} from "./TableProps";
 import {courseColumns as columns} from "./TableColumns";
 
-
+//// ReactDataGrid
 import ReactDataGrid from "@inovua/reactdatagrid-community";
 import "@inovua/reactdatagrid-community/index.css";
 

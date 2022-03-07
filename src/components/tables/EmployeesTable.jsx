@@ -1,7 +1,12 @@
+//// React
 import React from "react";
 import { useHistory } from "react-router";
-import "./EmployeesTable.scss";
 import moment from "moment";
+
+//// CSS
+import "./EmployeesTable.scss";
+
+//// Functions
 import { DateParser as parse } from "../../helpers/DateParser";
 import {
     employeeDefaultFilterValue as defaultFilterValue,
@@ -11,6 +16,7 @@ import {
 } from "./TableProps";
 import { EmployeeColumns } from "./TableColumns";
 
+//// ReactDataGrid
 import ReactDataGrid from "@inovua/reactdatagrid-community";
 import "@inovua/reactdatagrid-community/index.css";
 

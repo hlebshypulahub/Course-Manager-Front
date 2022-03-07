@@ -1,0 +1,186 @@
+@import "../../css/fonts";
+@import "../../css/colors";
+
+.EmployeeView {
+    padding: 20px;
+    position: relative;
+
+    background-color: white;
+
+    font-family: "Exo 2", sans-serif;
+
+    .header-label-card {
+        display: inline-block;
+        padding-bottom: 5px;
+        font-size: 26px;
+        font-weight: 700;
+    }
+
+    .card-label-card {
+        overflow: auto;
+        :first-child {
+            float: left;
+        }
+
+        :nth-child(2) {
+            float: right;
+        }
+    }
+
+    .pin {
+        color: white;
+        font-size: 22px;
+        font-weight: 500;
+        border-radius: 5px;
+        padding: 5px;
+        display: inline-block;
+    }
+
+    .first-row {
+        display: flex;
+        align-items: stretch;
+        flex-wrap: wrap;
+        height: auto;
+        width: 100%;
+
+        .card {
+            position: relative;
+            width: calc(33.33% - 20px);
+            margin: 10px;
+
+            .label-text-large {
+                display: inline-block;
+                width: 250px;
+                font-size: 18px;
+                font-weight: 400;
+            }
+
+            .value-text {
+                font-size: 18px;
+                font-weight: 600;
+            }
+
+            .card-content {
+                height: calc(100% - 40px);
+                position: relative;
+                background-color: var(--banana);
+
+                > div {
+                    padding-top: 4px;
+                    padding-bottom: 4px;
+                }
+
+                .card-actions {
+                    padding-top: 15px;
+                    padding-bottom: 0px;
+                    padding-left: 0px;
+                }
+
+                .documents-btn {
+                    position: absolute;
+                    bottom: 24px;
+                    left: 16px;
+                }
+            }
+
+            .course-label,
+            .course-hours,
+            .add-course-btn,
+            .course-date-label {
+                color: white;
+                font-weight: 700;
+                position: absolute;
+                -webkit-transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%);
+            }
+
+            .add-course-btn {
+                left: 50%;
+                top: 75%;
+            }
+
+            .course-hours {
+                font-size: 60px;
+                left: 50%;
+                top: 20%;
+            }
+
+            .course-label {
+                width: 325px;
+                font-size: 24px;
+                left: 50%;
+                top: 40%;
+            }
+
+            .course-date-label {
+                width: 165px;
+                font-size: 24px;
+                left: 50%;
+                top: 50%;
+            }
+        }
+
+        .main-info {
+            .label-text {
+                display: inline-block;
+                width: 180px;
+                font-size: 22px;
+                font-weight: 400;
+            }
+
+            .value-text {
+                font-size: 22px;
+                font-weight: 600;
+            }
+        }
+    }
+
+    .second-row {
+        display: flex;
+        align-items: stretch;
+        flex-wrap: wrap;
+        width: 100%;
+
+        .card {
+            position: relative;
+            height: max-content;
+            width: calc(50% - 20px);
+            margin: 10px;
+
+            .label-text {
+                display: inline-block;
+                width: 150px;
+                font-size: 18px;
+                font-weight: 400;
+            }
+
+            .label-text-large {
+                display: inline-block;
+                width: 250px;
+                font-size: 18px;
+                font-weight: 400;
+            }
+
+            .value-text {
+                font-size: 18px;
+                font-weight: 600;
+            }
+
+            .card-content {
+                height: calc(100% - 40px);
+                background-color: var(--banana);
+
+                .info-row {
+                    padding-top: 4px;
+                    padding-bottom: 4px;
+                }
+
+                .card-actions {
+                    padding-top: 15px;
+                    padding-bottom: 0px;
+                    padding-left: 0px;
+                }
+            }
+        }
+    }
+}

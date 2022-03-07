@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 // import { history } from "./helpers/history";
 import { clearMessage } from "./actions/message";
 import "./App.css";
-import { Dashboard } from "./pages/Dashboard";
+import { Dashboard } from "./pages/dashboard/Dashboard";
 
 function App() {
     const dispatch = useDispatch();

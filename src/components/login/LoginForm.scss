@@ -1,0 +1,50 @@
+@import url("https://fonts.googleapis.com/css2?family=Quicksand&display=swap");
+
+@import "../../css/colors";
+
+.LoginForm {
+    background-color: var(--banana);
+    box-shadow: 0 0 3em #d4d4d4;
+    border-radius: 8px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    padding: 0 10px 20px 10px;
+
+    .label {
+        font-family: 'Exo 2', sans-serif;
+        font-size: 20px;
+        text-align: center;
+    }
+
+    .form {
+        display: flex;
+        flex-direction: column;
+
+        .input {
+            margin: 10px;
+        }
+
+        .button {
+            width: 140px;
+            margin-top: 10px;
+            margin-left: auto;
+            margin-right: 10px;
+        }
+    }
+
+    .error {
+        text-align: center;
+        padding-bottom: 5px;
+        padding-top: 5px;
+        margin-bottom: 20px;
+        background-color: #f6d9d8;
+
+        span {
+            font-family: 'Exo 2', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--blood);
+        }
+    }
+}

@@ -43,6 +43,13 @@ export class DependentProps {
     }
 }
 
+export const everyColumnProps = {
+    showColumnMenuGroupOptions: false,
+    showColumnMenuFilterOptions: false,
+    showColumnMenuLockOptions: false,
+    
+};
+
 export const dateColumnProps = {
     sort: (v1, v2) => compare(v1, v2),
     dateFormat: "DD.MM.YYYY",
