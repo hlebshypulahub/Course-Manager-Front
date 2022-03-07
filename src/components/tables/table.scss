@@ -1,0 +1,39 @@
+.table {
+    height: 700px;
+
+    .InovuaReactDataGrid {
+        height: 700px;
+        background-color: var(--banana);
+    }
+
+    .InovuaReactDataGrid__header {
+        background-color: var(--banana);
+    }
+
+    .InovuaReactDataGrid__column-header {
+        font-family: "Roboto", sans-serif;
+        font-size: 18px;
+    }
+
+    .InovuaReactDataGrid__row {
+        font-family: "Exo 2", sans-serif;
+        font-size: 18px;
+        font-weight: 400;
+    }
+
+    .InovuaReactDataGrid__row--odd {
+        background-color: var(--row2);
+    }
+
+    .InovuaReactDataGrid__row--even {
+        background-color: var(--row1);
+    }
+
+    .InovuaReactDataGrid__column-header__filter-wrapper {
+        background-color: var(--banana);
+    }
+
+    .inovua-react-pagination-toolbar {
+        background-color: var(--banana);
+    }
+}
