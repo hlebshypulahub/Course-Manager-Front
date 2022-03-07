@@ -1,5 +1,5 @@
 //// React
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import validator from "validator";
 import { useHistory } from "react-router-dom";
 import { Redirect } from "react-router-dom";
@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import MyTextField from "./MyTextField";
 import MyDatePicker from "./MyDatePicker";
 import FormButtons from "./FormButtons";
+import Spinner from "../components/Spinner";
 
 //// Mui
 import Card from "@mui/material/Card";
@@ -17,6 +18,7 @@ import CardContent from "@mui/material/CardContent";
 //// Functions
 import { addCourseToEmployee } from "../services/course.service";
 import { DateFormatter as format } from "../helpers/DateFormatter";
+import { getEmployeeById } from "../services/employee.service";
 
 //// Utils
 import { banana_color } from "../helpers/color";
@@ -25,7 +27,7 @@ import { banana_color } from "../helpers/color";
 import "../css/Form.scss";
 
 const AddCourse = (props) => {
-    const employeeFullName = props.location.state.employeeFullName;
+    const [fullName, setFullName] = useState("");
     const employeeId = props.match.params.id;
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
@@ -39,10 +41,22 @@ const AddCourse = (props) => {
         startDate: "",
         endDate: "",
     });
+    const [employeeLoaded, setEmployeeLoaded] = useState(false);
 
     const { user: currentUser } = useSelector((state) => state.auth);
 
     const history = useHistory();
+
+    useEffect(() => {
+        const fetchEmployee = () => {
+            getEmployeeById(employeeId).then((data) => {
+                setFullName(data.fullName);
+                setEmployeeLoaded(true);
+            });
+        };
+
+        fetchEmployee();
+    }, [employeeId]);
 
     const validate = useCallback(() => {
         let tempErrors = {};
@@ -108,6 +122,10 @@ const AddCourse = (props) => {
         return <Redirect to="/login" />;
     }
 
+    if (!employeeLoaded) {
+        return <Spinner />;
+    }
+
     return (
         <div className="Form">
             <Card className="card">
@@ -126,7 +144,7 @@ const AddCourse = (props) => {
                             <MyTextField
                                 disabled
                                 label="ФИО"
-                                value={employeeFullName}
+                                value={fullName}
                             />
                         </div>
 

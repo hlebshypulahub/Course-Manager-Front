@@ -1,15 +1,21 @@
+//// React
+import React from "react";
+import { useHistory } from "react-router-dom";
+
+//// Mui
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
-import { useHistory } from "react-router-dom";
 import Button from "@mui/material/Button";
+
+//// Utils
 import { green, red } from "../helpers/color";
 
-const FormButtons = (props) => {
+const FormButtons = ({ onlySubmit, cancelFunc, cancelText, acceptText }) => {
     const history = useHistory();
 
     return (
         <>
-            {!props.onlySubmit && (
+            {!onlySubmit && (
                 <Button
                     variant="contained"
                     endIcon={<CancelIcon />}
@@ -21,16 +27,16 @@ const FormButtons = (props) => {
                         height: "40px",
                     }}
                     onClick={
-                        props.cancelFunc
+                        cancelFunc
                             ? () => {
-                                  props.cancelFunc();
+                                  cancelFunc();
                               }
                             : () => {
                                   history.goBack();
                               }
                     }
                 >
-                    {props.cancelText ? props.cancelText : "Отменить"}
+                    {cancelText || "Отменить"}
                 </Button>
             )}
             <Button
@@ -45,7 +51,7 @@ const FormButtons = (props) => {
                 }}
                 type="submit"
             >
-                {props.acceptText ? props.acceptText : "Подтвердить"}
+                {acceptText || "Подтвердить"}
             </Button>
         </>
     );

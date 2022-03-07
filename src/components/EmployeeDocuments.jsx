@@ -1,6 +1,5 @@
 //// React
 import React, { useState, useEffect, useCallback } from "react";
-import { useHistory } from "react-router-dom";
 
 //// Components
 import MyModal from "./MyModal";
@@ -37,8 +36,6 @@ const EmployeeDocuments = (props) => {
     const [principalCompany, setPrincipalCompany] = useState("");
     const [categories, setCategories] = useState();
     const [categoriesLoaded, setCategoriesLoaded] = useState(false);
-
-    const history = useHistory();
 
     const fetchDocument = useCallback(
         (e, documentDto, documentType) => {
@@ -113,16 +110,14 @@ const EmployeeDocuments = (props) => {
         setAlignment(newAlignment);
     };
 
-    if (modalShown) {
-        return (
-            <MyModal
-                message="Отсутствует соединение с сервером..."
-                func={() => {
-                    history.push("/employees");
-                }}
-            />
-        );
-    }
+    const modal = modalShown && (
+        <MyModal
+            message="Отсутствует соединение с сервером..."
+            func={() => {
+                setModalShown(false);
+            }}
+        />
+    );
 
     if (
         isLoading ||
@@ -135,18 +130,13 @@ const EmployeeDocuments = (props) => {
 
     return (
         <div className="EmployeeDocuments">
-            {modalShown && (
-                <MyModal
-                    message="Отсутствует соединение с сервером..."
-                    func={() => {
-                        setModalShown(false);
-                    }}
-                />
-            )}
+            {modal}
+
             <div className="cards-row">
                 <PersonalCard employee={employee} showCardActions={false} />
                 <CategoryCard employee={employee} showCardActions={false} />
             </div>
+
             <div className="type-btns">
                 <ToggleButtonGroup
                     color="primary"
@@ -168,6 +158,7 @@ const EmployeeDocuments = (props) => {
                         })}
                 </ToggleButtonGroup>
             </div>
+
             {alignment === "REPRESENTATION" && (
                 <RepresentationForm
                     employee={employee}
@@ -176,6 +167,7 @@ const EmployeeDocuments = (props) => {
                     fetchDocument={fetchDocument}
                 />
             )}
+
             {alignment === "QUALIFICATION_SHEET" && (
                 <QualificationSheetForm
                     employee={employee}
@@ -184,6 +176,7 @@ const EmployeeDocuments = (props) => {
                     fetchDocument={fetchDocument}
                 />
             )}
+
             {alignment === "PROFESSIONAL_REPORT" && (
                 <ProfessionalReportForm
                     employee={employee}

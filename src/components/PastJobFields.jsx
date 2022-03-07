@@ -15,6 +15,23 @@ const PastJobFields = ({
     extend,
     customMarginRight,
 }) => {
+    const extendButton = isLast && (
+        <Button
+            variant="outlined"
+            style={{
+                fontWeight: "bold",
+                display: "inline",
+                marginTop: "14px",
+                marginLeft: "194px",
+            }}
+            size="large"
+            type="button"
+            onClick={extend}
+        >
+            Еще
+        </Button>
+    );
+
     return (
         <>
             <div className="text-field" style={{ marginTop: "40px" }}>
@@ -33,7 +50,6 @@ const PastJobFields = ({
                 <div className="input text-field" style={customMarginRight}>
                     <MyDatePicker
                         small={true}
-                        // key={uniqueKey}
                         label=""
                         value={startDate}
                         onChange={(newStartDate) =>
@@ -61,22 +77,7 @@ const PastJobFields = ({
                     />
                 </div>
 
-                {isLast && (
-                    <Button
-                        variant="outlined"
-                        style={{
-                            fontWeight: "bold",
-                            display: "inline",
-                            marginTop: "14px",
-                            marginLeft: "194px",
-                        }}
-                        size="large"
-                        type="button"
-                        onClick={extend}
-                    >
-                        Еще
-                    </Button>
-                )}
+                {extendButton}
             </div>
         </>
     );

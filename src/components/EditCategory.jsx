@@ -9,6 +9,7 @@ import MyTextField from "./MyTextField";
 import MyDatePicker from "./MyDatePicker";
 import FormButtons from "./FormButtons";
 import Spinner from "../components/Spinner";
+import MyModal from "./MyModal";
 
 //// Mui
 import MenuItem from "@mui/material/MenuItem";
@@ -48,6 +49,7 @@ const EditCategory = (props) => {
     });
     const [categoryLoaded, setCategoryLoaded] = useState(false);
     const [categoriesLoaded, setCategoriesLoaded] = useState(false);
+    const [modalShown, setModalShown] = useState(false);
 
     const { user: currentUser } = useSelector((state) => state.auth);
 
@@ -99,21 +101,25 @@ const EditCategory = (props) => {
             if (validate()) {
                 const patch = {
                     qualification,
-                    category,
+                    category: category.name,
                     ...(categoryNumber && { categoryNumber }),
                     ...(categoryAssignmentDate && {
                         categoryAssignmentDate: format(categoryAssignmentDate),
                     }),
                 };
 
-                patchEmployeeCategory(id, patch).then(() => {
-                    history.push({
-                        pathname: `/employees/${id}`,
-                        state: {
-                            snackMessage: `Категория изменена`,
-                        },
+                patchEmployeeCategory(id, patch)
+                    .then(() => {
+                        history.push({
+                            pathname: `/employees/${id}`,
+                            state: {
+                                snackMessage: `Категория изменена`,
+                            },
+                        });
+                    })
+                    .catch(() => {
+                        setModalShown(true);
                     });
-                });
             }
         },
         [
@@ -143,8 +149,19 @@ const EditCategory = (props) => {
         return <Spinner />;
     }
 
+    const modal = modalShown && (
+        <MyModal
+            message="Отсутствует соединение с сервером..."
+            func={() => {
+                setModalShown(false);
+            }}
+        />
+    );
+
     return (
         <div className="Form">
+            {modal}
+
             <Card className="card">
                 <CardContent
                     className="card-content"

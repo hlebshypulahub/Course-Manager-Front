@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import EmployeesTable from "../components/EmployeesTable";
+import EmployeesTable from "../components/tables/EmployeesTable";
 import { Redirect, useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { styled } from "@mui/material/styles";
@@ -12,8 +12,8 @@ import {
 } from "../services/employee.service";
 import Spinner from "../components/Spinner";
 import ArticleIcon from "@mui/icons-material/Article";
-import OkAlert from "../components/OkAlert";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
+import MyModal from "../components/MyModal";
 
 import { uploadFile } from "../services/file.service";
 
@@ -29,7 +29,7 @@ const EmployeesPage = (props) => {
     const [file, setFile] = useState();
     const [isFilePicked, setFilePicked] = useState(false);
     const { user: currentUser } = useSelector((state) => state.auth);
-    const [okAlertShown, setOkAlertShown] = useState(false);
+    const [errorModalShown, setErrorModalShown] = useState(false);
     const [isTableLoading, setTableLoading] = useState(true);
     const [employeeId, setEmployeeId] = useState(0);
 
@@ -66,7 +66,7 @@ const EmployeesPage = (props) => {
                 })
                 .catch((error) => {
                     setLoading(false);
-                    setOkAlertShown(true);
+                    setErrorModalShown(true);
                 });
         };
 
@@ -88,9 +88,9 @@ const EmployeesPage = (props) => {
                     setLoading(false);
                     setTableLoading(false);
                 })
-                .catch((error) => {
+                .catch(() => {
                     setLoading(false);
-                    setOkAlertShown(true);
+                    setErrorModalShown(true);
                 });
         };
 
@@ -100,6 +100,15 @@ const EmployeesPage = (props) => {
     const goToEmployeeView = useCallback(() => {
         history.push("/employees/" + employeeId);
     }, [employeeId, history]);
+
+    const modal = errorModalShown && (
+        <MyModal
+            message="Отсутствует соединение с сервером..."
+            func={() => {
+                setErrorModalShown(false);
+            }}
+        />
+    );
 
     if (!currentUser) {
         return <Redirect to="/login" />;
@@ -111,16 +120,8 @@ const EmployeesPage = (props) => {
 
     return (
         <div>
-            {okAlertShown && (
-                <OkAlert
-                    message="Отсутствует соединение с сервером..."
-                    func={() => {
-                        setOkAlertShown(false);
-                        window.location.reload();
-                    }}
-                />
-            )}
-            <div className={okAlertShown ? "dark-mode" : ""}>
+            {modal}
+            <div className={errorModalShown ? "dark-mode" : ""}>
                 <div className="EmployeesPage">
                     <div className="top-btns">
                         <Button

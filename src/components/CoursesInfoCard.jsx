@@ -53,12 +53,9 @@ const CoursesInfoCard = ({ employee }) => {
                             width: "200px",
                         }}
                         onClick={() => {
-                            history.push({
-                                pathname: `/employees/${employee.id}/add-course`,
-                                state: {
-                                    employeeFullName: employee.fullName,
-                                },
-                            });
+                            history.push(
+                                `/employees/${employee.id}/add-course`
+                            );
                         }}
                     >
                         Добавить курс

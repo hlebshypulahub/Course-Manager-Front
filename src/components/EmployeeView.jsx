@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 
 //// Components
 import Spinner from "../components/Spinner";
-import CoursesTable from "./CoursesTable";
+import CoursesTable from "./tables/CoursesTable";
 import CategoryCard from "./CategoryCard";
 import PersonalCard from "./PersonalCard";
 import MyModal from "./MyModal";
@@ -25,6 +25,7 @@ import { CategoryValidator as validateCategory } from "../helpers/CategoryValida
 import { EducationValidator as validateEducation } from "../helpers/EducationValidator";
 import { DateParser as parse } from "../helpers/DateParser";
 import { EmptyErrorTableChecker as isEmpty } from "../helpers/EmptyErrorTableChecker";
+import { getEmployeeCourses } from "../services/course.service";
 
 //// CSS
 import "../css/EmployeeView.scss";
@@ -39,6 +40,8 @@ const EmployeeView = (props) => {
         useState(false);
     const [errorModalShown, setErrorModalShown] = useState(false);
     const [snackOpened, setSnackOpened] = useState(false);
+    const [courses, setCourses] = useState();
+    const [isCoursesLoading, setCoursesLoading] = useState(false);
 
     const { user: currentUser } = useSelector((state) => state.auth);
 
@@ -49,6 +52,18 @@ const EmployeeView = (props) => {
     const [snackMessage, setSnackMessage] = useState(
         location.state ? location.state.snackMessage : ""
     );
+
+    useEffect(() => {
+        const fetchCourses = () => {
+            getEmployeeCourses(id).then((data) => {
+                setCourses(data);
+                setCoursesLoading(false);
+            });
+        };
+
+        setCoursesLoading(true);
+        fetchCourses();
+    }, [id]);
 
     useEffect(() => {
         setSnackMessage(location.state ? location.state.snackMessage : "");
@@ -138,6 +153,14 @@ const EmployeeView = (props) => {
         setSnackMessage("");
     };
 
+    useEffect(() => {
+        return () => {
+            history.replace({
+                state: { snackMessage: "" },
+            });
+        };
+    }, [history]);
+
     if (isLoading) {
         return <Spinner />;
     }
@@ -186,7 +209,9 @@ const EmployeeView = (props) => {
                     <PersonalCard
                         withActions
                         employee={employee}
-                        toggleActiveAlert={toggleEmployeeStateModalShown}
+                        toggleEmployeeStateModalShown={
+                            toggleEmployeeStateModalShown
+                        }
                         showCardActions={true}
                         categoryIsValid={categoryIsValid}
                     />
@@ -214,7 +239,10 @@ const EmployeeView = (props) => {
                     />
                 </div>
 
-                <CoursesTable employeeId={id} />
+                <CoursesTable
+                    courses={courses}
+                    isCoursesLoading={isCoursesLoading}
+                />
             </div>
         </div>
     );

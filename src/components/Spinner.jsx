@@ -1,10 +1,8 @@
 import GridLoader from "react-spinners/GridLoader";
-
 import { dark_blue } from "../helpers/color";
-
 import "../css/Spinner.scss";
 
-const Spinner = (props) => {
+const Spinner = () => {
     return (
         <div className="Spinner">
             <GridLoader
