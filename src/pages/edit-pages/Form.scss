@@ -1,4 +1,5 @@
 @import "../../css/fonts";
+@import "../../css/colors";
 
 .Form {
     width: 900px;
@@ -17,6 +18,10 @@
     }
 
     .card {
+        .card-content {
+            background-color: var(--banana);
+        }
+
         .text-field,
         .combined-row {
             width: 750px;

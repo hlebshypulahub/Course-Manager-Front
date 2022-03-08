@@ -64,6 +64,10 @@ export const patchEmployeeExemption = (id, patch) => {
     return patchEmployee(id, patch, "/exemption");
 };
 
+export const patchEmployeeNote = (id, patch) => {
+    return patchEmployee(id, patch, "/note");
+};
+
 export const patchEmployeeEducation = (id, patch) => {
     return patchEmployee(id, patch, "/education");
 };

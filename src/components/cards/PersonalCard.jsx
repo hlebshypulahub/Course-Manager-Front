@@ -50,16 +50,49 @@ const PersonalCard = ({
         activePin
     );
 
+    const noteButton = (
+        <Button
+            variant="outlined"
+            style={{
+                fontWeight: "bold",
+                marginLeft: "8px",
+            }}
+            size="large"
+            onClick={() => {
+                history.push(`/employees/${employee.id}/note`);
+            }}
+        >
+            Заметки
+        </Button>
+    );
+
+    const noteButtonWithTooltip =
+        !!employee.note || !!employee.notificationDate ? (
+            <Tooltip
+                title={
+                    <div style={{ fontSize: "15px" }}>
+                        {!!employee.note &&
+                            employee.note
+                                .split("\n")
+                                .map((line) => <div key={line}>{line}</div>)}
+                        <div style={{ marginTop: "10px" }}>
+                            <span>Дата уведомления: </span>
+                            <span>{employee.notificationDate}</span>
+                        </div>
+                    </div>
+                }
+                placement="right"
+            >
+                {noteButton}
+            </Tooltip>
+        ) : (
+            noteButton
+        );
+
     const cardActions = showCardActions && (
         <CardActions className="card-actions documents-btn">
             <Tooltip
-                title={
-                    employee.exemptioned
-                        ? "Сотрудник освобождён"
-                        : !categoryIsValid
-                        ? "Необходимо указать категорию"
-                        : ""
-                }
+                title={!categoryIsValid ? "Необходимо указать категорию" : ""}
                 placement="right"
             >
                 <div>
@@ -78,6 +111,8 @@ const PersonalCard = ({
                     </Button>
                 </div>
             </Tooltip>
+
+            {noteButtonWithTooltip}
         </CardActions>
     );
 

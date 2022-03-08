@@ -27,9 +27,6 @@ import { DateParser as parse } from "../../helpers/DateParser";
 import { DateFormatter as format } from "../../helpers/DateFormatter";
 import { EmptyErrorTableChecker as isEmpty } from "../../helpers/EmptyErrorTableChecker";
 
-//// Utils
-import { banana_color } from "../../helpers/color";
-
 //// CSS
 import "./Form.scss";
 
@@ -183,9 +180,6 @@ const EditExemptionPage = (props) => {
             <Card className="card">
                 <CardContent
                     className="card-content"
-                    style={{
-                        backgroundColor: banana_color,
-                    }}
                 >
                     <div className="card-label">
                         <span className="header-label">

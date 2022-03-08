@@ -14,6 +14,7 @@ import AddCoursePage from "../course/AddCoursePage";
 import EditExemptionPage from "../edit-pages/EditExemptionPage";
 import EmployeeDocumentsPage from "../documents/EmployeeDocumentsPage";
 import NotFoundPage from "../not-found/NotFoundPage";
+import EditNotePage from "../edit-pages/EditNotePage";
 
 //// CSS
 import "./Dashboard.scss";
@@ -40,9 +41,7 @@ export const Dashboard = () => {
 
     return (
         <div className="Dashboard">
-
             <header>
-
                 <a href="/employees" style={{ textDecoration: "none" }}>
                     Course Manager
                 </a>
@@ -64,14 +63,17 @@ export const Dashboard = () => {
                         </Button>
                     </div>
                 )}
-
             </header>
 
             <Switch>
                 <Route exact path="/" component={EmployeesPage} />
                 <Route path="/login" component={LoginPage} />
                 <Route exact path="/employees" component={EmployeesPage} />
-                <Route exact path="/employees/:id" component={EmployeeViewPage} />
+                <Route
+                    exact
+                    path="/employees/:id"
+                    component={EmployeeViewPage}
+                />
                 <Route
                     path="/employees/:id/edit-edu"
                     component={EditEducationPage}
@@ -80,7 +82,10 @@ export const Dashboard = () => {
                     path="/employees/:id/edit-category"
                     component={EditCategoryPage}
                 />
-                <Route path="/employees/:id/add-course" component={AddCoursePage} />
+                <Route
+                    path="/employees/:id/add-course"
+                    component={AddCoursePage}
+                />
                 <Route
                     path="/employees/:id/edit-category-deadline"
                     component={EditCategoryDeadlinePage}
@@ -88,6 +93,10 @@ export const Dashboard = () => {
                 <Route
                     path="/employees/:id/edit-exemption"
                     component={EditExemptionPage}
+                />
+                <Route
+                    path="/employees/:id/note"
+                    component={EditNotePage}
                 />
                 <Route
                     path="/employees/:id/documents"

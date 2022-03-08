@@ -27,9 +27,6 @@ import { DateFormatter as format } from "../../helpers/DateFormatter";
 import { CategoryValidator as validateCategory } from "../../helpers/CategoryValidator";
 import { EmptyErrorTableChecker as isEmpty } from "../../helpers/EmptyErrorTableChecker";
 
-//// Utils
-import { banana_color } from "../../helpers/color";
-
 //// CSS
 import "./Form.scss";
 
@@ -165,9 +162,6 @@ const EditCategoryPage = (props) => {
             <Card className="card">
                 <CardContent
                     className="card-content"
-                    style={{
-                        backgroundColor: banana_color,
-                    }}
                 >
                     <div className="card-label">
                         <span className="header-label">Изменить категорию</span>

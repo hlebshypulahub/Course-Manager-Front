@@ -26,9 +26,7 @@ import { EducationValidator as validateEducation } from "../../helpers/Education
 import { DateParser as parse } from "../../helpers/DateParser";
 import { DateFormatter as format } from "../../helpers/DateFormatter";
 import { EmptyErrorTableChecker as isEmpty } from "../../helpers/EmptyErrorTableChecker";
-
-//// Utils
-import { banana_color } from "../../helpers/color";
+import { handleSubmit as hS } from "../../helpers/FormSubmition";
 
 //// CSS
 import "./Form.scss";
@@ -97,28 +95,22 @@ const EditEducationPage = (props) => {
 
     const handleSubmit = useCallback(
         (e) => {
-            e.preventDefault();
+            const patch = {
+                eduName,
+                eduGraduationDate: format(eduGraduationDate),
+                education: education.name,
+            };
 
-            if (validate()) {
-                const patch = {
-                    eduName,
-                    eduGraduationDate: format(eduGraduationDate),
-                    education: education.name,
-                };
-
-                patchEmployeeEducation(id, patch)
-                    .then(() => {
-                        history.push({
-                            pathname: `/employees/${id}`,
-                            state: {
-                                snackMessage: `Образование изменено`,
-                            },
-                        });
-                    })
-                    .catch(() => {
-                        setModalShown(true);
-                    });
-            }
+            hS(
+                e,
+                id,
+                history,
+                validate,
+                patch,
+                patchEmployeeEducation,
+                setModalShown,
+                "Образование изменено"
+            );
         },
         [id, eduName, eduGraduationDate, education, history, validate]
     );
@@ -153,12 +145,7 @@ const EditEducationPage = (props) => {
             {modal}
 
             <Card className="card">
-                <CardContent
-                    className="card-content"
-                    style={{
-                        backgroundColor: banana_color,
-                    }}
-                >
+                <CardContent className="card-content">
                     <div className="card-label">
                         <span className="header-label">
                             Изменить образование
