@@ -47,8 +47,6 @@ const LoginForm = () => {
         };
     }, [handleLogin]);
 
-    console.log(message);
-
     const errorSpan = message && (
         <div className="error">
             <span>{message}</span>

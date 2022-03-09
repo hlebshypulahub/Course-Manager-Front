@@ -1,5 +1,7 @@
 //// React
 import React, { useState, useEffect, useCallback } from "react";
+import { useSelector } from "react-redux";
+import { Redirect } from "react-router-dom";
 
 //// Components
 import MyModal from "../../components/modals/MyModal";
@@ -19,7 +21,6 @@ import { getEmployeeById } from "../../services/employee.service";
 import { getCategories } from "../../services/category.service";
 import { getDocumentForEmployee } from "../../services/employee.service";
 import { getDocumentTypes } from "../../services/documentType.service";
-import { getPrincipalCompany } from "../../services/principal.service";
 
 //// CSS
 import "./EmployeeDocuments.scss";
@@ -31,11 +32,12 @@ const EmployeeDocumentsPage = (props) => {
     const [modalShown, setModalShown] = useState(false);
     const [alignment, setAlignment] = useState("REPRESENTATION");
     const [documentTypesLoaded, setDocumentTypesLoaded] = useState(false);
-    const [principalCompanyLoaded, setPrincipalCompanyLoaded] = useState(false);
     const [documentTypes, setDocumentTypes] = useState();
-    const [principalCompany, setPrincipalCompany] = useState("");
+    const principalCompany = JSON.parse(localStorage.getItem("user")).company;
     const [categories, setCategories] = useState();
     const [categoriesLoaded, setCategoriesLoaded] = useState(false);
+
+    const { user: currentUser } = useSelector((state) => state.auth);
 
     const fetchDocument = useCallback(
         (e, documentDto, documentType) => {
@@ -91,17 +93,6 @@ const EmployeeDocumentsPage = (props) => {
         fetchDocumentTypes();
     }, []);
 
-    useEffect(() => {
-        const fetchPrincipal = () => {
-            getPrincipalCompany().then((data) => {
-                setPrincipalCompany(data);
-                setPrincipalCompanyLoaded(true);
-            });
-        };
-
-        fetchPrincipal();
-    }, []);
-
     const handleDocumentTypeChange = (event, newAlignment) => {
         if (!newAlignment) {
             return;
@@ -109,6 +100,10 @@ const EmployeeDocumentsPage = (props) => {
 
         setAlignment(newAlignment);
     };
+
+    if (!currentUser) {
+        return <Redirect to="/login" />;
+    }
 
     const modal = modalShown && (
         <MyModal
@@ -119,12 +114,7 @@ const EmployeeDocumentsPage = (props) => {
         />
     );
 
-    if (
-        isLoading ||
-        !documentTypesLoaded ||
-        !principalCompanyLoaded ||
-        !categoriesLoaded
-    ) {
+    if (isLoading || !documentTypesLoaded || !categoriesLoaded) {
         return <Spinner />;
     }
 

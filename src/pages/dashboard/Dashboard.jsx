@@ -15,6 +15,7 @@ import EditExemptionPage from "../edit-pages/EditExemptionPage";
 import EmployeeDocumentsPage from "../documents/EmployeeDocumentsPage";
 import NotFoundPage from "../not-found/NotFoundPage";
 import EditNotePage from "../edit-pages/EditNotePage";
+import EditProfilePage from "../edit-pages/EditProfilePage";
 
 //// CSS
 import "./Dashboard.scss";
@@ -22,9 +23,10 @@ import "./Dashboard.scss";
 //// Mui
 import Button from "@mui/material/Button";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import FaceIcon from "@mui/icons-material/Face";
 
 //// Utils
-import { yellow } from "../../helpers/color";
+import { yellow, cyan } from "../../helpers/color";
 
 export const Dashboard = () => {
     const history = useHistory();
@@ -42,32 +44,58 @@ export const Dashboard = () => {
     return (
         <div className="Dashboard">
             <header>
-                <a href="/employees" style={{ textDecoration: "none" }}>
-                    Course Manager
-                </a>
-
                 {currentUser && (
-                    <div className="buttons">
-                        <Button
-                            variant="contained"
-                            startIcon={<PeopleAltIcon />}
-                            style={{
-                                backgroundColor: yellow,
-                                color: "black",
-                                fontWeight: "600",
-                                height: "40px",
-                            }}
-                            onClick={toEmployeesPage}
-                        >
-                            Сотрудники
-                        </Button>
-                    </div>
+                    <>
+                        <a href="/employees" style={{ textDecoration: "none" }}>
+                            <span
+                                style={{
+                                    color: yellow,
+                                    fontSize: "24px",
+                                    fontFamily: "'Exo 2', sans-serif",
+                                }}
+                            >
+                                {currentUser.company}
+                            </span>
+                        </a>
+
+                        <div className="buttons">
+                            <Button
+                                variant="contained"
+                                startIcon={<PeopleAltIcon />}
+                                style={{
+                                    backgroundColor: yellow,
+                                    color: "black",
+                                    fontWeight: "600",
+                                    height: "40px",
+                                }}
+                                onClick={toEmployeesPage}
+                            >
+                                Сотрудники
+                            </Button>
+
+                            <Button
+                                variant="contained"
+                                startIcon={<FaceIcon />}
+                                style={{
+                                    marginLeft: "15px",
+                                    backgroundColor: cyan,
+                                    color: "black",
+                                    fontWeight: "600",
+                                    height: "40px",
+                                }}
+                                onClick={() => history.push("/edit-profile")}
+                            >
+                                Профиль
+                            </Button>
+                        </div>
+                    </>
                 )}
             </header>
 
             <Switch>
                 <Route exact path="/" component={EmployeesPage} />
                 <Route path="/login" component={LoginPage} />
+                <Route path="/edit-profile" component={EditProfilePage} />
                 <Route exact path="/employees" component={EmployeesPage} />
                 <Route
                     exact
@@ -94,10 +122,7 @@ export const Dashboard = () => {
                     path="/employees/:id/edit-exemption"
                     component={EditExemptionPage}
                 />
-                <Route
-                    path="/employees/:id/note"
-                    component={EditNotePage}
-                />
+                <Route path="/employees/:id/note" component={EditNotePage} />
                 <Route
                     path="/employees/:id/documents"
                     component={EmployeeDocumentsPage}

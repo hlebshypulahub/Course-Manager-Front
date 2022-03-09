@@ -10,7 +10,7 @@ export const uploadFile = (formData) => {
         headers: Object.assign({}, authHeader()),
     }).then((response) => {
         if (response.ok) {
-            return response.json();
+            return;
         } else {
             throw new Error();
         }

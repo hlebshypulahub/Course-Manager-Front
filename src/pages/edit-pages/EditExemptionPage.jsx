@@ -164,23 +164,21 @@ const EditExemptionPage = (props) => {
         return <Spinner />;
     }
 
-     const modal = modalShown && (
-         <MyModal
-             message="Отсутствует соединение с сервером..."
-             func={() => {
-                 setModalShown(false);
-             }}
-         />
-     );
+    const modal = modalShown && (
+        <MyModal
+            message="Отсутствует соединение с сервером..."
+            func={() => {
+                setModalShown(false);
+            }}
+        />
+    );
 
     return (
         <div className="Form">
             {modal}
 
             <Card className="card">
-                <CardContent
-                    className="card-content"
-                >
+                <CardContent className="card-content">
                     <div className="card-label">
                         <span className="header-label">
                             Изменить освобождение
