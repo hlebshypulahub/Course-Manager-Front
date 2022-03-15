@@ -6,11 +6,18 @@ import { useHistory } from "react-router-dom";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Button from "@mui/material/Button";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 //// Utils
 import { green, red } from "../helpers/color";
 
-const FormButtons = ({ onlySubmit, cancelFunc, cancelText, acceptText }) => {
+const FormButtons = ({
+    onlySubmit,
+    cancelFunc,
+    cancelText,
+    acceptText,
+    submitting,
+}) => {
     const history = useHistory();
 
     return (
@@ -39,7 +46,9 @@ const FormButtons = ({ onlySubmit, cancelFunc, cancelText, acceptText }) => {
                     {cancelText || "Отменить"}
                 </Button>
             )}
-            <Button
+            <LoadingButton
+                loading={submitting}
+                loadingPosition="end"
                 variant="contained"
                 endIcon={<CheckCircleIcon />}
                 style={{
@@ -52,7 +61,7 @@ const FormButtons = ({ onlySubmit, cancelFunc, cancelText, acceptText }) => {
                 type="submit"
             >
                 {acceptText || "Подтвердить"}
-            </Button>
+            </LoadingButton>
         </>
     );
 };

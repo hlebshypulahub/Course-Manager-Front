@@ -51,6 +51,7 @@ const EditEducationPage = (props) => {
         eduGraduationDate: "",
     });
     const [modalShown, setModalShown] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
 
     const { user: currentUser } = useSelector((state) => state.auth);
 
@@ -100,6 +101,8 @@ const EditEducationPage = (props) => {
                 eduGraduationDate: format(eduGraduationDate),
                 education: education.name,
             };
+
+            setSubmitting(true);
 
             hS(
                 e,
@@ -206,7 +209,7 @@ const EditEducationPage = (props) => {
                         </div>
 
                         <div className="buttons">
-                            <FormButtons />
+                            <FormButtons submitting={submitting} />
                         </div>
                     </form>
                 </CardContent>
