@@ -1,7 +1,7 @@
 //// React
 import React, { useState, useCallback } from "react";
 import { Redirect } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import validator from "validator";
 
@@ -17,6 +17,7 @@ import CardContent from "@mui/material/CardContent";
 //// Functions
 import { EmptyErrorTableChecker as isEmpty } from "../../helpers/EmptyErrorTableChecker";
 import { edit } from "../../services/auth.service";
+import { editUser, setMessage } from "../../redux";
 
 //// CSS
 import "./Form.scss";
@@ -30,14 +31,19 @@ const EditProfilePage = () => {
         company: "",
     });
     const [modalShown, setModalShown] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
 
-    const { user: currentUser } = useSelector((state) => state.auth);
+    const dispatch = useDispatch();
+
+    const { user: currentUser } = useSelector((state) => state.user);
 
     const history = useHistory();
 
     const validate = useCallback(() => {
         let tempErrors = {};
-        tempErrors.email = validator.isEmail(email) ? "" : "Необходимо указать и-мейл";
+        tempErrors.email = validator.isEmail(email)
+            ? ""
+            : "Необходимо указать и-мейл";
         tempErrors.company = company
             ? ""
             : "Необходимо указать наименование индивидуального предпринимателя, организации";
@@ -57,8 +63,12 @@ const EditProfilePage = () => {
                     company,
                 };
 
+                setSubmitting(true);
+
                 edit(patch)
                     .then(() => {
+                        dispatch(editUser(patch));
+                        dispatch(setMessage("Профиль изменен"))
                         history.push(`/`);
                     })
                     .catch(() => {
@@ -66,7 +76,7 @@ const EditProfilePage = () => {
                     });
             }
         },
-        [email, company, history, validate]
+        [email, company, history, validate, dispatch]
     );
 
     if (!currentUser) {
@@ -113,7 +123,7 @@ const EditProfilePage = () => {
                         </div>
 
                         <div className="buttons">
-                            <FormButtons />
+                            <FormButtons submitting={submitting} />
                         </div>
                     </form>
                 </CardContent>

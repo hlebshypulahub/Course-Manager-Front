@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 
 //// Functions
-import { login } from "../../actions/auth";
+import { login } from "../../redux";
 
 //// Mui
 import { TextField, Button } from "@mui/material";
@@ -16,8 +16,8 @@ const LoginForm = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    const { isLoggedIn } = useSelector((state) => state.auth);
-    const { message } = useSelector((state) => state.message);
+    const { isLoggedIn } = useSelector((state) => state.user);
+    const { message } = useSelector((state) => state.error);
 
     const dispatch = useDispatch();
 

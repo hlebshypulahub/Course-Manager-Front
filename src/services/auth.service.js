@@ -3,7 +3,7 @@ import authHeader from "./auth-header";
 
 const API_BASE_URL = baseUrl + "/api/v1/auth";
 
-const login = (username, password) => {
+export const login = (username, password) => {
     return fetch(API_BASE_URL + "/signin", {
         method: "POST",
         body: JSON.stringify({ username, password }),
@@ -51,13 +51,6 @@ export const edit = (patch) => {
     });
 };
 
-const logout = () => {
+export const logout = () => {
     localStorage.removeItem("user");
 };
-
-const exportedObject = {
-    login,
-    logout,
-};
-
-export default exportedObject;

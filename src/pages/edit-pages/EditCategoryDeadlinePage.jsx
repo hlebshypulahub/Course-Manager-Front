@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import { Redirect } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import validator from "validator";
 
 //// Components
@@ -10,7 +10,6 @@ import MyTextField from "../../components/inputs/MyTextField";
 import MyDatePicker from "../../components/inputs/MyDatePicker";
 import FormButtons from "../../components/FormButtons";
 import Spinner from "../../components/spinner/Spinner";
-import MyModal from "../../components/modals/MyModal";
 
 //// Mui
 import Card from "@mui/material/Card";
@@ -23,6 +22,7 @@ import {
 } from "../../services/employee.service";
 import { DateParser as parse } from "../../helpers/DateParser";
 import { DateFormatter as format } from "../../helpers/DateFormatter";
+import { handleSubmit as hS } from "../../helpers/FormSubmition";
 
 //// CSS
 import "./Form.scss";
@@ -36,11 +36,12 @@ const EditCategoryDeadlinePage = (props) => {
         categoryAssignmentDeadlineDate: "",
     });
     const [isLoading, setLoading] = useState(false);
-    const [modalShown, setModalShown] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
 
-    const { user: currentUser } = useSelector((state) => state.auth);
+    const { user: currentUser } = useSelector((state) => state.user);
 
     const history = useHistory();
+    const dispatch = useDispatch();
 
     const validate = useCallback(() => {
         let tempErrors = {};
@@ -82,21 +83,19 @@ const EditCategoryDeadlinePage = (props) => {
                     ),
                 };
 
-                patchEmployeeCategoryAssignmentDeadlineDate(id, patch)
-                    .then(
-                        history.push({
-                            pathname: `/employees/${id}`,
-                            state: {
-                                snackMessage: `Срок аттестации изменён`,
-                            },
-                        })
-                    )
-                    .catch(() => {
-                        setModalShown(true);
-                    });
+                setSubmitting(true);
+
+                hS(
+                    id,
+                    history,
+                    patch,
+                    patchEmployeeCategoryAssignmentDeadlineDate,
+                    "Срок аттестации изменён",
+                    dispatch
+                );
             }
         },
-        [id, categoryAssignmentDeadlineDate, history, validate]
+        [id, categoryAssignmentDeadlineDate, history, validate, dispatch]
     );
 
     if (!currentUser) {
@@ -107,23 +106,10 @@ const EditCategoryDeadlinePage = (props) => {
         return <Spinner />;
     }
 
-    const modal = modalShown && (
-        <MyModal
-            message="Отсутствует соединение с сервером..."
-            func={() => {
-                setModalShown(false);
-            }}
-        />
-    );
-
     return (
         <div className="Form">
-            {modal}
-
             <Card className="card">
-                <CardContent
-                    className="card-content"
-                >
+                <CardContent className="card-content">
                     <div className="card-label">
                         <span className="header-label">
                             Изменить срок аттестации на категорию вручную
@@ -157,7 +143,7 @@ const EditCategoryDeadlinePage = (props) => {
                         </div>
 
                         <div className="buttons">
-                            <FormButtons />
+                            <FormButtons submitting={submitting} />
                         </div>
                     </form>
                 </CardContent>

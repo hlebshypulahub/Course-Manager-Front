@@ -1,15 +1,13 @@
 //// React
 import React, { useState, useEffect, useCallback } from "react";
-import { Redirect, useLocation, useHistory } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Redirect, useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
 //// Components
 import Spinner from "../../components/spinner/Spinner";
 import CoursesTable from "../../components/tables/CoursesTable";
 import CategoryCard from "../../components/cards/CategoryCard";
 import PersonalCard from "../../components/cards/PersonalCard";
-import MyModal from "../../components/modals/MyModal";
-import SnackBar from "../../components/SnackBar";
 import CoursesInfoCard from "../../components/cards/CoursesInfoCard";
 import EducationCard from "../../components/cards/EducationCard";
 import MyAcceptModal from "../../components/modals/MyAcceptModal";
@@ -26,6 +24,7 @@ import { EducationValidator as validateEducation } from "../../helpers/Education
 import { DateParser as parse } from "../../helpers/DateParser";
 import { EmptyErrorTableChecker as isEmpty } from "../../helpers/EmptyErrorTableChecker";
 import { getEmployeeCourses } from "../../services/course.service";
+import { setMessage, setError } from "../../redux";
 
 //// CSS
 import "./EmployeeView.scss";
@@ -38,37 +37,29 @@ const EmployeeViewPage = (props) => {
     const [educationIsValid, setEducationIsValid] = useState(false);
     const [employeeStateModalShown, setEmployeeStateModalShown] =
         useState(false);
-    const [errorModalShown, setErrorModalShown] = useState(false);
-    const [snackOpened, setSnackOpened] = useState(false);
     const [courses, setCourses] = useState();
     const [isCoursesLoading, setCoursesLoading] = useState(false);
+    const [modalSubmitting, setModalSubmitting] = useState(false);
+    const [exemptionDeleteSubmitting, setExemptionDeleteSubmitting] =
+        useState(false);
 
-    const { user: currentUser } = useSelector((state) => state.auth);
+    const { user: currentUser } = useSelector((state) => state.user);
 
-    const location = useLocation();
     const history = useHistory();
+    const dispatch = useDispatch();
 
-    //////// ????
-    const [snackMessage, setSnackMessage] = useState(
-        location.state ? location.state.snackMessage : ""
-    );
-
-    useEffect(() => {
-        const fetchCourses = () => {
-            getEmployeeCourses(id).then((data) => {
-                setCourses(data);
-                setCoursesLoading(false);
-            });
-        };
-
+    const fetchCourses = useCallback(() => {
         setCoursesLoading(true);
-        fetchCourses();
+
+        getEmployeeCourses(id).then((data) => {
+            setCourses(data);
+            setCoursesLoading(false);
+        });
     }, [id]);
 
     useEffect(() => {
-        setSnackMessage(location.state ? location.state.snackMessage : "");
-        setSnackOpened(Boolean(location.state && location.state.snackMessage));
-    }, [location]);
+        fetchCourses();
+    }, [fetchCourses]);
 
     useEffect(() => {
         if (employee) {
@@ -95,21 +86,25 @@ const EmployeeViewPage = (props) => {
         }
     }, [employee]);
 
-    useEffect(() => {
-        const fetchEmployee = () => {
-            getEmployeeById(id)
-                .then((data) => {
-                    setEmployee(data);
-                    setLoading(false);
-                })
-                .catch(() => {
-                    setLoading(false);
-                    setErrorModalShown(true);
-                });
-        };
+    const fetchEmployee = useCallback(() => {
+        setLoading(true);
 
+        getEmployeeById(id)
+            .then((data) => {
+                setEmployee(data);
+                setLoading(false);
+            })
+            .catch(() => {
+                setLoading(false);
+                dispatch(
+                    setError("Отсутствует соединение с сервером...", true)
+                );
+            });
+    }, [id, dispatch]);
+
+    useEffect(() => {
         fetchEmployee();
-    }, [id]);
+    }, [fetchEmployee]);
 
     const toggleEmployeeStateModalShown = () => {
         setEmployeeStateModalShown(!employeeStateModalShown);
@@ -123,14 +118,22 @@ const EmployeeViewPage = (props) => {
                 active: !employee.active,
             };
 
-            patchEmployeeActive(id, patch).then(() => {
-                history.replace({
-                    state: { snackMessage: "Состояние изменено" },
+            setModalSubmitting(true);
+
+            patchEmployeeActive(id, patch)
+                .then(() => {
+                    dispatch(setMessage("Состояние изменено"));
+                    fetchEmployee();
+                    setModalSubmitting(false);
+                    setEmployeeStateModalShown(false);
+                })
+                .catch(() => {
+                    dispatch(
+                        setError("Отсутствует соединение с сервером...", true)
+                    );
                 });
-                window.location.reload();
-            });
         },
-        [id, employee, history]
+        [id, employee, dispatch, fetchEmployee]
     );
 
     const deleteExemption = useCallback(() => {
@@ -140,18 +143,20 @@ const EmployeeViewPage = (props) => {
             exemptionEndDate: null,
         };
 
-        patchEmployeeExemption(id, patch).then(() => {
-            history.replace({
-                state: { snackMessage: "Освобождение удалено" },
-            });
-            window.location.reload();
-        });
-    }, [id, history]);
+        setExemptionDeleteSubmitting(true);
 
-    const handleSnackClose = () => {
-        setSnackOpened(false);
-        setSnackMessage("");
-    };
+        patchEmployeeExemption(id, patch)
+            .then(() => {
+                dispatch(setMessage("Освобождение удалено"));
+                setExemptionDeleteSubmitting(false);
+                fetchEmployee();
+            })
+            .catch(() => {
+                dispatch(
+                    setError("Отсутствует соединение с сервером...", true)
+                );
+            });
+    }, [id, dispatch, fetchEmployee]);
 
     useEffect(() => {
         return () => {
@@ -161,16 +166,9 @@ const EmployeeViewPage = (props) => {
         };
     }, [history]);
 
-    if (isLoading) {
-        return <Spinner />;
-    }
-
-    if (!currentUser) {
-        return <Redirect to="/login" />;
-    }
-
     const employeeStateModal = employeeStateModalShown && (
         <MyAcceptModal
+            submitting={modalSubmitting}
             message={`Вы уверенны, что хотите изменить состояние сотрудника ${
                 employee.fullName
             } на ${!employee.active ? "'Активный'" : "'Неактивный'"} ?`}
@@ -179,30 +177,17 @@ const EmployeeViewPage = (props) => {
         />
     );
 
-    const errorModal = errorModalShown && (
-        <MyModal
-            message="Отсутствует соединение с сервером..."
-            func={() => {
-                setErrorModalShown(false);
-            }}
-        />
-    );
+    if (isLoading) {
+        return <Spinner />;
+    }
 
-    const snackBar = (
-        <SnackBar
-            open={snackOpened}
-            message={snackMessage}
-            handleClose={handleSnackClose}
-        />
-    );
+    if (!currentUser) {
+        return <Redirect to="/login" />;
+    }
 
     return (
         <div>
             {employeeStateModal}
-
-            {errorModal}
-
-            {snackBar}
 
             <div className="EmployeeView">
                 <div className="first-row">
@@ -236,6 +221,7 @@ const EmployeeViewPage = (props) => {
                         employee={employee}
                         deleteExemption={deleteExemption}
                         categoryIsValid={categoryIsValid}
+                        deleteSubmitting={exemptionDeleteSubmitting}
                     />
                 </div>
 

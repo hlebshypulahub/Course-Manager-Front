@@ -1,12 +1,11 @@
 //// React
 import React, { useState, useEffect, useCallback } from "react";
 import { Redirect, useHistory } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 //// Components
 import EmployeesTable from "../../components/tables/EmployeesTable";
 import Spinner from "../../components/spinner/Spinner";
-import MyModal from "../../components/modals/MyModal";
 
 //// Mui
 import { styled } from "@mui/material/styles";
@@ -22,6 +21,7 @@ import {
 import ArticleIcon from "@mui/icons-material/Article";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import { uploadFile } from "../../services/file.service";
+import { setError } from "../../redux";
 
 //// Utils
 import { green, sky_blue, pink, grey } from "../../helpers/color";
@@ -34,13 +34,13 @@ const EmployeesPage = () => {
     const [isLoading, setLoading] = useState(true);
     const [file, setFile] = useState();
     const [isFilePicked, setFilePicked] = useState(false);
-    const [errorModalShown, setErrorModalShown] = useState(false);
     const [isTableLoading, setTableLoading] = useState(true);
     const [employeeId, setEmployeeId] = useState();
 
-    const { user: currentUser } = useSelector((state) => state.auth);
+    const { user: currentUser } = useSelector((state) => state.user);
 
     const history = useHistory();
+    const dispatch = useDispatch();
 
     const Input = styled("input")({
         display: "none",
@@ -63,7 +63,9 @@ const EmployeesPage = () => {
                 window.location.reload(true);
             })
             .catch(() => {
-                setErrorModalShown(true);
+                 dispatch(
+                     setError("Отсутствует соединение с сервером...", true)
+                 );
             });
     };
 
@@ -77,12 +79,14 @@ const EmployeesPage = () => {
                 })
                 .catch(() => {
                     setLoading(false);
-                    setErrorModalShown(true);
+                     dispatch(
+                         setError("Отсутствует соединение с сервером...", true)
+                     );
                 });
         };
 
         fetchEmployees();
-    }, []);
+    }, [dispatch]);
 
     const fetchEmployeesForCoursePlan = () => {
         setLoading(true);
@@ -97,7 +101,9 @@ const EmployeesPage = () => {
                 })
                 .catch(() => {
                     setLoading(false);
-                    setErrorModalShown(true);
+                     dispatch(
+                         setError("Отсутствует соединение с сервером...", true)
+                     );
                 });
         };
 
@@ -107,15 +113,6 @@ const EmployeesPage = () => {
     const goToEmployeeView = useCallback(() => {
         history.push("/employees/" + employeeId);
     }, [employeeId, history]);
-
-    const modal = errorModalShown && (
-        <MyModal
-            message="Отсутствует соединение с сервером..."
-            func={() => {
-                setErrorModalShown(false);
-            }}
-        />
-    );
 
     if (!currentUser) {
         return <Redirect to="/login" />;
@@ -127,8 +124,6 @@ const EmployeesPage = () => {
 
     return (
         <div>
-            {modal}
-
             <div className="EmployeesPage">
                 <div className="top-btns">
                     <Button

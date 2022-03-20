@@ -1,7 +1,7 @@
 //// React
 import React, { useState, useEffect, useCallback } from "react";
 import { Redirect } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import validator from "validator";
 
@@ -10,7 +10,6 @@ import MyTextField from "../../components/inputs/MyTextField";
 import MyDatePicker from "../../components/inputs/MyDatePicker";
 import Spinner from "../../components/spinner/Spinner";
 import FormButtons from "../../components/FormButtons";
-import MyModal from "../../components/modals/MyModal";
 
 //// Mui
 import Card from "@mui/material/Card";
@@ -40,14 +39,15 @@ const EditNotePage = (props) => {
         useState(false);
     const [notificationDate, setNotificationDate] = useState({});
     const [fullName, setFullName] = useState("");
-    const [modalShown, setModalShown] = useState(false);
     const [errors, setErrors] = useState({
         notificationDate: "",
     });
+    const [submitting, setSubmitting] = useState(false);
 
-    const { user: currentUser } = useSelector((state) => state.auth);
+    const { user: currentUser } = useSelector((state) => state.user);
 
     const history = useHistory();
+    const dispatch = useDispatch();
 
     const validate = useCallback(() => {
         let tempErrors = {};
@@ -77,22 +77,26 @@ const EditNotePage = (props) => {
 
     const handleSubmit = useCallback(
         (e) => {
-            const patch = {
-                note,
-                notificationDate: format(notificationDate),
-                shouldExtendNotification,
-            };
+            e.preventDefault();
 
-            hS(
-                e,
-                id,
-                history,
-                validate,
-                patch,
-                patchEmployeeNote,
-                setModalShown,
-                "Заметки изменены"
-            );
+            if (validate()) {
+                const patch = {
+                    note,
+                    notificationDate: format(notificationDate),
+                    shouldExtendNotification,
+                };
+
+                setSubmitting(true);
+
+                hS(
+                    id,
+                    history,
+                    patch,
+                    patchEmployeeNote,
+                    "Заметки изменены",
+                    dispatch
+                );
+            }
         },
         [
             id,
@@ -101,6 +105,7 @@ const EditNotePage = (props) => {
             notificationDate,
             shouldExtendNotification,
             validate,
+            dispatch
         ]
     );
 
@@ -112,19 +117,8 @@ const EditNotePage = (props) => {
         return <Spinner />;
     }
 
-    const modal = modalShown && (
-        <MyModal
-            message="Отсутствует соединение с сервером..."
-            func={() => {
-                setModalShown(false);
-            }}
-        />
-    );
-
     return (
         <div className="Form">
-            {modal}
-
             <Card className="card">
                 <CardContent className="card-content">
                     <div className="card-label">
@@ -202,7 +196,7 @@ const EditNotePage = (props) => {
                         </div>
 
                         <div className="buttons">
-                            <FormButtons />
+                            <FormButtons submitting={submitting} />
                         </div>
                     </form>
                 </CardContent>

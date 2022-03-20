@@ -1,27 +1,19 @@
+import { setMessage, setError } from "../redux";
+
 export const handleSubmit = (
-    e,
     id,
     history,
-    validate,
     patch,
     fetchFunction,
-    setModalShown,
-    snackMessage
+    snackMessage,
+    dispatch = () => {}
 ) => {
-    e.preventDefault();
-
-    if (validate()) {
-        fetchFunction(id, patch)
-            .then(() => {
-                history.push({
-                    pathname: `/employees/${id}`,
-                    state: {
-                        snackMessage,
-                    },
-                });
-            })
-            .catch(() => {
-                setModalShown(true);
-            });
-    }
+    fetchFunction(id, patch)
+        .then(() => {
+            dispatch(setMessage(snackMessage));
+            history.push(`/employees/${id}`);
+        })
+        .catch(() => {
+            dispatch(setError("Отсутствует соединение с сервером...", true));
+        });
 };

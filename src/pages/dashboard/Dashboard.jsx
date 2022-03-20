@@ -1,7 +1,7 @@
 //// React
 import React from "react";
 import { Switch, Route, useHistory, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 //// Pages
 import LoginPage from "../login/LoginPage";
@@ -17,6 +17,9 @@ import NotFoundPage from "../not-found/NotFoundPage";
 import EditNotePage from "../edit-pages/EditNotePage";
 import EditProfilePage from "../edit-pages/EditProfilePage";
 
+//// Components
+import MyModal from "../../components/modals/MyModal";
+
 //// CSS
 import "./Dashboard.scss";
 
@@ -24,6 +27,10 @@ import "./Dashboard.scss";
 import Button from "@mui/material/Button";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import FaceIcon from "@mui/icons-material/Face";
+import SnackBar from "../../components/SnackBar";
+
+//// Functions
+import { clearMessage, clearError } from "../../redux";
 
 //// Utils
 import { yellow, cyan } from "../../helpers/color";
@@ -31,7 +38,13 @@ import { yellow, cyan } from "../../helpers/color";
 export const Dashboard = () => {
     const history = useHistory();
     const location = useLocation();
-    const { user: currentUser } = useSelector((state) => state.auth);
+    const dispatch = useDispatch();
+
+    const { user: currentUser } = useSelector((state) => state.user);
+    const { message: snackMessage } = useSelector((state) => state.message);
+    const { showModal, message: modalMessage } = useSelector(
+        (state) => state.error
+    );
 
     const toEmployeesPage = () => {
         if (location.pathname === "/employees") {
@@ -41,8 +54,31 @@ export const Dashboard = () => {
         }
     };
 
+    const snackBar = (
+        <SnackBar
+            open={!!snackMessage}
+            message={snackMessage}
+            handleClose={() => {
+                dispatch(clearMessage());
+            }}
+        />
+    );
+
+    const modal = showModal && (
+        <MyModal
+            message={modalMessage}
+            func={() => {
+                dispatch(clearError());
+            }}
+        />
+    );
+
     return (
         <div className="Dashboard">
+            {snackBar}
+
+            {modal}
+
             <header>
                 {currentUser && (
                     <>

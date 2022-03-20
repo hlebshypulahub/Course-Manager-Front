@@ -3,14 +3,13 @@ import React, { useState, useEffect, useCallback } from "react";
 import validator from "validator";
 import { useHistory } from "react-router-dom";
 import { Redirect } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 //// Components
 import MyTextField from "../../components/inputs/MyTextField";
 import MyDatePicker from "../../components/inputs/MyDatePicker";
 import FormButtons from "../../components/FormButtons";
 import Spinner from "../../components/spinner/Spinner";
-import MyModal from "../../components/modals/MyModal";
 
 //// Mui
 import Card from "@mui/material/Card";
@@ -20,6 +19,7 @@ import CardContent from "@mui/material/CardContent";
 import { addCourseToEmployee } from "../../services/course.service";
 import { DateFormatter as format } from "../../helpers/DateFormatter";
 import { getEmployeeById } from "../../services/employee.service";
+import { setMessage, setError } from "../../redux";
 
 //// Utils
 import { banana_color } from "../../helpers/color";
@@ -43,11 +43,12 @@ const AddCoursePage = (props) => {
         endDate: "",
     });
     const [employeeLoaded, setEmployeeLoaded] = useState(false);
-    const [modalShown, setModalShown] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
 
-    const { user: currentUser } = useSelector((state) => state.auth);
+    const { user: currentUser } = useSelector((state) => state.user);
 
     const history = useHistory();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const fetchEmployee = () => {
@@ -98,17 +99,20 @@ const AddCoursePage = (props) => {
                     endDate: format(endDate),
                 };
 
+                setSubmitting(true);
+
                 addCourseToEmployee(employeeId, course)
                     .then(() => {
-                        history.push({
-                            pathname: `/employees/${employeeId}`,
-                            state: {
-                                snackMessage: `Курс добавлен`,
-                            },
-                        });
+                        history.push(`/employees/${employeeId}`);
+                        dispatch(setMessage("Курс добавлен"));
                     })
                     .catch(() => {
-                        setModalShown(true);
+                        dispatch(
+                            setError(
+                                "Отсутствует соединение с сервером...",
+                                true
+                            )
+                        );
                     });
             }
         },
@@ -119,8 +123,9 @@ const AddCoursePage = (props) => {
             hours,
             startDate,
             endDate,
-            history,
             validate,
+            dispatch,
+            history
         ]
     );
 
@@ -132,19 +137,8 @@ const AddCoursePage = (props) => {
         return <Spinner />;
     }
 
-        const modal = modalShown && (
-            <MyModal
-                message="Отсутствует соединение с сервером..."
-                func={() => {
-                    setModalShown(false);
-                }}
-            />
-        );
-
     return (
         <div className="Form">
-            {modal}
-
             <Card className="card">
                 <CardContent
                     className="card-content"
@@ -217,7 +211,7 @@ const AddCoursePage = (props) => {
                         </div>
 
                         <div className="buttons">
-                            <FormButtons />
+                            <FormButtons submitting={submitting} />
                         </div>
                     </form>
                 </CardContent>

@@ -9,11 +9,17 @@ import CardContent from "@mui/material/CardContent";
 import Tooltip from "@mui/material/Tooltip";
 import Collapse from "@mui/material/Collapse";
 import Button from "@mui/material/Button";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 //// Utils
 import { green, red } from "../../helpers/color";
 
-const ExemptionCard = ({ employee, categoryIsValid, deleteExemption }) => {
+const ExemptionCard = ({
+    employee,
+    categoryIsValid,
+    deleteExemption,
+    deleteSubmitting,
+}) => {
     const [shownExemption, setShownExemption] = useState(false);
 
     const history = useHistory();
@@ -109,7 +115,8 @@ const ExemptionCard = ({ employee, categoryIsValid, deleteExemption }) => {
                             </Tooltip>
 
                             {employee.exemptioned && (
-                                <Button
+                                <LoadingButton
+                                    loading={deleteSubmitting}
                                     variant="outlined"
                                     style={{
                                         fontWeight: "bold",
@@ -119,7 +126,7 @@ const ExemptionCard = ({ employee, categoryIsValid, deleteExemption }) => {
                                     onClick={deleteExemption}
                                 >
                                     Удалить
-                                </Button>
+                                </LoadingButton>
                             )}
                         </CardActions>
                     </Collapse>

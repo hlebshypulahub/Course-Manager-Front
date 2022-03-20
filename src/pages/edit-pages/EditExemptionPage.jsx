@@ -1,7 +1,7 @@
 //// React
 import React, { useState, useEffect, useCallback } from "react";
 import { Redirect } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 //// Components
@@ -9,7 +9,6 @@ import MyTextField from "../../components/inputs/MyTextField";
 import MyDatePicker from "../../components/inputs/MyDatePicker";
 import Spinner from "../../components/spinner/Spinner";
 import FormButtons from "../../components/FormButtons";
-import MyModal from "../../components/modals/MyModal";
 
 //// Mui
 import MenuItem from "@mui/material/MenuItem";
@@ -26,6 +25,7 @@ import { ExemptionValidator as validateExemption } from "../../helpers/Exemption
 import { DateParser as parse } from "../../helpers/DateParser";
 import { DateFormatter as format } from "../../helpers/DateFormatter";
 import { EmptyErrorTableChecker as isEmpty } from "../../helpers/EmptyErrorTableChecker";
+import { handleSubmit as hS } from "../../helpers/FormSubmition";
 
 //// CSS
 import "./Form.scss";
@@ -49,11 +49,12 @@ const EditExemptionPage = (props) => {
         exemptionEndDate: "",
     });
     const [fullName, setFullName] = useState("");
-    const [modalShown, setModalShown] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
 
-    const { user: currentUser } = useSelector((state) => state.auth);
+    const { user: currentUser } = useSelector((state) => state.user);
 
     const history = useHistory();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const fetchExemptions = () => {
@@ -105,21 +106,19 @@ const EditExemptionPage = (props) => {
                     }),
                 };
 
-                patchEmployeeExemption(id, patch)
-                    .then(() => {
-                        history.push({
-                            pathname: `/employees/${id}`,
-                            state: {
-                                snackMessage: `Освобождение изменено`,
-                            },
-                        });
-                    })
-                    .catch(() => {
-                        setModalShown(true);
-                    });
+                setSubmitting(true);
+
+                hS(
+                    id,
+                    history,
+                    patch,
+                    patchEmployeeExemption,
+                    "Освобождение изменено",
+                    dispatch
+                );
             }
         },
-        [id, exemption, exemptionStartDate, exemptionEndDate, history, validate]
+        [id, exemption, exemptionStartDate, exemptionEndDate, history, validate, dispatch]
     );
 
     const onChangeExemption = (e) => {
@@ -164,19 +163,8 @@ const EditExemptionPage = (props) => {
         return <Spinner />;
     }
 
-    const modal = modalShown && (
-        <MyModal
-            message="Отсутствует соединение с сервером..."
-            func={() => {
-                setModalShown(false);
-            }}
-        />
-    );
-
     return (
         <div className="Form">
-            {modal}
-
             <Card className="card">
                 <CardContent className="card-content">
                     <div className="card-label">
@@ -237,7 +225,7 @@ const EditExemptionPage = (props) => {
                         </div>
 
                         <div className="buttons">
-                            <FormButtons />
+                            <FormButtons submitting={submitting} />
                         </div>
                     </form>
                 </CardContent>

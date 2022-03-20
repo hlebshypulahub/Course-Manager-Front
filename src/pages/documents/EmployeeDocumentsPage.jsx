@@ -1,10 +1,9 @@
 //// React
 import React, { useState, useEffect, useCallback } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Redirect } from "react-router-dom";
 
 //// Components
-import MyModal from "../../components/modals/MyModal";
 import Spinner from "../../components/spinner/Spinner";
 import CategoryCard from "../../components/cards/CategoryCard";
 import PersonalCard from "../../components/cards/PersonalCard";
@@ -21,6 +20,7 @@ import { getEmployeeById } from "../../services/employee.service";
 import { getCategories } from "../../services/category.service";
 import { getDocumentForEmployee } from "../../services/employee.service";
 import { getDocumentTypes } from "../../services/documentType.service";
+import { setError } from "../../redux";
 
 //// CSS
 import "./EmployeeDocuments.scss";
@@ -29,7 +29,6 @@ const EmployeeDocumentsPage = (props) => {
     const id = props.match.params.id;
     const [employee, setEmployee] = useState();
     const [isLoading, setLoading] = useState(false);
-    const [modalShown, setModalShown] = useState(false);
     const [alignment, setAlignment] = useState("REPRESENTATION");
     const [documentTypesLoaded, setDocumentTypesLoaded] = useState(false);
     const [documentTypes, setDocumentTypes] = useState();
@@ -37,16 +36,20 @@ const EmployeeDocumentsPage = (props) => {
     const [categories, setCategories] = useState();
     const [categoriesLoaded, setCategoriesLoaded] = useState(false);
 
-    const { user: currentUser } = useSelector((state) => state.auth);
+    const { user: currentUser } = useSelector((state) => state.user);
+
+    const dispatch = useDispatch();
 
     const fetchDocument = useCallback(
         (e, documentDto, documentType) => {
             e.preventDefault();
             getDocumentForEmployee(id, documentDto, documentType).catch(() => {
-                setModalShown(true);
+                dispatch(
+                    setError("Отсутствует соединение с сервером...", true)
+                );
             });
         },
-        [id]
+        [id, dispatch]
     );
 
     useEffect(() => {
@@ -57,12 +60,14 @@ const EmployeeDocumentsPage = (props) => {
                     setCategoriesLoaded(true);
                 })
                 .catch(() => {
-                    setModalShown(true);
+                    dispatch(
+                        setError("Отсутствует соединение с сервером...", true)
+                    );
                 });
         };
 
         fetchCategories();
-    }, []);
+    }, [dispatch]);
 
     useEffect(() => {
         const fetchEmployee = () => {
@@ -73,13 +78,15 @@ const EmployeeDocumentsPage = (props) => {
                 })
                 .catch(() => {
                     setLoading(false);
-                    setModalShown(true);
+                    dispatch(
+                        setError("Отсутствует соединение с сервером...", true)
+                    );
                 });
         };
 
         setLoading(true);
         fetchEmployee();
-    }, [id]);
+    }, [id, dispatch]);
 
     useEffect(() => {
         const fetchDocumentTypes = () => {
@@ -105,23 +112,12 @@ const EmployeeDocumentsPage = (props) => {
         return <Redirect to="/login" />;
     }
 
-    const modal = modalShown && (
-        <MyModal
-            message="Отсутствует соединение с сервером..."
-            func={() => {
-                setModalShown(false);
-            }}
-        />
-    );
-
     if (isLoading || !documentTypesLoaded || !categoriesLoaded) {
         return <Spinner />;
     }
 
     return (
         <div className="EmployeeDocuments">
-            {modal}
-
             <div className="cards-row">
                 <PersonalCard employee={employee} showCardActions={false} />
                 <CategoryCard employee={employee} showCardActions={false} />

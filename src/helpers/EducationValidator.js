@@ -3,6 +3,7 @@ import validator from "validator";
 
 export const EducationValidator = (education, eduName, eduGraduationDate) => {
     let tempErrors = {};
+
     tempErrors.education = !isFalseObject(education)
         ? ""
         : "Необходимо указать уровень";

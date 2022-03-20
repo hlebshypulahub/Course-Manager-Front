@@ -6,7 +6,7 @@ import Modal from "@mui/material/Modal";
 
 import "./MyModal.scss";
 
-const MyAcceptModal = ({ submitFunc, cancelFunc, message }) => {
+const MyAcceptModal = ({ submitFunc, cancelFunc, message, submitting }) => {
     return (
         <Modal
             hideBackdrop
@@ -30,6 +30,7 @@ const MyAcceptModal = ({ submitFunc, cancelFunc, message }) => {
                         <form onSubmit={submitFunc ? submitFunc : () => {}}>
                             <div className="buttons">
                                 <FormButtons
+                                    submitting={submitting}
                                     acceptText="Да"
                                     cancelText="Нет"
                                     cancelFunc={cancelFunc}

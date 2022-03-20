@@ -2,14 +2,13 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import { Redirect } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 //// Components
 import MyTextField from "../../components/inputs/MyTextField";
 import MyDatePicker from "../../components/inputs/MyDatePicker";
 import FormButtons from "../../components/FormButtons";
 import Spinner from "../../components/spinner/Spinner";
-import MyModal from "../../components/modals/MyModal";
 
 //// Mui
 import MenuItem from "@mui/material/MenuItem";
@@ -26,6 +25,7 @@ import { DateParser as parse } from "../../helpers/DateParser";
 import { DateFormatter as format } from "../../helpers/DateFormatter";
 import { CategoryValidator as validateCategory } from "../../helpers/CategoryValidator";
 import { EmptyErrorTableChecker as isEmpty } from "../../helpers/EmptyErrorTableChecker";
+import { handleSubmit as hS } from "../../helpers/FormSubmition";
 
 //// CSS
 import "./Form.scss";
@@ -46,11 +46,12 @@ const EditCategoryPage = (props) => {
     });
     const [categoryLoaded, setCategoryLoaded] = useState(false);
     const [categoriesLoaded, setCategoriesLoaded] = useState(false);
-    const [modalShown, setModalShown] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
 
-    const { user: currentUser } = useSelector((state) => state.auth);
+    const { user: currentUser } = useSelector((state) => state.user);
 
     const history = useHistory();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const fetchCategories = () => {
@@ -105,18 +106,16 @@ const EditCategoryPage = (props) => {
                     }),
                 };
 
-                patchEmployeeCategory(id, patch)
-                    .then(() => {
-                        history.push({
-                            pathname: `/employees/${id}`,
-                            state: {
-                                snackMessage: `Категория изменена`,
-                            },
-                        });
-                    })
-                    .catch(() => {
-                        setModalShown(true);
-                    });
+                setSubmitting(true);
+
+                hS(
+                    id,
+                    history,
+                    patch,
+                    patchEmployeeCategory,
+                    "Категория изменена",
+                    dispatch
+                );
             }
         },
         [
@@ -127,6 +126,7 @@ const EditCategoryPage = (props) => {
             categoryAssignmentDate,
             history,
             validate,
+            dispatch,
         ]
     );
 
@@ -146,23 +146,10 @@ const EditCategoryPage = (props) => {
         return <Spinner />;
     }
 
-    const modal = modalShown && (
-        <MyModal
-            message="Отсутствует соединение с сервером..."
-            func={() => {
-                setModalShown(false);
-            }}
-        />
-    );
-
     return (
         <div className="Form">
-            {modal}
-
             <Card className="card">
-                <CardContent
-                    className="card-content"
-                >
+                <CardContent className="card-content">
                     <div className="card-label">
                         <span className="header-label">Изменить категорию</span>
                     </div>
@@ -234,7 +221,7 @@ const EditCategoryPage = (props) => {
                         </div>
 
                         <div className="buttons">
-                            <FormButtons />
+                            <FormButtons submitting={submitting} />
                         </div>
                     </form>
                 </CardContent>

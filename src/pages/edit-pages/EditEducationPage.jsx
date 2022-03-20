@@ -1,7 +1,7 @@
 //// React
 import React, { useState, useEffect, useCallback } from "react";
 import { Redirect } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 //// Components
@@ -9,7 +9,6 @@ import MyTextField from "../../components/inputs/MyTextField";
 import MyDatePicker from "../../components/inputs/MyDatePicker";
 import Spinner from "../../components/spinner/Spinner";
 import FormButtons from "../../components/FormButtons";
-import MyModal from "../../components/modals/MyModal";
 
 //// Mui
 import MenuItem from "@mui/material/MenuItem";
@@ -50,12 +49,12 @@ const EditEducationPage = (props) => {
         eduName: "",
         eduGraduationDate: "",
     });
-    const [modalShown, setModalShown] = useState(false);
     const [submitting, setSubmitting] = useState(false);
 
-    const { user: currentUser } = useSelector((state) => state.auth);
+    const { user: currentUser } = useSelector((state) => state.user);
 
     const history = useHistory();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const fetchEducations = () => {
@@ -96,26 +95,28 @@ const EditEducationPage = (props) => {
 
     const handleSubmit = useCallback(
         (e) => {
-            const patch = {
-                eduName,
-                eduGraduationDate: format(eduGraduationDate),
-                education: education.name,
-            };
+            e.preventDefault();
 
-            setSubmitting(true);
+            if (validate()) {
+                const patch = {
+                    eduName,
+                    eduGraduationDate: format(eduGraduationDate),
+                    education: education.name,
+                };
 
-            hS(
-                e,
-                id,
-                history,
-                validate,
-                patch,
-                patchEmployeeEducation,
-                setModalShown,
-                "Образование изменено"
-            );
+                setSubmitting(true);
+
+                hS(
+                    id,
+                    history,
+                    patch,
+                    patchEmployeeEducation,
+                    "Образование изменено",
+                    dispatch
+                );
+            }
         },
-        [id, eduName, eduGraduationDate, education, history, validate]
+        [id, eduName, eduGraduationDate, education, history, validate, dispatch]
     );
 
     const onChangeEducation = (e) => {
@@ -134,19 +135,8 @@ const EditEducationPage = (props) => {
         return <Spinner />;
     }
 
-    const modal = modalShown && (
-        <MyModal
-            message="Отсутствует соединение с сервером..."
-            func={() => {
-                setModalShown(false);
-            }}
-        />
-    );
-
     return (
         <div className="Form">
-            {modal}
-
             <Card className="card">
                 <CardContent className="card-content">
                     <div className="card-label">
