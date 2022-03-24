@@ -4,7 +4,12 @@ import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import MyTextField from "./MyTextField";
 import MyTextFieldSmall from "./MyTextFieldSmall";
 
-const MyDatePicker = ({ error, helperText, ...params }) => {
+const MyDatePicker = ({
+    error,
+    helperText,
+    validate = () => {},
+    ...params
+}) => {
     const small = params.small;
     return (
         <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -26,6 +31,10 @@ const MyDatePicker = ({ error, helperText, ...params }) => {
                             onFocus={(event) => {
                                 event.target.select();
                             }}
+                            onBlur={() => {
+                                if (params.inputProps.iserror === "true")
+                                    validate();
+                            }}
                         />
                     ) : (
                         <MyTextField
@@ -34,6 +43,10 @@ const MyDatePicker = ({ error, helperText, ...params }) => {
                             error={params.inputProps.iserror === "true"}
                             onFocus={(event) => {
                                 event.target.select();
+                            }}
+                            onBlur={() => {
+                                if (params.inputProps.iserror === "true")
+                                    validate();
                             }}
                         />
                     );

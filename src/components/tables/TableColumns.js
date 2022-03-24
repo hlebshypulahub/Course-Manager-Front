@@ -8,12 +8,43 @@ import {
     everyColumnProps,
 } from "./TableProps";
 import NumberFilter from "@inovua/reactdatagrid-community/NumberFilter";
+import { tableColor } from "../../helpers/color";
 
 export class EmployeeColumns {
     constructor(employees) {
         this.dependentProps = new DependentProps(employees);
 
         this.columns = [
+            {
+                name: "colorGroup",
+                header: "Группа",
+                defaultFlex: 0.35,
+                ...everyColumnProps,
+                render: () => {
+                    "";
+                },
+                onRender: (cellProps, { data }) => {
+                    const size = data.colorGroup.length;
+
+                    const colors = data.colorGroup.map((g) => {
+                        return legend.find((l) => l.name === g).color;
+                    });
+
+                    const percentage = 100 / size;
+
+                    if (size > 1) {
+                        let background = "linear-gradient(90deg";
+                        for (let i = 0; i < size; i++) {
+                            background += `,${colors[i]} ${percentage}%`;
+                        }
+                        background += ")";
+
+                        cellProps.style.background = background;
+                    } else if (size === 1) {
+                        cellProps.style.background = colors[0];
+                    }
+                },
+            },
             {
                 name: "fullName",
                 header: "ФИО",
@@ -139,6 +170,40 @@ export class EmployeeColumns {
         ];
     }
 }
+
+export const legend = [
+    {
+        name: "lackOfData",
+        color: tableColor.red,
+        text: ["Информация не дополнена (образование, категория)"],
+    },
+    {
+        name: "noCoursesOrCourseDateAndLackOfHours",
+        color: tableColor.yellow,
+        text: [
+            "Прошло более 3.5 лет после прохождения крайних\nкурсов и не набран необходимый объем часов",
+            "Список курсов пуст",
+        ],
+    },
+    {
+        name: "docsDateOrEnoughHours",
+        color: tableColor.blue,
+        text: [
+            "Менее 4-х месяцев до срока подачи документов",
+            "Необходимый объем часов набран",
+        ],
+    },
+    {
+        name: "notificationToday",
+        color: tableColor.green,
+        text: ["Сегодня запланированно уведомление (см. заметки)"],
+    },
+    {
+        name: "notActiveOrExemptioned",
+        color: tableColor.grey,
+        text: ["Освобожден", "Неактивный"],
+    },
+];
 
 export const courseColumns = [
     { name: "name", header: "Название", defaultFlex: 1 },

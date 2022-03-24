@@ -47,7 +47,6 @@ export const everyColumnProps = {
     showColumnMenuGroupOptions: false,
     showColumnMenuFilterOptions: false,
     showColumnMenuLockOptions: false,
-    
 };
 
 export const dateColumnProps = {
@@ -101,6 +100,7 @@ export const defaultSortInfo = [
     { name: "education", dir: 0 },
     { name: "eduName", dir: 0 },
     { name: "eduGraduationDate", dir: 0 },
+    { name: "colorGroup", dir: 0 },
 ];
 
 export const dateFilterProps = {
@@ -172,6 +172,7 @@ export const employeeDefaultFilterValue = [
     { name: "courseHoursLeft", ...numberFilterProps },
     { name: "education", ...selectFilterProps },
     { name: "eduName", ...selectFilterProps },
+    { name: "colorGroup" },
 ];
 
 export const i18n = Object.assign({}, ReactDataGrid.defaultProps.i18n, {

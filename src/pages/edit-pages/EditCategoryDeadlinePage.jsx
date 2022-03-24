@@ -139,6 +139,7 @@ const EditCategoryDeadlinePage = (props) => {
                                 onChange={(newDate) =>
                                     setCategoryAssignmentDeadlineDate(newDate)
                                 }
+                                validate={validate}
                             />
                         </div>
 

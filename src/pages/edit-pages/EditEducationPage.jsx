@@ -162,6 +162,9 @@ const EditEducationPage = (props) => {
                                 value={education ? education.label : ""}
                                 label="Уровень"
                                 onChange={onChangeEducation}
+                                onBlur={() => {
+                                    if (errors.education.length > 0) validate();
+                                }}
                             >
                                 {educations.map((type) => {
                                     return (
@@ -183,6 +186,9 @@ const EditEducationPage = (props) => {
                                 label="Учреждение образования"
                                 value={eduName ? eduName : ""}
                                 onChange={(e) => setEduName(e.target.value)}
+                                onBlur={() => {
+                                    if (errors.eduName.length > 0) validate();
+                                }}
                             />
                         </div>
 
@@ -195,6 +201,7 @@ const EditEducationPage = (props) => {
                                 onChange={(newDate) =>
                                     setEduGraduationDate(newDate)
                                 }
+                                validate={validate}
                             />
                         </div>
 

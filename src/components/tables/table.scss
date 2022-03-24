@@ -1,7 +1,34 @@
 .table {
-    border-radius: 25px;
+    font-family: "Exo 2", sans-serif;
+
+    .legend {
+        height: 100%;
+        margin-top: 20px;
+        display: grid;
+        grid-gap: 10px;
+        grid-template-columns: repeat(auto-fill, 500px);
+    }
+
+    .settingsBtns {
+        display: flex;
+        flex-direction: row;
+        margin-top: -35px;
+
+        div {
+            margin-left: auto;
+
+            button {
+                margin-left: 15px;
+            }
+
+            button:last-child {
+                margin-right: 15px;
+            }
+        }
+    }
+
     .InovuaReactDataGrid {
-        height: 700px;
+        height: 600px;
         background-color: var(--banana);
     }
 

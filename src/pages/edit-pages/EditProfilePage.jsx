@@ -68,7 +68,7 @@ const EditProfilePage = () => {
                 edit(patch)
                     .then(() => {
                         dispatch(editUser(patch));
-                        dispatch(setMessage("Профиль изменен"))
+                        dispatch(setMessage("Профиль изменен"));
                         history.push(`/`);
                     })
                     .catch(() => {
@@ -109,6 +109,9 @@ const EditProfilePage = () => {
                                 label="Индивидуальный предприниматель, организация"
                                 value={company || ""}
                                 onChange={(e) => setCompany(e.target.value)}
+                                onBlur={() => {
+                                    if (errors.company.length > 0) validate();
+                                }}
                             />
                         </div>
 
@@ -119,6 +122,9 @@ const EditProfilePage = () => {
                                 label="И-мейл"
                                 value={email || ""}
                                 onChange={(e) => setEmail(e.target.value)}
+                                onBlur={() => {
+                                    if (errors.email.length > 0) validate();
+                                }}
                             />
                         </div>
 

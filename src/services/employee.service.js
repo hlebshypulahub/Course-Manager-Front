@@ -8,6 +8,10 @@ export const getEmployees = () => {
     return fetchData(API_BASE_URL);
 };
 
+export const getEmployeesByGroups = () => {
+    return fetchData(API_BASE_URL + "/by-groups");
+};
+
 export const getEmployeesForCoursePlan = () => {
     return fetchData(API_BASE_URL + "/for-course-plan");
 };

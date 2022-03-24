@@ -125,7 +125,7 @@ const AddCoursePage = (props) => {
             endDate,
             validate,
             dispatch,
-            history
+            history,
         ]
     );
 
@@ -166,6 +166,9 @@ const AddCoursePage = (props) => {
                                 label="Название"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
+                                onBlur={() => {
+                                    if (errors.name.length > 0) validate();
+                                }}
                             />
                         </div>
 
@@ -176,6 +179,10 @@ const AddCoursePage = (props) => {
                                 label="Описание"
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
+                                onBlur={() => {
+                                    if (errors.description.length > 0)
+                                        validate();
+                                }}
                             />
                         </div>
 
@@ -187,6 +194,9 @@ const AddCoursePage = (props) => {
                                 label="Количество часов"
                                 value={hours}
                                 onChange={(e) => setHours(e.target.value)}
+                                onBlur={() => {
+                                    if (errors.hours.length > 0) validate();
+                                }}
                             />
                         </div>
 
@@ -197,6 +207,7 @@ const AddCoursePage = (props) => {
                                 label="Дата начала"
                                 value={startDate}
                                 onChange={(newDate) => setStartDate(newDate)}
+                                validate={validate}
                             />
                         </div>
 
@@ -207,6 +218,7 @@ const AddCoursePage = (props) => {
                                 label="Дата окончания"
                                 value={endDate}
                                 onChange={(newDate) => setEndDate(newDate)}
+                                validate={validate}
                             />
                         </div>
 

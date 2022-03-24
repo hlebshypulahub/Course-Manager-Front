@@ -16,12 +16,14 @@ import SendIcon from "@mui/icons-material/Send";
 //// Functions
 import {
     getEmployees,
+    getEmployeesByGroups,
     getEmployeesForCoursePlan,
 } from "../../services/employee.service";
 import ArticleIcon from "@mui/icons-material/Article";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import { uploadFile } from "../../services/file.service";
 import { setError } from "../../redux";
+import { legend } from "../../components/tables/TableColumns";
 
 //// Utils
 import { green, sky_blue, pink, grey } from "../../helpers/color";
@@ -31,10 +33,12 @@ import "./EmployeesPage.scss";
 
 const EmployeesPage = () => {
     const [employees, setEmployees] = useState();
+    const [employeesByGroups, setEmployeesByGroups] = useState([]);
     const [isLoading, setLoading] = useState(true);
     const [file, setFile] = useState();
     const [isFilePicked, setFilePicked] = useState(false);
-    const [isTableLoading, setTableLoading] = useState(true);
+    const [isEmployeesByGroupsLoading, setEmployeesByGroupsLoading] =
+        useState(true);
     const [employeeId, setEmployeeId] = useState();
 
     const { user: currentUser } = useSelector((state) => state.user);
@@ -63,9 +67,9 @@ const EmployeesPage = () => {
                 window.location.reload(true);
             })
             .catch(() => {
-                 dispatch(
-                     setError("Отсутствует соединение с сервером...", true)
-                 );
+                dispatch(
+                    setError("Отсутствует соединение с сервером...", true)
+                );
             });
     };
 
@@ -75,13 +79,28 @@ const EmployeesPage = () => {
                 .then((data) => {
                     setEmployees(data);
                     setLoading(false);
-                    setTableLoading(false);
                 })
                 .catch(() => {
-                    setLoading(false);
-                     dispatch(
-                         setError("Отсутствует соединение с сервером...", true)
-                     );
+                    dispatch(
+                        setError("Отсутствует соединение с сервером...", true)
+                    );
+                });
+        };
+
+        fetchEmployees();
+    }, [dispatch]);
+
+    useEffect(() => {
+        const fetchEmployees = () => {
+            getEmployeesByGroups()
+                .then((data) => {
+                    setEmployeesByGroups(data);
+                    setEmployeesByGroupsLoading(false);
+                })
+                .catch(() => {
+                    dispatch(
+                        setError("Отсутствует соединение с сервером...", true)
+                    );
                 });
         };
 
@@ -90,20 +109,18 @@ const EmployeesPage = () => {
 
     const fetchEmployeesForCoursePlan = () => {
         setLoading(true);
-        setTableLoading(true);
 
         const fetchEmployees = () => {
             getEmployeesForCoursePlan()
                 .then((data) => {
                     setEmployees(data);
                     setLoading(false);
-                    setTableLoading(false);
                 })
                 .catch(() => {
                     setLoading(false);
-                     dispatch(
-                         setError("Отсутствует соединение с сервером...", true)
-                     );
+                    dispatch(
+                        setError("Отсутствует соединение с сервером...", true)
+                    );
                 });
         };
 
@@ -118,9 +135,22 @@ const EmployeesPage = () => {
         return <Redirect to="/login" />;
     }
 
-    if (isLoading) {
+    if (isEmployeesByGroupsLoading || isLoading) {
         return <Spinner />;
     }
+
+    employees.forEach((e) => (e.colorGroup = []));
+
+    const legendNames = legend.map((l) => l.name);
+    legendNames.forEach((g) => {
+        employeesByGroups[g].forEach((e) => {
+            employees.forEach((employee) => {
+                if (employee.id === e.id) {
+                    employee.colorGroup.push(g);
+                }
+            });
+        });
+    });
 
     return (
         <div>
@@ -162,7 +192,8 @@ const EmployeesPage = () => {
 
                 <EmployeesTable
                     employees={employees}
-                    tableLoading={isTableLoading}
+                    employeesByGroups={employeesByGroups}
+                    tableLoading={isEmployeesByGroupsLoading || isLoading}
                     setEmployeeId={(id) => {
                         setEmployeeId(id);
                     }}

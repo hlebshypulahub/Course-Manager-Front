@@ -118,7 +118,15 @@ const EditExemptionPage = (props) => {
                 );
             }
         },
-        [id, exemption, exemptionStartDate, exemptionEndDate, history, validate, dispatch]
+        [
+            id,
+            exemption,
+            exemptionStartDate,
+            exemptionEndDate,
+            history,
+            validate,
+            dispatch,
+        ]
     );
 
     const onChangeExemption = (e) => {
@@ -190,6 +198,9 @@ const EditExemptionPage = (props) => {
                                 value={exemption ? exemption.label : ""}
                                 label="Причина"
                                 onChange={onChangeExemption}
+                                onBlur={() => {
+                                    if (errors.exemption.length > 0) validate();
+                                }}
                             >
                                 {exemptions.map((type) => {
                                     return (
@@ -211,6 +222,7 @@ const EditExemptionPage = (props) => {
                                 label="Дата начала"
                                 value={exemptionStartDate}
                                 onChange={onChangeExemptionStartDate}
+                                validate={validate}
                             />
                         </div>
 
@@ -221,6 +233,7 @@ const EditExemptionPage = (props) => {
                                 label="Дата окончания"
                                 value={exemptionEndDate}
                                 onChange={onChangeExemptionEndDate}
+                                validate={validate}
                             />
                         </div>
 

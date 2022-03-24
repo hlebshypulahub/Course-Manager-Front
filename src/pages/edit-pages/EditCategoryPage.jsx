@@ -172,6 +172,10 @@ const EditCategoryPage = (props) => {
                                 onChange={(e) =>
                                     setQualification(e.target.value)
                                 }
+                                onBlur={() => {
+                                    if (errors.qualification.length > 0)
+                                        validate();
+                                }}
                             />
                         </div>
 
@@ -183,6 +187,9 @@ const EditCategoryPage = (props) => {
                                 select
                                 label="Категория"
                                 onChange={onChangeCategory}
+                                onBlur={() => {
+                                    if (errors.category.length > 0) validate();
+                                }}
                             >
                                 {categories.map((c) => {
                                     return (
@@ -204,6 +211,10 @@ const EditCategoryPage = (props) => {
                                 onChange={(e) =>
                                     setCategoryNumber(e.target.value)
                                 }
+                                onBlur={() => {
+                                    if (errors.categoryNumber.length > 0)
+                                        validate();
+                                }}
                             />
                         </div>
 
@@ -217,6 +228,7 @@ const EditCategoryPage = (props) => {
                                 onChange={(newDate) =>
                                     setCategoryAssignmentDate(newDate)
                                 }
+                                validate={validate}
                             />
                         </div>
 

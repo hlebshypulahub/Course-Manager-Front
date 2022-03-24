@@ -139,6 +139,7 @@ const EditNotePage = (props) => {
                                 label="Заметки"
                                 value={note}
                                 onChange={(e) => setNote(e.target.value)}
+                                onBlur={() => validate()}
                                 multiline
                             />
                         </div>
@@ -157,6 +158,7 @@ const EditNotePage = (props) => {
                                     onChange={(newDate) =>
                                         setNotificationDate(newDate)
                                     }
+                                    validate={validate}
                                 />
                             </div>
 

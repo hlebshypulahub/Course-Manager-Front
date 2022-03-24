@@ -14,7 +14,7 @@ import {
     i18n,
     defaultSortInfo,
 } from "./TableProps";
-import { EmployeeColumns } from "./TableColumns";
+import { EmployeeColumns, legend } from "./TableColumns";
 
 //// ReactDataGrid
 import ReactDataGrid from "@inovua/reactdatagrid-community";
@@ -46,6 +46,7 @@ const EmployeesTable = ({ employees, tableLoading, setEmployeeId }) => {
             education,
             eduName,
             eduGraduationDate,
+            colorGroup,
         }) => {
             return {
                 id,
@@ -69,6 +70,7 @@ const EmployeesTable = ({ employees, tableLoading, setEmployeeId }) => {
                 education: education ? education.label : "",
                 eduName,
                 eduGraduationDate: parse(eduGraduationDate),
+                colorGroup,
             };
         }
     );
@@ -80,6 +82,60 @@ const EmployeesTable = ({ employees, tableLoading, setEmployeeId }) => {
             history.push("/employees/" + rowProps.data.id);
         }
     };
+
+    const legendBlock = (
+        <div className="legend">
+            {legend.map((l) => {
+                return (
+                    <div
+                        key={l.name}
+                        style={{ display: "table", height: "60px" }}
+                    >
+                        <div
+                            style={{
+                                height: "100%",
+                                width: "50px",
+                                borderRadius: "5px",
+                                background: l.color,
+                                display: "table-cell",
+                                verticalAlign: "middle",
+                            }}
+                        ></div>
+                        <div
+                            style={{
+                                paddingLeft: "10px",
+                                display: "table-cell",
+                                verticalAlign: "middle",
+                                whiteSpace: "pre-line",
+                            }}
+                        >
+                            {l.text.map((str) => {
+                                return (
+                                    <div key={str}>
+                                        <div
+                                            style={{
+                                                display: "inline-block",
+                                                verticalAlign: "top",
+                                            }}
+                                        >
+                                            ●
+                                        </div>
+                                        <div
+                                            style={{
+                                                display: "inline-block",
+                                            }}
+                                        >
+                                            {str}
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                );
+            })}
+        </div>
+    );
 
     return (
         <div className="EmployeesTable">
@@ -99,6 +155,15 @@ const EmployeesTable = ({ employees, tableLoading, setEmployeeId }) => {
                     shareSpaceOnResize
                     i18n={i18n}
                 />
+
+                {legendBlock}
+
+                {/* <div className="settingsBtns">
+                    <div>
+                        {saveSettingsButton}
+                        {restoreSettingsButton}
+                    </div>
+                </div> */}
             </div>
         </div>
     );
