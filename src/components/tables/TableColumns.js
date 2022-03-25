@@ -35,7 +35,10 @@ export class EmployeeColumns {
                     if (size > 1) {
                         let background = "linear-gradient(90deg";
                         for (let i = 0; i < size; i++) {
-                            background += `,${colors[i]} ${percentage}%`;
+                            background += `,${colors[i]} ${percentage * i}%`;
+                            background += `,${colors[i]} ${
+                                percentage * (i + 1)
+                            }%`;
                         }
                         background += ")";
 
@@ -43,6 +46,9 @@ export class EmployeeColumns {
                     } else if (size === 1) {
                         cellProps.style.background = colors[0];
                     }
+                    
+                    // #b5b5b5
+                    cellProps.style.borderColor = "#fff";
                 },
             },
             {

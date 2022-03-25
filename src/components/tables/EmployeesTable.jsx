@@ -19,8 +19,14 @@ import { EmployeeColumns, legend } from "./TableColumns";
 //// ReactDataGrid
 import ReactDataGrid from "@inovua/reactdatagrid-community";
 import "@inovua/reactdatagrid-community/index.css";
+import Button from "@inovua/reactdatagrid-community/packages/Button";
 
-const EmployeesTable = ({ employees, tableLoading, setEmployeeId }) => {
+const EmployeesTable = ({
+    employees,
+    tableLoading,
+    setEmployeeId,
+    showFilteredEmployees,
+}) => {
     const employeeColumns = new EmployeeColumns(employees);
 
     const history = useHistory();
@@ -89,44 +95,21 @@ const EmployeesTable = ({ employees, tableLoading, setEmployeeId }) => {
                 return (
                     <div
                         key={l.name}
-                        style={{ display: "table", height: "60px" }}
+                        className="legend-unit"
+                        onClick={() => showFilteredEmployees(l.name)}
                     >
                         <div
+                            className="color-box"
                             style={{
-                                height: "100%",
-                                width: "50px",
-                                borderRadius: "5px",
                                 background: l.color,
-                                display: "table-cell",
-                                verticalAlign: "middle",
                             }}
                         ></div>
-                        <div
-                            style={{
-                                paddingLeft: "10px",
-                                display: "table-cell",
-                                verticalAlign: "middle",
-                                whiteSpace: "pre-line",
-                            }}
-                        >
+                        <div className="label">
                             {l.text.map((str) => {
                                 return (
                                     <div key={str}>
-                                        <div
-                                            style={{
-                                                display: "inline-block",
-                                                verticalAlign: "top",
-                                            }}
-                                        >
-                                            ●
-                                        </div>
-                                        <div
-                                            style={{
-                                                display: "inline-block",
-                                            }}
-                                        >
-                                            {str}
-                                        </div>
+                                        <div className="dot">●</div>
+                                        <div className="text">{str}</div>
                                     </div>
                                 );
                             })}
@@ -135,6 +118,15 @@ const EmployeesTable = ({ employees, tableLoading, setEmployeeId }) => {
                 );
             })}
         </div>
+    );
+
+    const resetButton = (
+        <Button
+            onClick={() => window.location.reload(true)}
+            style={{ marginLeft: 10 }}
+        >
+            Сбросить фильтры
+        </Button>
     );
 
     return (
@@ -156,14 +148,11 @@ const EmployeesTable = ({ employees, tableLoading, setEmployeeId }) => {
                     i18n={i18n}
                 />
 
-                {legendBlock}
+                <div className="settingsBtns">
+                    <div>{resetButton}</div>
+                </div>
 
-                {/* <div className="settingsBtns">
-                    <div>
-                        {saveSettingsButton}
-                        {restoreSettingsButton}
-                    </div>
-                </div> */}
+                {legendBlock}
             </div>
         </div>
     );

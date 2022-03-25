@@ -127,6 +127,17 @@ const EmployeesPage = () => {
         fetchEmployees();
     };
 
+    const showFilteredEmployees = useCallback(
+        (groupName) => {
+            setEmployees(
+                employees.filter((e) => {
+                    return e.colorGroup.some((c) => c === groupName);
+                })
+            );
+        },
+        [employees]
+    );
+
     const goToEmployeeView = useCallback(() => {
         history.push("/employees/" + employeeId);
     }, [employeeId, history]);
@@ -197,6 +208,7 @@ const EmployeesPage = () => {
                     setEmployeeId={(id) => {
                         setEmployeeId(id);
                     }}
+                    showFilteredEmployees={showFilteredEmployees}
                 />
 
                 <div className="upload-btn">
