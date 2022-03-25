@@ -69,6 +69,11 @@
     .InovuaReactDataGrid__column-header {
         font-family: "Roboto", sans-serif;
         font-size: 18px;
+
+        .InovuaReactDataGrid__checkbox {
+            visibility: hidden;
+            pointer-events: none;
+        }
     }
 
     .InovuaReactDataGrid__row {

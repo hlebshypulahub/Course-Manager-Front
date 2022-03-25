@@ -1,5 +1,5 @@
 //// React
-import React from "react";
+import React, { useEffect } from "react";
 import { useHistory } from "react-router";
 import moment from "moment";
 
@@ -26,9 +26,10 @@ const EmployeesTable = ({
     tableLoading,
     setEmployeeId,
     showFilteredEmployees,
+    coursePlan,
+    employeesIdsForCoursePlan,
+    setEmployeesIdsForCoursePlan,
 }) => {
-    const employeeColumns = new EmployeeColumns(employees);
-
     const history = useHistory();
 
     window.moment = moment;
@@ -89,6 +90,31 @@ const EmployeesTable = ({
         }
     };
 
+    const addEmployeeToCoursePlan = (employeeId, whichHalfYear, checked) => {
+        if (checked) {
+            let tempArray = [...employeesIdsForCoursePlan];
+            tempArray[whichHalfYear - 1].push(employeeId);
+            setEmployeesIdsForCoursePlan([...tempArray]);
+        } else {
+            let tempArray = [...employeesIdsForCoursePlan];
+            tempArray[whichHalfYear - 1].splice(
+                tempArray.indexOf(employeeId),
+                1
+            );
+            setEmployeesIdsForCoursePlan([...tempArray]);
+        }
+    };
+
+    const isEmployeeChecked = (employeeId, whichHalfYear) => {
+        return employeesIdsForCoursePlan[whichHalfYear - 1].some(
+            (id) => id === employeeId
+        );
+    };
+
+    useEffect(() => {
+        console.log(employeesIdsForCoursePlan);
+    }, [employeesIdsForCoursePlan]);
+
     const legendBlock = (
         <div className="legend">
             {legend.map((l) => {
@@ -129,11 +155,18 @@ const EmployeesTable = ({
         </Button>
     );
 
+    const employeeColumns = new EmployeeColumns(
+        employees,
+        coursePlan,
+        addEmployeeToCoursePlan,
+        isEmployeeChecked
+    );
+
     return (
         <div className="EmployeesTable">
             <div className="table">
                 <ReactDataGrid
-                    idProperty="name"
+                    idProperty="id"
                     columns={employeeColumns.columns}
                     dataSource={rows}
                     loading={tableLoading}
@@ -142,7 +175,7 @@ const EmployeesTable = ({
                     pagination
                     enableFiltering
                     defaultFilterValue={defaultFilterValue}
-                    rowHeight={50}
+                    rowHeight={45}
                     scrollProps={scrollProps}
                     shareSpaceOnResize
                     i18n={i18n}

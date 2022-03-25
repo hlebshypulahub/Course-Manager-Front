@@ -12,12 +12,15 @@ import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import SendIcon from "@mui/icons-material/Send";
+import PrintIcon from "@mui/icons-material/Print";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 //// Functions
 import {
     getEmployees,
     getEmployeesByGroups,
     getEmployeesForCoursePlan,
+    getCoursePlan
 } from "../../services/employee.service";
 import ArticleIcon from "@mui/icons-material/Article";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
@@ -40,6 +43,12 @@ const EmployeesPage = () => {
     const [isEmployeesByGroupsLoading, setEmployeesByGroupsLoading] =
         useState(true);
     const [employeeId, setEmployeeId] = useState();
+    const [coursePlan, setCoursePlan] = useState(false);
+    const [employeesIdsForCoursePlan, setEmployeesIdsForCoursePlan] = useState([
+        [],
+        [],
+    ]);
+    const [sendingEmployees, setSendingEmployees] = useState(false);
 
     const { user: currentUser } = useSelector((state) => state.user);
 
@@ -107,25 +116,25 @@ const EmployeesPage = () => {
         fetchEmployees();
     }, [dispatch]);
 
-    const fetchEmployeesForCoursePlan = () => {
-        setLoading(true);
+    // const fetchEmployeesForCoursePlan = () => {
+    //     setLoading(true);
 
-        const fetchEmployees = () => {
-            getEmployeesForCoursePlan()
-                .then((data) => {
-                    setEmployees(data);
-                    setLoading(false);
-                })
-                .catch(() => {
-                    setLoading(false);
-                    dispatch(
-                        setError("Отсутствует соединение с сервером...", true)
-                    );
-                });
-        };
+    //     const fetchEmployees = () => {
+    //         getEmployeesForCoursePlan()
+    //             .then((data) => {
+    //                 setEmployees(data);
+    //                 setLoading(false);
+    //             })
+    //             .catch(() => {
+    //                 setLoading(false);
+    //                 dispatch(
+    //                     setError("Отсутствует соединение с сервером...", true)
+    //                 );
+    //             });
+    //     };
 
-        fetchEmployees();
-    };
+    //     fetchEmployees();
+    // };
 
     const showFilteredEmployees = useCallback(
         (groupName) => {
@@ -137,6 +146,38 @@ const EmployeesPage = () => {
         },
         [employees]
     );
+
+    useEffect(() => {
+        employees && employees.forEach((e) => (e.colorGroup = []));
+    }, [employees]);
+
+    useEffect(() => {
+        const legendNames = legend.map((l) => l.name);
+        if (employees) {
+            legendNames.forEach((g) => {
+                employeesByGroups[g] &&
+                    employeesByGroups[g].forEach((e) => {
+                        employees.forEach((employee) => {
+                            if (employee.id === e.id) {
+                                employee.colorGroup.push(g);
+                            }
+                        });
+                    });
+            });
+        }
+    }, [employees, employeesByGroups]);
+
+    const sendEmployeesIdsForCoursePlan = useCallback(() => {
+        setSendingEmployees(true);
+
+        getCoursePlan(employeesIdsForCoursePlan)
+            .then(() => setSendingEmployees(false))
+            .catch(() => {
+                dispatch(
+                    setError("Отсутствует соединение с сервером...", true)
+                );
+            });
+    }, [employeesIdsForCoursePlan, dispatch, sendingEmployees]);
 
     const goToEmployeeView = useCallback(() => {
         history.push("/employees/" + employeeId);
@@ -150,38 +191,35 @@ const EmployeesPage = () => {
         return <Spinner />;
     }
 
-    employees.forEach((e) => (e.colorGroup = []));
-
-    const legendNames = legend.map((l) => l.name);
-    legendNames.forEach((g) => {
-        employeesByGroups[g].forEach((e) => {
-            employees.forEach((employee) => {
-                if (employee.id === e.id) {
-                    employee.colorGroup.push(g);
-                }
-            });
-        });
-    });
-
     return (
         <div>
             <div className="EmployeesPage">
                 <div className="top-btns">
-                    <Button
+                    <LoadingButton
+                        loading={sendingEmployees}
+                        loadingPosition="end"
                         variant="contained"
                         component="span"
-                        endIcon={<ArticleIcon />}
+                        endIcon={coursePlan ? <PrintIcon /> : <ArticleIcon />}
                         style={{
-                            backgroundColor: pink,
+                            backgroundColor: coursePlan ? green : pink,
                             color: "white",
                             fontWeight: "600",
                             height: "40px",
                             width: "200px",
                         }}
-                        onClick={fetchEmployeesForCoursePlan}
+                        onClick={() => {
+                            if (!coursePlan) {
+                                setCoursePlan(true);
+                            } else {
+                                sendEmployeesIdsForCoursePlan(
+                                    employeesIdsForCoursePlan
+                                );
+                            }
+                        }}
                     >
-                        План аттестации
-                    </Button>
+                        {coursePlan ? "Печать" : "Создать график"}
+                    </LoadingButton>
 
                     <Button
                         disabled={!employeeId}
@@ -209,6 +247,9 @@ const EmployeesPage = () => {
                         setEmployeeId(id);
                     }}
                     showFilteredEmployees={showFilteredEmployees}
+                    coursePlan={coursePlan}
+                    employeesIdsForCoursePlan={employeesIdsForCoursePlan}
+                    setEmployeesIdsForCoursePlan={setEmployeesIdsForCoursePlan}
                 />
 
                 <div className="upload-btn">

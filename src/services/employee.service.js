@@ -48,6 +48,37 @@ export const getDocumentForEmployee = (id, dto, documentType) => {
     });
 };
 
+export const getCoursePlan = (employeesIdsForCoursePlan) => {
+    console.log(JSON.stringify(employeesIdsForCoursePlan));
+    return fetch(API_BASE_URL + "/course-plan", {
+        method: "POST",
+        body: JSON.stringify(employeesIdsForCoursePlan),
+        headers: Object.assign(
+            {},
+            { "Content-type": "application/json" },
+            authHeader()
+        ),
+    }).then((response) => {
+        if (response.ok) {
+            response.blob().then((blob) => {
+                let url = window.URL.createObjectURL(blob);
+                let iframe = document.createElement("iframe");
+                document.body.appendChild(iframe);
+                iframe.style.display = "none";
+                iframe.src = url;
+                iframe.onload = function () {
+                    setTimeout(function () {
+                        iframe.focus();
+                        iframe.contentWindow.print();
+                    }, 1);
+                };
+            });
+        } else {
+            throw new Error();
+        }
+    });
+};
+
 export const getEmployeeById = (id) => {
     return fetchData(API_BASE_URL + "/" + id);
 };

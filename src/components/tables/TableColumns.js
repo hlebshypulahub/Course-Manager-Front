@@ -9,16 +9,77 @@ import {
 } from "./TableProps";
 import NumberFilter from "@inovua/reactdatagrid-community/NumberFilter";
 import { tableColor } from "../../helpers/color";
+import Checkbox from "@mui/material/Checkbox";
 
 export class EmployeeColumns {
-    constructor(employees) {
+    constructor(
+        employees,
+        coursePlan,
+        addEmployeeToCoursePlan,
+        isEmployeeChecked
+    ) {
         this.dependentProps = new DependentProps(employees);
 
+        let courcePlanColumns = [];
+        if (coursePlan) {
+            courcePlanColumns = [
+                {
+                    name: "halfYear1",
+                    header: "I полугодие",
+                    defaultFlex: 0.61,
+                    ...everyColumnProps,
+                    render: (data) => {
+                        const employeeId = data.data.id;
+                        return (
+                            <div style={{ display: "table", margin: "0 auto" }}>
+                                <Checkbox
+                                    checked={isEmployeeChecked(employeeId, 1)}
+                                    onChange={(e) =>
+                                        addEmployeeToCoursePlan(
+                                            employeeId,
+                                            1,
+                                            e.target.checked
+                                        )
+                                    }
+                                    inputProps={{ "aria-label": "controlled" }}
+                                />
+                            </div>
+                        );
+                    },
+                },
+                {
+                    name: "halfYear2",
+                    header: "II полугодие",
+                    defaultFlex: 0.61,
+                    ...everyColumnProps,
+                    render: (data) => {
+                        const employeeId = data.data.id;
+                        return (
+                            <div style={{ display: "table", margin: "0 auto" }}>
+                                <Checkbox
+                                    checked={isEmployeeChecked(employeeId, 2)}
+                                    onChange={(e) =>
+                                        addEmployeeToCoursePlan(
+                                            employeeId,
+                                            2,
+                                            e.target.checked
+                                        )
+                                    }
+                                    inputProps={{ "aria-label": "controlled" }}
+                                />
+                            </div>
+                        );
+                    },
+                },
+            ];
+        }
+
         this.columns = [
+            ...courcePlanColumns,
             {
                 name: "colorGroup",
                 header: "Группа",
-                defaultFlex: 0.35,
+                defaultFlex: 0.4,
                 ...everyColumnProps,
                 render: () => {
                     "";
@@ -46,7 +107,7 @@ export class EmployeeColumns {
                     } else if (size === 1) {
                         cellProps.style.background = colors[0];
                     }
-                    
+
                     // #b5b5b5
                     cellProps.style.borderColor = "#fff";
                 },
