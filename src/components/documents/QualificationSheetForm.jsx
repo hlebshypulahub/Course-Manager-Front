@@ -27,7 +27,7 @@ import { MapToArray as mapToArray } from "../../helpers/MapToArray";
 //// CSS
 import "../../pages/edit-pages/Form.scss";
 
-const QualificationSheetForm = ({ employee, categories, principalCompany, fetchDocument }) => {
+const QualificationSheetForm = ({ employee, categories, principalCompany, fetchDocument, fetching }) => {
     const uuidv4 = require("uuid/v4");
 
     const [category, setCategory] = useState({});
@@ -427,10 +427,13 @@ const QualificationSheetForm = ({ employee, categories, principalCompany, fetchD
                         </div>
 
                         <div className="buttons">
-                            <FormButtons onlySubmit={true} />
+                            <FormButtons
+                                onlySubmit={true}
+                                submitting={fetching}
+                            />
                         </div>
                     </form>
-                </CardContent>{" "}
+                </CardContent>
             </Card>
         </div>
     );

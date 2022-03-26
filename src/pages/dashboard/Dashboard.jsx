@@ -33,7 +33,8 @@ import SnackBar from "../../components/SnackBar";
 import { clearMessage, clearError } from "../../redux";
 
 //// Utils
-import { yellow, cyan } from "../../helpers/color";
+import { yellow, cyan, green, white, font_grey } from "../../helpers/color";
+import snake from "../../img/snake.png";
 
 export const Dashboard = () => {
     const history = useHistory();
@@ -79,18 +80,23 @@ export const Dashboard = () => {
 
             {modal}
 
-            <header>
+            <header style={{ background: green }}>
                 {currentUser && (
                     <>
                         <a href="/employees" style={{ textDecoration: "none" }}>
                             <span
                                 style={{
-                                    color: yellow,
+                                    color: white,
                                     fontSize: "24px",
                                     fontFamily: "'Exo 2', sans-serif",
                                 }}
                             >
                                 {currentUser.company}
+                            </span>
+                            <span
+                                style={{ marginLeft: "15px", marginTop: "5px" }}
+                            >
+                                <img src={snake} alt="Медицина"></img>
                             </span>
                         </a>
 
@@ -99,8 +105,8 @@ export const Dashboard = () => {
                                 variant="contained"
                                 startIcon={<PeopleAltIcon />}
                                 style={{
-                                    backgroundColor: yellow,
-                                    color: "black",
+                                    backgroundColor: white,
+                                    color: font_grey,
                                     fontWeight: "600",
                                     height: "40px",
                                 }}
@@ -114,8 +120,8 @@ export const Dashboard = () => {
                                 startIcon={<FaceIcon />}
                                 style={{
                                     marginLeft: "15px",
-                                    backgroundColor: cyan,
-                                    color: "black",
+                                    backgroundColor: white,
+                                    color: font_grey,
                                     fontWeight: "600",
                                     height: "40px",
                                 }}

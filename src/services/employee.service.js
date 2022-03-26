@@ -49,7 +49,6 @@ export const getDocumentForEmployee = (id, dto, documentType) => {
 };
 
 export const getCoursePlan = (employeesIdsForCoursePlan) => {
-    console.log(JSON.stringify(employeesIdsForCoursePlan));
     return fetch(API_BASE_URL + "/course-plan", {
         method: "POST",
         body: JSON.stringify(employeesIdsForCoursePlan),

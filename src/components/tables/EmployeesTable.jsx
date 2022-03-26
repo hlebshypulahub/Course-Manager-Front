@@ -1,5 +1,5 @@
 //// React
-import React, { useEffect } from "react";
+import React from "react";
 import { useHistory } from "react-router";
 import moment from "moment";
 
@@ -37,7 +37,7 @@ const EmployeesTable = ({
     const rows = employees.map(
         ({
             id,
-            fullName,
+            shortName,
             hiringDate,
             jobFacility,
             position,
@@ -57,7 +57,7 @@ const EmployeesTable = ({
         }) => {
             return {
                 id,
-                fullName,
+                shortName,
                 hiringDate: parse(hiringDate),
                 jobFacility,
                 position,
@@ -111,10 +111,6 @@ const EmployeesTable = ({
         );
     };
 
-    useEffect(() => {
-        console.log(employeesIdsForCoursePlan);
-    }, [employeesIdsForCoursePlan]);
-
     const legendBlock = (
         <div className="legend">
             {legend.map((l) => {
@@ -124,12 +120,13 @@ const EmployeesTable = ({
                         className="legend-unit"
                         onClick={() => showFilteredEmployees(l.name)}
                     >
-                        <div
-                            className="color-box"
-                            style={{
-                                background: l.color,
-                            }}
-                        ></div>
+                        <div className="color-box">
+                            <div className="fill"
+                                style={{
+                                    background: l.color,
+                                }}
+                            ></div>
+                        </div>
                         <div className="label">
                             {l.text.map((str) => {
                                 return (

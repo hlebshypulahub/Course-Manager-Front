@@ -16,7 +16,7 @@ export class EmployeeColumns {
         employees,
         coursePlan,
         addEmployeeToCoursePlan,
-        isEmployeeChecked
+        isEmployeeChecked,
     ) {
         this.dependentProps = new DependentProps(employees);
 
@@ -26,7 +26,7 @@ export class EmployeeColumns {
                 {
                     name: "halfYear1",
                     header: "I полугодие",
-                    defaultFlex: 0.61,
+                    defaultFlex: 0.65,
                     ...everyColumnProps,
                     render: (data) => {
                         const employeeId = data.data.id;
@@ -50,7 +50,7 @@ export class EmployeeColumns {
                 {
                     name: "halfYear2",
                     header: "II полугодие",
-                    defaultFlex: 0.61,
+                    defaultFlex: 0.65,
                     ...everyColumnProps,
                     render: (data) => {
                         const employeeId = data.data.id;
@@ -78,8 +78,8 @@ export class EmployeeColumns {
             ...courcePlanColumns,
             {
                 name: "colorGroup",
-                header: "Группа",
-                defaultFlex: 0.4,
+                header: "",
+                defaultFlex: 0.35,
                 ...everyColumnProps,
                 render: () => {
                     "";
@@ -113,7 +113,7 @@ export class EmployeeColumns {
                 },
             },
             {
-                name: "fullName",
+                name: "shortName",
                 header: "ФИО",
                 defaultFlex: 1,
                 ...everyColumnProps,
@@ -203,10 +203,9 @@ export class EmployeeColumns {
             },
             {
                 name: "courseHoursLeft",
-                header: "Необходимый объем (оставшийся)",
+                header: "Необходимый объем",
                 type: "number",
-                defaultVisible: false,
-                defaultFlex: 1,
+                defaultFlex: 0.65,
                 filterEditor: NumberFilter,
                 ...everyColumnProps,
             },
@@ -246,7 +245,7 @@ export const legend = [
     },
     {
         name: "noCoursesOrCourseDateAndLackOfHours",
-        color: tableColor.yellow,
+        color: tableColor.orange,
         text: [
             "Прошло более 3.5 лет после прохождения крайних\nкурсов и не набран необходимый объем часов",
             "Список курсов пуст",
@@ -328,7 +327,7 @@ export const employeeDefaultFilterValue = [
         name: "eduGraduationDate",
         ...dateFilterProps,
     },
-    { name: "fullName", ...stringFilterProps },
+    { name: "shortName", ...stringFilterProps },
     { name: "jobFacility", ...selectFilterProps },
     { name: "position", ...selectFilterProps },
     { name: "qualification", ...selectFilterProps },

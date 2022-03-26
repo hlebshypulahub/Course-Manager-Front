@@ -2,7 +2,6 @@
     height: 100vh;
 
     header {
-        background: rgb(0, 0, 65);
         padding: 10px;
         height: 40px;
         position: relative;
@@ -17,6 +16,9 @@
             top: 50%;
             transform: translateY(-50%);
             float: left;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .buttons {

@@ -35,6 +35,7 @@ const EmployeeDocumentsPage = (props) => {
     const principalCompany = JSON.parse(localStorage.getItem("user")).company;
     const [categories, setCategories] = useState();
     const [categoriesLoaded, setCategoriesLoaded] = useState(false);
+    const [fetchingDocument, setFetchingDocument] = useState(false);
 
     const { user: currentUser } = useSelector((state) => state.user);
 
@@ -43,11 +44,16 @@ const EmployeeDocumentsPage = (props) => {
     const fetchDocument = useCallback(
         (e, documentDto, documentType) => {
             e.preventDefault();
-            getDocumentForEmployee(id, documentDto, documentType).catch(() => {
-                dispatch(
-                    setError("Отсутствует соединение с сервером...", true)
-                );
-            });
+
+            setFetchingDocument(true);
+
+            getDocumentForEmployee(id, documentDto, documentType)
+                .then(() => setFetchingDocument(false))
+                .catch(() => {
+                    dispatch(
+                        setError("Отсутствует соединение с сервером...", true)
+                    );
+                });
         },
         [id, dispatch]
     );
@@ -151,6 +157,7 @@ const EmployeeDocumentsPage = (props) => {
                     principalCompany={principalCompany}
                     categories={categories}
                     fetchDocument={fetchDocument}
+                    fetching={fetchingDocument}
                 />
             )}
 
@@ -160,6 +167,7 @@ const EmployeeDocumentsPage = (props) => {
                     principalCompany={principalCompany}
                     categories={categories}
                     fetchDocument={fetchDocument}
+                    fetching={fetchingDocument}
                 />
             )}
 
@@ -168,6 +176,7 @@ const EmployeeDocumentsPage = (props) => {
                     employee={employee}
                     principalCompany={principalCompany}
                     fetchDocument={fetchDocument}
+                    fetching={fetchingDocument}
                 />
             )}
         </div>

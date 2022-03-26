@@ -9,7 +9,7 @@ import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 
 //// Utils
-import { sky_blue, pink } from "../../helpers/color";
+import { sky_blue, pink, white } from "../../helpers/color";
 
 const CoursesInfoCard = ({ employee }) => {
     const history = useHistory();
@@ -46,7 +46,7 @@ const CoursesInfoCard = ({ employee }) => {
                         variant="contained"
                         startIcon={<AddIcon />}
                         style={{
-                            backgroundColor: sky_blue,
+                            backgroundColor: white,
                             color: "black",
                             fontWeight: "bold",
                             height: "50px",

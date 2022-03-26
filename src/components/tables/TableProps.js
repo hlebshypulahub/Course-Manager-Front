@@ -84,7 +84,7 @@ export const dateColumnProps = {
 };
 
 export const defaultSortInfo = [
-    { name: "fullName", dir: 0 },
+    { name: "shortName", dir: 0 },
     { name: "hiringDate", dir: 0 },
     { name: "jobFacility", dir: 0 },
     { name: "position", dir: 0 },
@@ -161,7 +161,7 @@ export const employeeDefaultFilterValue = [
         name: "eduGraduationDate",
         ...dateFilterProps,
     },
-    { name: "fullName", ...stringFilterProps },
+    { name: "shortName", ...stringFilterProps },
     { name: "jobFacility", ...selectFilterProps },
     { name: "position", ...selectFilterProps },
     { name: "qualification", ...selectFilterProps },

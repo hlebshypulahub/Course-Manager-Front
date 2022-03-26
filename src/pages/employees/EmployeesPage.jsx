@@ -19,8 +19,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import {
     getEmployees,
     getEmployeesByGroups,
-    getEmployeesForCoursePlan,
-    getCoursePlan
+    getCoursePlan,
 } from "../../services/employee.service";
 import ArticleIcon from "@mui/icons-material/Article";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
@@ -29,7 +28,7 @@ import { setError } from "../../redux";
 import { legend } from "../../components/tables/TableColumns";
 
 //// Utils
-import { green, sky_blue, pink, grey } from "../../helpers/color";
+import { green, sky_blue, pink, grey, diamond, white, font_grey } from "../../helpers/color";
 
 //// CSS
 import "./EmployeesPage.scss";
@@ -116,26 +115,6 @@ const EmployeesPage = () => {
         fetchEmployees();
     }, [dispatch]);
 
-    // const fetchEmployeesForCoursePlan = () => {
-    //     setLoading(true);
-
-    //     const fetchEmployees = () => {
-    //         getEmployeesForCoursePlan()
-    //             .then((data) => {
-    //                 setEmployees(data);
-    //                 setLoading(false);
-    //             })
-    //             .catch(() => {
-    //                 setLoading(false);
-    //                 dispatch(
-    //                     setError("Отсутствует соединение с сервером...", true)
-    //                 );
-    //             });
-    //     };
-
-    //     fetchEmployees();
-    // };
-
     const showFilteredEmployees = useCallback(
         (groupName) => {
             setEmployees(
@@ -143,6 +122,8 @@ const EmployeesPage = () => {
                     return e.colorGroup.some((c) => c === groupName);
                 })
             );
+
+            setEmployeesIdsForCoursePlan([[], []]);
         },
         [employees]
     );
@@ -177,7 +158,25 @@ const EmployeesPage = () => {
                     setError("Отсутствует соединение с сервером...", true)
                 );
             });
-    }, [employeesIdsForCoursePlan, dispatch, sendingEmployees]);
+    }, [employeesIdsForCoursePlan, dispatch]);
+
+    const onCoursePlanButtonClick = useCallback(() => {
+        if (!coursePlan) {
+            setCoursePlan(true);
+            setEmployees(
+                employees.filter(
+                    (e) => !e.colorGroup.some((value) => value === "lackOfData")
+                )
+            );
+        } else {
+            sendEmployeesIdsForCoursePlan(employeesIdsForCoursePlan);
+        }
+    }, [
+        coursePlan,
+        employees,
+        sendEmployeesIdsForCoursePlan,
+        employeesIdsForCoursePlan,
+    ]);
 
     const goToEmployeeView = useCallback(() => {
         history.push("/employees/" + employeeId);
@@ -202,21 +201,13 @@ const EmployeesPage = () => {
                         component="span"
                         endIcon={coursePlan ? <PrintIcon /> : <ArticleIcon />}
                         style={{
-                            backgroundColor: coursePlan ? green : pink,
-                            color: "white",
+                            backgroundColor: coursePlan ? green : white,
+                            color: coursePlan ? white : font_grey,
                             fontWeight: "600",
                             height: "40px",
                             width: "200px",
                         }}
-                        onClick={() => {
-                            if (!coursePlan) {
-                                setCoursePlan(true);
-                            } else {
-                                sendEmployeesIdsForCoursePlan(
-                                    employeesIdsForCoursePlan
-                                );
-                            }
-                        }}
+                        onClick={() => onCoursePlanButtonClick()}
                     >
                         {coursePlan ? "Печать" : "Создать график"}
                     </LoadingButton>

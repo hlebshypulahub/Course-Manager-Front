@@ -26,6 +26,7 @@ const RepresentationForm = ({
     principalCompany: pC,
     categories,
     fetchDocument,
+    fetching
 }) => {
     const [principalCompany, setPrincipalCompany] = useState(pC);
     const [category, setCategory] = useState();
@@ -263,7 +264,10 @@ const RepresentationForm = ({
                         </div>
 
                         <div className="buttons">
-                            <FormButtons onlySubmit={true} />
+                            <FormButtons
+                                onlySubmit={true}
+                                submitting={fetching}
+                            />
                         </div>
                     </form>
                 </CardContent>{" "}

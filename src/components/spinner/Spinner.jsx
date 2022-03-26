@@ -1,5 +1,5 @@
 import GridLoader from "react-spinners/GridLoader";
-import { dark_blue } from "../../helpers/color";
+import { green } from "../../helpers/color";
 import "./Spinner.scss";
 
 const Spinner = () => {
@@ -7,7 +7,7 @@ const Spinner = () => {
         <div className="Spinner">
             <GridLoader
                 className="spin"
-                color={dark_blue}
+                color={green}
                 loading={true}
                 size={30}
             />

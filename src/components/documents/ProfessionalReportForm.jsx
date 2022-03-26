@@ -22,6 +22,7 @@ const ProfessionalReportForm = ({
     employee,
     principalCompany,
     fetchDocument,
+    fetching
 }) => {
     const [mainInfo, setMainInfo] = useState(
         employee.fullName + ", " + employee.position + ", " + principalCompany
@@ -148,7 +149,7 @@ const ProfessionalReportForm = ({
                         </div>
 
                         <div className="buttons">
-                            <FormButtons onlySubmit={true} />
+                            <FormButtons onlySubmit={true} submitting={fetching} />
                         </div>
                     </form>
                 </CardContent>
