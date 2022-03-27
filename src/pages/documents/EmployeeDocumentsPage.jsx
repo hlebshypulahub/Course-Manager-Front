@@ -1,5 +1,5 @@
 //// React
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Redirect } from "react-router-dom";
 
@@ -19,7 +19,7 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { getEmployeeById } from "../../services/employee.service";
 import { getCategories } from "../../services/category.service";
 import { getDocumentForEmployee } from "../../services/employee.service";
-import { getDocumentTypes } from "../../services/documentType.service";
+import { getDocumentTypes } from "../../services/document-type.service";
 import { setError } from "../../redux";
 
 //// CSS

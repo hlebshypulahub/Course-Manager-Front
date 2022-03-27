@@ -1,4 +1,4 @@
-import { SET_ERROR, CLEAR_ERROR } from "./errorTypes";
+import { SET_ERROR, CLEAR_ERROR } from "./error-types";
 
 export const setError = (message, showModal = false) => {
     return {

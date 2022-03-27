@@ -1,5 +1,5 @@
 //// React
-import React, { useState } from "react";
+import { useState } from "react";
 import { useHistory } from "react-router-dom";
 
 //// Mui
@@ -13,7 +13,17 @@ import Button from "@mui/material/Button";
 import { green, red } from "../../helpers/color";
 
 const CategoryCard = ({
-    employee,
+    employee: {
+        id,
+        exemptioned,
+        category,
+        qualification,
+        categoryAssignmentDate,
+        categoryNumber,
+        categoryAssignmentDeadlineDate,
+        categoryPossiblePromotionDate,
+        docsSubmitDeadlineDate,
+    },
     categoryIsValid,
     educationIsValid,
     showCardActions,
@@ -25,7 +35,7 @@ const CategoryCard = ({
     const manualEditButton = categoryIsValid && (
         <Tooltip
             title={
-                clickCounter < 2 && !employee.exemptioned
+                clickCounter < 2 && !exemptioned
                     ? "Нажмите 2 раза, чтобы вручную указать срок подтверждения категории"
                     : ""
             }
@@ -37,16 +47,14 @@ const CategoryCard = ({
                 }}
             >
                 <Button
-                    disabled={clickCounter < 1 || employee.exemptioned}
+                    disabled={clickCounter < 1 || exemptioned}
                     variant="outlined"
                     style={{
                         fontWeight: "bold",
                     }}
                     size="large"
                     onClick={() => {
-                        history.push(
-                            `/employees/${employee.id}/edit-category-deadline`
-                        );
+                        history.push(`/employees/${id}/edit-category-deadline`);
                     }}
                 >
                     Указать вручную
@@ -58,7 +66,7 @@ const CategoryCard = ({
     const editButton = (
         <Tooltip
             title={
-                employee.exemptioned
+                exemptioned
                     ? "Сотрудник освобождён"
                     : !educationIsValid
                     ? "Необходимо указать образование"
@@ -68,14 +76,14 @@ const CategoryCard = ({
         >
             <div>
                 <Button
-                    disabled={!educationIsValid || employee.exemptioned}
+                    disabled={!educationIsValid || exemptioned}
                     variant="outlined"
                     style={{
                         fontWeight: "bold",
                     }}
                     size="large"
                     onClick={() => {
-                        history.push(`/employees/${employee.id}/edit-category`);
+                        history.push(`/employees/${id}/edit-category`);
                     }}
                 >
                     {categoryIsValid ? "Изменить" : "Указать"}
@@ -101,7 +109,7 @@ const CategoryCard = ({
                     <span
                         className="pin"
                         style={
-                            !employee.category
+                            !category
                                 ? {
                                       backgroundColor: red,
                                   }
@@ -110,42 +118,36 @@ const CategoryCard = ({
                                   }
                         }
                     >
-                        {!employee.category
-                            ? "Необходимо указать"
-                            : employee.category.label}
+                        {!category ? "Необходимо указать" : category.label}
                     </span>
                 </div>
 
                 <div>
                     <span className="label-text-large">Квалификация:</span>
-                    <span className="value-text">{employee.qualification}</span>
+                    <span className="value-text">{qualification}</span>
                 </div>
 
                 <div>
                     <span className="label-text-large">Категория:</span>
                     <span className="value-text">
-                        {employee.category ? employee.category.label : ""}
+                        {category ? category.label : ""}
                     </span>
                 </div>
 
                 <div>
                     <span className="label-text-large">Номер:</span>
-                    <span className="value-text">
-                        {employee.categoryNumber}
-                    </span>
+                    <span className="value-text">{categoryNumber}</span>
                 </div>
 
                 <div>
                     <span className="label-text-large">Дата получения:</span>
-                    <span className="value-text">
-                        {employee.categoryAssignmentDate}
-                    </span>
+                    <span className="value-text">{categoryAssignmentDate}</span>
                 </div>
 
                 <div>
                     <span className="label-text-large">Срок аттестации:</span>
                     <span className="value-text">
-                        {employee.categoryAssignmentDeadlineDate}
+                        {categoryAssignmentDeadlineDate}
                     </span>
                 </div>
 
@@ -153,9 +155,7 @@ const CategoryCard = ({
                     <span className="label-text-large">
                         Срок подачи документов:
                     </span>
-                    <span className="value-text">
-                        {employee.docsSubmitDeadlineDate}
-                    </span>
+                    <span className="value-text">{docsSubmitDeadlineDate}</span>
                 </div>
 
                 <div>
@@ -163,7 +163,7 @@ const CategoryCard = ({
                         Возможное повышение категории после:
                     </span>
                     <span className="value-text">
-                        {employee.categoryPossiblePromotionDate}
+                        {categoryPossiblePromotionDate}
                     </span>
                 </div>
 

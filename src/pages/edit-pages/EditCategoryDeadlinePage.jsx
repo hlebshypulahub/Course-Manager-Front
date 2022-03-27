@@ -1,5 +1,5 @@
 //// React
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import { Redirect } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -20,9 +20,9 @@ import {
     getEmployeeById,
     patchEmployeeCategoryAssignmentDeadlineDate,
 } from "../../services/employee.service";
-import { DateParser as parse } from "../../helpers/DateParser";
-import { DateFormatter as format } from "../../helpers/DateFormatter";
-import { handleSubmit as hS } from "../../helpers/FormSubmition";
+import { parseDates as parse } from "../../helpers/parse-dates";
+import { formatDates as format } from "../../helpers/format-dates";
+import { handleFormSubmit } from "../../helpers/handle-form-submit";
 
 //// CSS
 import "./Form.scss";
@@ -85,7 +85,7 @@ const EditCategoryDeadlinePage = (props) => {
 
                 setSubmitting(true);
 
-                hS(
+                handleFormSubmit(
                     id,
                     history,
                     patch,

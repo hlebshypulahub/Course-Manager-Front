@@ -1,5 +1,5 @@
 //// React
-import React from "react";
+
 import { useHistory } from "react-router";
 import moment from "moment";
 
@@ -7,7 +7,7 @@ import moment from "moment";
 import "./EmployeesTable.scss";
 
 //// Functions
-import { DateParser as parse } from "../../helpers/DateParser";
+import { parseDates as parse } from "../../helpers/parse-dates";
 import {
     employeeDefaultFilterValue as defaultFilterValue,
     scrollProps,

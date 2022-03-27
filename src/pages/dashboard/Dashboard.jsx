@@ -1,5 +1,5 @@
 //// React
-import React from "react";
+
 import { Switch, Route, useHistory, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -33,7 +33,7 @@ import SnackBar from "../../components/SnackBar";
 import { clearMessage, clearError } from "../../redux";
 
 //// Utils
-import { yellow, cyan, green, white, font_grey } from "../../helpers/color";
+import { green, white, font_grey } from "../../helpers/color";
 import snake from "../../img/snake.png";
 
 export const Dashboard = () => {
@@ -96,7 +96,7 @@ export const Dashboard = () => {
                             <span
                                 style={{ marginLeft: "15px", marginTop: "5px" }}
                             >
-                                <img src={snake} alt="Медицина"></img>
+                                <img src={snake} alt="Медицина"/>
                             </span>
                         </a>
 

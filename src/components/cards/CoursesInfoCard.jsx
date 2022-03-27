@@ -1,5 +1,4 @@
 //// React
-import React from "react";
 import { useHistory } from "react-router-dom";
 
 //// Mui
@@ -9,9 +8,11 @@ import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 
 //// Utils
-import { sky_blue, pink, white } from "../../helpers/color";
+import { pink, white } from "../../helpers/color";
 
-const CoursesInfoCard = ({ employee }) => {
+const CoursesInfoCard = ({
+    employee: { id, courseHoursLeft, categoryAssignmentDeadlineDate },
+}) => {
     const history = useHistory();
 
     return (
@@ -24,9 +25,7 @@ const CoursesInfoCard = ({ employee }) => {
             >
                 <div className="course-hours">
                     <span>
-                        {employee.courseHoursLeft == null
-                            ? "-"
-                            : employee.courseHoursLeft}
+                        {courseHoursLeft == null ? "-" : courseHoursLeft}
                     </span>
                 </div>
 
@@ -36,8 +35,8 @@ const CoursesInfoCard = ({ employee }) => {
 
                 <div className="course-date-label">
                     <span>
-                        {employee.categoryAssignmentDeadlineDate &&
-                            "до " + employee.categoryAssignmentDeadlineDate}
+                        {categoryAssignmentDeadlineDate &&
+                            "до " + categoryAssignmentDeadlineDate}
                     </span>
                 </div>
 
@@ -53,9 +52,7 @@ const CoursesInfoCard = ({ employee }) => {
                             width: "200px",
                         }}
                         onClick={() => {
-                            history.push(
-                                `/employees/${employee.id}/add-course`
-                            );
+                            history.push(`/employees/${id}/add-course`);
                         }}
                     >
                         Добавить курс

@@ -1,23 +1,26 @@
-import { SET_MESSAGE, CLEAR_MESSAGE } from "./messageTypes";
+import { SET_ERROR, CLEAR_ERROR } from "./error-types";
 
 const initialState = {
     message: "",
+    showModal: false,
 };
 
 export default function reducer(state = initialState, action) {
     const { type, payload } = action;
 
     switch (type) {
-        case SET_MESSAGE:
+        case SET_ERROR:
             return {
                 ...state,
-                message: payload,
+                message: payload.message,
+                showModal: payload.showModal,
             };
 
-        case CLEAR_MESSAGE:
+        case CLEAR_ERROR:
             return {
                 ...state,
                 message: "",
+                showModal: false,
             };
 
         default:

@@ -1,7 +1,7 @@
-import { FalseObjectChecker as isFalseObject } from "../helpers/FalseObjectChecker";
+import { isFalseObject } from "./is-false-object";
 import validator from "validator";
 
-export const softValidate = (date) => {
+export const dateIsBlank = (date) => {
     return isFalseObject(date) || validator.isDate(date)
         ? ""
         : "Неверный формат даты";

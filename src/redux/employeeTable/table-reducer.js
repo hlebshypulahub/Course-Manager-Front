@@ -1,4 +1,4 @@
-import { SAVE_SETTINGS, RESTORE_SETTINGS } from "./tableTypes";
+import { SAVE_SETTINGS, RESTORE_SETTINGS } from "./table-types";
 
 const settings = JSON.parse(localStorage.getItem("table-settings"));
 

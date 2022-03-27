@@ -1,4 +1,4 @@
-import { SET_MESSAGE, CLEAR_MESSAGE } from "./messageTypes";
+import { SET_MESSAGE, CLEAR_MESSAGE } from "./message-types";
 
 export const setMessage = (message) => {
     return {

@@ -1,12 +1,12 @@
 //// React
-import React from "react";
+
 import moment from "moment";
 
 //// CSS
 import "./CoursesTable.scss";
 
 //// Functions
-import { DateParser as parse } from "../../helpers/DateParser";
+import { parseDates as parse } from "../../helpers/parse-dates";
 import {scrollProps, i18n} from "./TableProps";
 import {courseColumns as columns} from "./TableColumns";
 

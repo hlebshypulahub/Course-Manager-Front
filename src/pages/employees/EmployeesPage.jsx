@@ -1,5 +1,5 @@
 //// React
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Redirect, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -28,7 +28,7 @@ import { setError } from "../../redux";
 import { legend } from "../../components/tables/TableColumns";
 
 //// Utils
-import { green, sky_blue, pink, grey, diamond, white, font_grey } from "../../helpers/color";
+import { green, sky_blue, grey, white, font_grey } from "../../helpers/color";
 
 //// CSS
 import "./EmployeesPage.scss";

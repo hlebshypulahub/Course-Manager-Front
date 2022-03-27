@@ -1,7 +1,7 @@
-import { FalseObjectChecker as isFalseObject } from "./FalseObjectChecker";
+import { isFalseObject } from "./is-false-object";
 import validator from "validator";
 
-export const EducationValidator = (education, eduName, eduGraduationDate) => {
+export const validateEducation = (education, eduName, eduGraduationDate) => {
     let tempErrors = {};
 
     tempErrors.education = !isFalseObject(education)

@@ -1,6 +1,6 @@
 import { setMessage, setError } from "../redux";
 
-export const handleSubmit = (
+export const handleFormSubmit = (
     id,
     history,
     patch,

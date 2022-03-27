@@ -1,4 +1,4 @@
-import { LOGIN_SUCCESS, LOGIN_FAIL, EDIT_USER } from "./userTypes";
+import { LOGIN_SUCCESS, LOGIN_FAIL, EDIT_USER } from "./user-types";
 
 const user = JSON.parse(localStorage.getItem("user"));
 

@@ -1,5 +1,5 @@
 //// React
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import validator from "validator";
 import { useHistory } from "react-router-dom";
 import { Redirect } from "react-router-dom";
@@ -17,7 +17,7 @@ import CardContent from "@mui/material/CardContent";
 
 //// Functions
 import { addCourseToEmployee } from "../../services/course.service";
-import { DateFormatter as format } from "../../helpers/DateFormatter";
+import { formatDates as format } from "../../helpers/format-dates";
 import { getEmployeeById } from "../../services/employee.service";
 import { setMessage, setError } from "../../redux";
 

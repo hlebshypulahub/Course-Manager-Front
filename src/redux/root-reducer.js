@@ -1,8 +1,8 @@
 import { combineReducers } from "redux";
-import userReducer from "./user/userReducer";
-import errorReducer from "./error/errorReducer";
-import messageReducer from "./message/messageReducer";
-import tableReducer from "./employeeTable/tableReducer";
+import userReducer from "./user/user-reducer";
+import errorReducer from "./error/error-reducer";
+import messageReducer from "./message/message-reducer";
+import tableReducer from "./employeeTable/table-reducer";
 
 const rootReducer = combineReducers({
     user: userReducer,

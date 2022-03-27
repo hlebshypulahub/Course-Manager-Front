@@ -1,5 +1,5 @@
 //// React
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Redirect, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -19,10 +19,10 @@ import {
     patchEmployeeActive,
     patchEmployeeExemption,
 } from "../../services/employee.service";
-import { CategoryValidator as validateCategory } from "../../helpers/CategoryValidator";
-import { EducationValidator as validateEducation } from "../../helpers/EducationValidator";
-import { DateParser as parse } from "../../helpers/DateParser";
-import { EmptyErrorTableChecker as isEmpty } from "../../helpers/EmptyErrorTableChecker";
+import { validateCategory } from "../../helpers/validate-category";
+import { validateEducation } from "../../helpers/validate-education";
+import { parseDates as parse } from "../../helpers/parse-dates";
+import { arrayIsEmpty as isEmpty } from "../../helpers/array-is-empty";
 import { getEmployeeCourses } from "../../services/course.service";
 import { setMessage, setError } from "../../redux";
 

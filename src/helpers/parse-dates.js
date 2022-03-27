@@ -1,4 +1,4 @@
-export const DateParser = (dateString) => {
+export const parseDates = (dateString) => {
     if (
         typeof dateString === "undefined" ||
         dateString == null ||

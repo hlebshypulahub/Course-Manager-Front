@@ -1,7 +1,7 @@
-import { FalseObjectChecker as isFalseObject } from "./FalseObjectChecker";
+import { isFalseObject } from "./is-false-object";
 import validator from "validator";
 
-export const ExemptionValidator = (
+export const validateExemption = (
     exemption,
     exemptionStartDate,
     exemptionEndDate

@@ -1,5 +1,5 @@
 //// React
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Redirect } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -21,11 +21,11 @@ import {
     getEmployeeById,
     patchEmployeeEducation,
 } from "../../services/employee.service";
-import { EducationValidator as validateEducation } from "../../helpers/EducationValidator";
-import { DateParser as parse } from "../../helpers/DateParser";
-import { DateFormatter as format } from "../../helpers/DateFormatter";
-import { EmptyErrorTableChecker as isEmpty } from "../../helpers/EmptyErrorTableChecker";
-import { handleSubmit as hS } from "../../helpers/FormSubmition";
+import { validateEducation } from "../../helpers/validate-education";
+import { parseDates as parse } from "../../helpers/parse-dates";
+import { formatDates as format } from "../../helpers/format-dates";
+import { arrayIsEmpty as isEmpty } from "../../helpers/array-is-empty";
+import { handleFormSubmit } from "../../helpers/handle-form-submit";
 
 //// CSS
 import "./Form.scss";
@@ -106,7 +106,7 @@ const EditEducationPage = (props) => {
 
                 setSubmitting(true);
 
-                hS(
+                handleFormSubmit(
                     id,
                     history,
                     patch,

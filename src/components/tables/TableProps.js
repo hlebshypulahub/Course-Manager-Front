@@ -1,9 +1,9 @@
-import { DateComparator as compare } from "../../helpers/DateComparator";
+import { compareDates as compare } from "../../helpers/compare-dates";
 import DateFilter from "@inovua/reactdatagrid-community/DateFilter";
 import moment from "moment";
 import SelectFilter from "@inovua/reactdatagrid-community/SelectFilter";
 import ReactDataGrid from "@inovua/reactdatagrid-community";
-import { dark_blue } from "../../helpers/color";
+import { green } from "../../helpers/color";
 
 export class DependentProps {
     constructor(employees) {
@@ -131,7 +131,7 @@ export const scrollProps = Object.assign(
     ReactDataGrid.defaultProps.scrollProps,
     {
         scrollThumbStyle: {
-            background: dark_blue,
+            background: green,
         },
     }
 );

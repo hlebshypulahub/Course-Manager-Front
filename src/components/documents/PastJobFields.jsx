@@ -1,7 +1,7 @@
 import MyTextField from "../inputs/MyTextField";
 import MyDatePicker from "../inputs/MyDatePicker";
 import Button from "@mui/material/Button";
-import { softValidate } from "../../helpers/DateValidator";
+import { dateIsBlank } from "../../helpers/date-is-blank";
 
 const PastJobFields = ({
     pastJob,
@@ -55,8 +55,8 @@ const PastJobFields = ({
                         onChange={(newStartDate) =>
                             onChangeStartDate(newStartDate, uniqueKey)
                         }
-                        error={!!softValidate(endDate)}
-                        helperText={softValidate(startDate)}
+                        error={!!dateIsBlank(endDate)}
+                        helperText={dateIsBlank(startDate)}
                     />
                 </div>
 
@@ -72,8 +72,8 @@ const PastJobFields = ({
                         onChange={(newEndDate) =>
                             onChangeEndDate(newEndDate, uniqueKey)
                         }
-                        error={!!softValidate(endDate)}
-                        helperText={softValidate(endDate)}
+                        error={!!dateIsBlank(endDate)}
+                        helperText={dateIsBlank(endDate)}
                     />
                 </div>
 

@@ -20,9 +20,9 @@ export class EmployeeColumns {
     ) {
         this.dependentProps = new DependentProps(employees);
 
-        let courcePlanColumns = [];
+        let coursePlanColumns = [];
         if (coursePlan) {
-            courcePlanColumns = [
+            coursePlanColumns = [
                 {
                     name: "halfYear1",
                     header: "I полугодие",
@@ -75,7 +75,7 @@ export class EmployeeColumns {
         }
 
         this.columns = [
-            ...courcePlanColumns,
+            ...coursePlanColumns,
             {
                 name: "colorGroup",
                 header: "",

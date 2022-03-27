@@ -1,6 +1,6 @@
-import { LOGIN_SUCCESS, LOGIN_FAIL, EDIT_USER } from "./userTypes";
+import { LOGIN_SUCCESS, LOGIN_FAIL, EDIT_USER } from "./user-types";
 
-import { setError, clearError } from "../error/errorActions";
+import { setError, clearError } from "../error/error-actions";
 
 import { login as serviceLogin } from "../../services/auth.service";
 

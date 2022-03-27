@@ -19,10 +19,10 @@ import MenuItem from "@mui/material/MenuItem";
 import { banana_color } from "../../helpers/color";
 
 //// Functions
-import { DateParser as parse } from "../../helpers/DateParser";
-import { FalseObjectChecker as isFalseObject } from "../../helpers/FalseObjectChecker";
-import { DateFormatter as format } from "../../helpers/DateFormatter";
-import { MapToArray as mapToArray } from "../../helpers/MapToArray";
+import { parseDates as parse } from "../../helpers/parse-dates";
+import { isFalseObject } from "../../helpers/is-false-object";
+import { formatDates as format } from "../../helpers/format-dates";
+import { convertMapToArray as mapToArray } from "../../helpers/convert-map-to-array";
 
 //// CSS
 import "../../pages/edit-pages/Form.scss";

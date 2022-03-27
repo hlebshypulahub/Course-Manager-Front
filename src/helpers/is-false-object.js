@@ -1,4 +1,4 @@
-export const FalseObjectChecker = (obj) => {
+export const isFalseObject = (obj) => {
     return (
         obj == null ||
         obj === undefined ||

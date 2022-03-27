@@ -1,4 +1,4 @@
-import { API_BASE_URL as baseUrl } from "./api.base.url";
+import { API_BASE_URL as baseUrl } from "./api-base-url";
 import authHeader from "./auth-header";
 
 const API_BASE_URL = baseUrl + "/api/v1/auth";

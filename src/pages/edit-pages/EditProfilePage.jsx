@@ -1,5 +1,5 @@
 //// React
-import React, { useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { Redirect } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -15,7 +15,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 
 //// Functions
-import { EmptyErrorTableChecker as isEmpty } from "../../helpers/EmptyErrorTableChecker";
+import { arrayIsEmpty as isEmpty } from "../../helpers/array-is-empty";
 import { edit } from "../../services/auth.service";
 import { editUser, setMessage } from "../../redux";
 

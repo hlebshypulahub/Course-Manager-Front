@@ -1,5 +1,5 @@
 //// React
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 //// Components
 import MyTextField from "../inputs/MyTextField";
@@ -16,7 +16,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { banana_color } from "../../helpers/color";
 
 //// Functions
-import { FalseObjectChecker as isFalseObject } from "../../helpers/FalseObjectChecker";
+import { isFalseObject } from "../../helpers/is-false-object";
 
 //// CSS
 import "../../pages/edit-pages/Form.scss";
