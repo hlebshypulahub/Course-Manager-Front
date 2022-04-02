@@ -19,7 +19,7 @@ import CardContent from "@mui/material/CardContent";
 import { getEducations } from "../../services/education.service";
 import {
     getEmployeeById,
-    patchEmployeeEducation,
+    patchEmployee,
 } from "../../services/employee.service";
 import { validateEducation } from "../../helpers/validate-education";
 import { parseDates as parse } from "../../helpers/parse-dates";
@@ -55,6 +55,8 @@ const EditEducationPage = (props) => {
 
     const history = useHistory();
     const dispatch = useDispatch();
+
+    useEffect(() => (document.title = "Изменить образование"), []);
 
     useEffect(() => {
         const fetchEducations = () => {
@@ -99,6 +101,7 @@ const EditEducationPage = (props) => {
 
             if (validate()) {
                 const patch = {
+                    type: "education",
                     eduName,
                     eduGraduationDate: format(eduGraduationDate),
                     education: education.name,
@@ -110,7 +113,7 @@ const EditEducationPage = (props) => {
                     id,
                     history,
                     patch,
-                    patchEmployeeEducation,
+                    patchEmployee,
                     "Образование изменено",
                     dispatch
                 );

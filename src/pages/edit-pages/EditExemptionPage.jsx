@@ -19,7 +19,7 @@ import CardContent from "@mui/material/CardContent";
 import { getExemptions } from "../../services/exemption.service";
 import {
     getEmployeeById,
-    patchEmployeeExemption,
+    patchEmployee,
 } from "../../services/employee.service";
 import { validateExemption } from "../../helpers/validate-exemption";
 import { parseDates as parse } from "../../helpers/parse-dates";
@@ -55,6 +55,8 @@ const EditExemptionPage = (props) => {
 
     const history = useHistory();
     const dispatch = useDispatch();
+
+    useEffect(() => (document.title = "Изменить освобождение"), []);
 
     useEffect(() => {
         const fetchExemptions = () => {
@@ -99,6 +101,7 @@ const EditExemptionPage = (props) => {
 
             if (validate()) {
                 const patch = {
+                    type: "exemption",
                     exemption: exemption.name,
                     exemptionStartDate: format(exemptionStartDate),
                     ...(exemptionEndDate && {
@@ -112,7 +115,7 @@ const EditExemptionPage = (props) => {
                     id,
                     history,
                     patch,
-                    patchEmployeeExemption,
+                    patchEmployee,
                     "Освобождение изменено",
                     dispatch
                 );

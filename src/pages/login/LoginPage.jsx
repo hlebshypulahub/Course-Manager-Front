@@ -1,9 +1,11 @@
-
+import { useEffect } from "react";
 import LoginForm from "../../components/login/LoginForm";
 import "./LoginPage.scss";
 import staffImg from "../../img/staff_bg.jpg";
 
 const LoginPage = (props) => {
+    useEffect(() => (document.title = "Курс Менеджер | Логин"), []);
+
     return (
         <div className="LoginPage">
             <div className="container">

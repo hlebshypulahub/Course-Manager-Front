@@ -19,7 +19,7 @@ import CardContent from "@mui/material/CardContent";
 import { getCategories } from "../../services/category.service";
 import {
     getEmployeeById,
-    patchEmployeeCategory,
+    patchEmployee,
 } from "../../services/employee.service";
 import { parseDates as parse } from "../../helpers/parse-dates";
 import { formatDates as format } from "../../helpers/format-dates";
@@ -52,6 +52,8 @@ const EditCategoryPage = (props) => {
 
     const history = useHistory();
     const dispatch = useDispatch();
+
+    useEffect(() => (document.title = "Изменить категорию"), []);
 
     useEffect(() => {
         const fetchCategories = () => {
@@ -98,6 +100,7 @@ const EditCategoryPage = (props) => {
 
             if (validate()) {
                 const patch = {
+                    type: "category",
                     qualification,
                     category: category.name,
                     ...(categoryNumber && { categoryNumber }),
@@ -112,7 +115,7 @@ const EditCategoryPage = (props) => {
                     id,
                     history,
                     patch,
-                    patchEmployeeCategory,
+                    patchEmployee,
                     "Категория изменена",
                     dispatch
                 );

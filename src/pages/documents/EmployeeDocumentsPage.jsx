@@ -41,6 +41,8 @@ const EmployeeDocumentsPage = (props) => {
 
     const dispatch = useDispatch();
 
+    useEffect(() => (document.title = "Документы сотрудника"), []);
+
     const fetchDocument = useCallback(
         (e, documentDto, documentType) => {
             e.preventDefault();

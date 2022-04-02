@@ -1,4 +1,4 @@
-import { LOGIN_SUCCESS, LOGIN_FAIL, EDIT_USER } from "./user-types";
+import { LOGIN_SUCCESS, LOGIN_FAIL, EDIT_USER, LOGIN_FETCHING } from "./user-types";
 
 import { setError, clearError } from "../error/error-actions";
 
@@ -8,6 +8,12 @@ const loginSuccess = (user) => {
     return {
         type: LOGIN_SUCCESS,
         payload: user,
+    };
+};
+
+const loginFetching = () => {
+    return {
+        type: LOGIN_FETCHING,
     };
 };
 
@@ -25,6 +31,8 @@ export const editUser = (patch) => {
 };
 
 export const login = (username, password) => (dispatch) => {
+    dispatch(loginFetching())
+
     return serviceLogin(username, password)
         .then((data) => {
             if (data.accessToken) {

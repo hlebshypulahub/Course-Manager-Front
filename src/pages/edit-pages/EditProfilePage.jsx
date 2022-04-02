@@ -1,5 +1,5 @@
 //// React
-import { useState, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Redirect } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -38,6 +38,8 @@ const EditProfilePage = () => {
     const { user: currentUser } = useSelector((state) => state.user);
 
     const history = useHistory();
+
+    useEffect(() => (document.title = "Изменить профиль"), []);
 
     const validate = useCallback(() => {
         let tempErrors = {};

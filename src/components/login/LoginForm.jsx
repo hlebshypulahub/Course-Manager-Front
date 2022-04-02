@@ -7,16 +7,21 @@ import { Redirect } from "react-router-dom";
 import { login } from "../../redux";
 
 //// Mui
-import { TextField, Button } from "@mui/material";
+import { TextField } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
+import LoginIcon from "@mui/icons-material/Login";
 
 //// CSS
 import "./LoginForm.scss";
+
+//// Utils
+import { green } from "../../helpers/color";
 
 const LoginForm = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    const { isLoggedIn } = useSelector((state) => state.user);
+    const { isLoggedIn, fetching } = useSelector((state) => state.user);
     const { message } = useSelector((state) => state.error);
 
     const dispatch = useDispatch();
@@ -81,19 +86,22 @@ const LoginForm = () => {
                     onChange={(e) => setPassword(e.target.value)}
                 />
 
-                <Button
+                <LoadingButton
+                    endIcon={<LoginIcon />}
                     type="submit"
                     className="button"
                     variant="contained"
-                    color="success"
+                    loading={fetching}
+                    loadingPosition="end"
                     style={{
+                        background: green,
                         fontFamily: "'Roboto', sans-serif",
                         color: "white",
                         fontWeight: "600",
                     }}
                 >
                     Войти
-                </Button>
+                </LoadingButton>
             </form>
         </div>
     );

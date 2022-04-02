@@ -82,33 +82,9 @@ export const getEmployeeById = (id) => {
     return fetchData(API_BASE_URL + "/" + id);
 };
 
-export const patchEmployeeCategory = (id, patch) => {
-    return patchEmployee(id, patch, "/category");
-};
-
-export const patchEmployeeCategoryAssignmentDeadlineDate = (id, patch) => {
-    return patchEmployee(id, patch, "/category-deadline");
-};
-
-export const patchEmployeeActive = (id, patch) => {
-    return patchEmployee(id, patch, "/active");
-};
-
-export const patchEmployeeExemption = (id, patch) => {
-    return patchEmployee(id, patch, "/exemption");
-};
-
-export const patchEmployeeNote = (id, patch) => {
-    return patchEmployee(id, patch, "/note");
-};
-
-export const patchEmployeeEducation = (id, patch) => {
-    return patchEmployee(id, patch, "/education");
-};
-
-const patchEmployee = (id, patch, path) => {
+export const patchEmployee = (id, patch) => {
     return fetchData(
-        API_BASE_URL + "/" + id + path,
+        API_BASE_URL + "/" + id + "/patch",
         "POST",
         JSON.stringify(patch)
     );

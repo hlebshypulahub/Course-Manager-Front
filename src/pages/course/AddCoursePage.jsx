@@ -50,6 +50,8 @@ const AddCoursePage = (props) => {
     const history = useHistory();
     const dispatch = useDispatch();
 
+    useEffect(() => (document.title = "Добавить курс"), []);
+
     useEffect(() => {
         const fetchEmployee = () => {
             getEmployeeById(employeeId).then((data) => {

@@ -1,10 +1,15 @@
-import { LOGIN_SUCCESS, LOGIN_FAIL, EDIT_USER } from "./user-types";
+import {
+    LOGIN_SUCCESS,
+    LOGIN_FAIL,
+    EDIT_USER,
+    LOGIN_FETCHING,
+} from "./user-types";
 
 const user = JSON.parse(localStorage.getItem("user"));
 
 const initialState = user
-    ? { isLoggedIn: true, user }
-    : { isLoggedIn: false, user: null };
+    ? { isLoggedIn: true, user, fetching: false }
+    : { isLoggedIn: false, user: null, fetching: false };
 
 export default function reducer(state = initialState, action) {
     const { type, payload } = action;
@@ -14,13 +19,21 @@ export default function reducer(state = initialState, action) {
             return {
                 ...state,
                 isLoggedIn: true,
+                fetching: false,
                 user: payload,
+            };
+
+        case LOGIN_FETCHING:
+            return {
+                ...state,
+                fetching: true,
             };
 
         case LOGIN_FAIL:
             return {
                 ...state,
                 isLoggedIn: false,
+                fetching: false,
                 user: null,
             };
 

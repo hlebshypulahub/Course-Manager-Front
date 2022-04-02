@@ -16,8 +16,7 @@ import ExemptionCard from "../../components/cards/ExemptionCard";
 //// Functions
 import {
     getEmployeeById,
-    patchEmployeeActive,
-    patchEmployeeExemption,
+    patchEmployee,
 } from "../../services/employee.service";
 import { validateCategory } from "../../helpers/validate-category";
 import { validateEducation } from "../../helpers/validate-education";
@@ -61,6 +60,11 @@ const EmployeeViewPage = (props) => {
         fetchCourses();
     }, [fetchCourses]);
 
+    useEffect(
+        () => (document.title = employee && (employee.shortName || "")),
+        [employee]
+    );
+
     useEffect(() => {
         if (employee) {
             const tempErrors = validateCategory(
@@ -102,9 +106,7 @@ const EmployeeViewPage = (props) => {
             });
     }, [id, dispatch]);
 
-    useEffect(() => {
-        fetchEmployee();
-    }, [fetchEmployee]);
+    useEffect(() => fetchEmployee(), [fetchEmployee]);
 
     const toggleEmployeeStateModalShown = () => {
         setEmployeeStateModalShown(!employeeStateModalShown);
@@ -115,15 +117,16 @@ const EmployeeViewPage = (props) => {
             e.preventDefault();
 
             const patch = {
+                type: "active",
                 active: !employee.active,
             };
 
             setModalSubmitting(true);
 
-            patchEmployeeActive(id, patch)
+            patchEmployee(id, patch)
                 .then(() => {
-                    dispatch(setMessage("Состояние изменено"));
                     fetchEmployee();
+                    dispatch(setMessage("Состояние изменено"));
                     setModalSubmitting(false);
                     setEmployeeStateModalShown(false);
                 })
@@ -138,6 +141,7 @@ const EmployeeViewPage = (props) => {
 
     const deleteExemption = useCallback(() => {
         const patch = {
+            type: "exemption",
             exemption: null,
             exemptionStartDate: null,
             exemptionEndDate: null,
@@ -145,7 +149,7 @@ const EmployeeViewPage = (props) => {
 
         setExemptionDeleteSubmitting(true);
 
-        patchEmployeeExemption(id, patch)
+        patchEmployee(id, patch)
             .then(() => {
                 dispatch(setMessage("Освобождение удалено"));
                 setExemptionDeleteSubmitting(false);

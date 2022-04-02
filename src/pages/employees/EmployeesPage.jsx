@@ -54,6 +54,8 @@ const EmployeesPage = () => {
     const history = useHistory();
     const dispatch = useDispatch();
 
+    useEffect(() => (document.title = "Сотрудники"), []);
+
     const Input = styled("input")({
         display: "none",
     });

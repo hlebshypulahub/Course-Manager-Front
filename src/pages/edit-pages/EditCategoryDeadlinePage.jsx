@@ -18,7 +18,7 @@ import CardContent from "@mui/material/CardContent";
 //// Functions
 import {
     getEmployeeById,
-    patchEmployeeCategoryAssignmentDeadlineDate,
+    patchEmployee,
 } from "../../services/employee.service";
 import { parseDates as parse } from "../../helpers/parse-dates";
 import { formatDates as format } from "../../helpers/format-dates";
@@ -42,6 +42,8 @@ const EditCategoryDeadlinePage = (props) => {
 
     const history = useHistory();
     const dispatch = useDispatch();
+
+    useEffect(() => (document.title = "Изменить срок аттестации"), []);
 
     const validate = useCallback(() => {
         let tempErrors = {};
@@ -78,6 +80,7 @@ const EditCategoryDeadlinePage = (props) => {
 
             if (validate()) {
                 const patch = {
+                    type: "categoryDeadline",
                     categoryAssignmentDeadlineDate: format(
                         categoryAssignmentDeadlineDate
                     ),
@@ -89,7 +92,7 @@ const EditCategoryDeadlinePage = (props) => {
                     id,
                     history,
                     patch,
-                    patchEmployeeCategoryAssignmentDeadlineDate,
+                    patchEmployee,
                     "Срок аттестации изменён",
                     dispatch
                 );

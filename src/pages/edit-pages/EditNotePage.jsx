@@ -21,7 +21,7 @@ import Tooltip from "@mui/material/Tooltip";
 //// Functions
 import {
     getEmployeeById,
-    patchEmployeeNote,
+    patchEmployee,
 } from "../../services/employee.service";
 import { parseDates as parse } from "../../helpers/parse-dates";
 import { formatDates as format } from "../../helpers/format-dates";
@@ -48,6 +48,8 @@ const EditNotePage = (props) => {
 
     const history = useHistory();
     const dispatch = useDispatch();
+
+    useEffect(() => (document.title = "Изменить заметки"), []);
 
     const validate = useCallback(() => {
         let tempErrors = {};
@@ -81,6 +83,7 @@ const EditNotePage = (props) => {
 
             if (validate()) {
                 const patch = {
+                    type: "note",
                     note,
                     notificationDate: format(notificationDate),
                     shouldExtendNotification,
@@ -92,7 +95,7 @@ const EditNotePage = (props) => {
                     id,
                     history,
                     patch,
-                    patchEmployeeNote,
+                    patchEmployee,
                     "Заметки изменены",
                     dispatch
                 );

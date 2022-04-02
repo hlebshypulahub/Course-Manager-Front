@@ -6,7 +6,7 @@ export const handleFormSubmit = (
     patch,
     fetchFunction,
     snackMessage,
-    dispatch = () => {}
+    dispatch = () => {},
 ) => {
     fetchFunction(id, patch)
         .then(() => {
@@ -17,3 +17,7 @@ export const handleFormSubmit = (
             dispatch(setError("Отсутствует соединение с сервером...", true));
         });
 };
+
+//////////////////////////////
+//////////////////////
+///// Not shown snack
