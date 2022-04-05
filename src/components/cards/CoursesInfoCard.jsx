@@ -8,7 +8,7 @@ import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 
 //// Utils
-import { pink, white } from "../../helpers/color";
+import { pink, white, font_grey } from "../../helpers/color";
 
 const CoursesInfoCard = ({
     employee: { id, courseHoursLeft, categoryAssignmentDeadlineDate },
@@ -46,7 +46,7 @@ const CoursesInfoCard = ({
                         startIcon={<AddIcon />}
                         style={{
                             backgroundColor: white,
-                            color: "black",
+                            color: font_grey,
                             fontWeight: "bold",
                             height: "50px",
                             width: "200px",

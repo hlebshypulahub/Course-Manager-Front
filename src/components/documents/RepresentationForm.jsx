@@ -247,7 +247,7 @@ const RepresentationForm = ({
 
                         <div className="text-field">
                             <MyTextField
-                                label="Недостатки в работе, дисциплинарные взыскания, обоснованные жалобы"
+                                label="Показатели деятельности за представляемый период, достижения"
                                 value={showing}
                                 onChange={(e) => setShowing(e.target.value)}
                                 multiline

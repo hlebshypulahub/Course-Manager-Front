@@ -60,10 +60,13 @@ const EmployeeViewPage = (props) => {
         fetchCourses();
     }, [fetchCourses]);
 
-    useEffect(
-        () => (document.title = employee && (employee.shortName || "")),
-        [employee]
-    );
+    useEffect(() => {
+        console.log(
+            employee && employee.shortName && (employee.shortName || "")
+        );
+        document.title =
+            employee && employee.shortName && (employee.shortName || "");
+    }, [employee]);
 
     useEffect(() => {
         if (employee) {
