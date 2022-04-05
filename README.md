@@ -29,7 +29,7 @@ The below documentation describes only the technical side of the front-end appli
 
 [![Employee Profile](docs/employee_view.png)](docs/employee_view.png)
 
-**More [Screenshots](documents/SCREENSHOTS.md)**
+**More [Screenshots](docs/screenshots.md)**
 
 </br>
 
