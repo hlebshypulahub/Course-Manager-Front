@@ -46,13 +46,13 @@ export const Dashboard = () => {
         (state) => state.error
     );
 
-    const toEmployeesPage = () => {
-        if (location.pathname === "/employees") {
-            window.location.reload();
-        } else {
-            history.push("/employees");
-        }
-    };
+    // const toEmployeesPage = () => {
+    //     if (location.pathname === "/employees") {
+    //         window.location.reload();
+    //     } else {
+    //         history.push("/");
+    //     }
+    // };
 
     const snackBar = (
         <SnackBar
@@ -121,7 +121,7 @@ export const Dashboard = () => {
                                     fontWeight: "600",
                                     height: "40px",
                                 }}
-                                onClick={toEmployeesPage}
+                                onClick={() => history.push("/employees")}
                             >
                                 Сотрудники
                             </Button>
