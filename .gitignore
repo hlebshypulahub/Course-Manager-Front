@@ -13,7 +13,7 @@
 /build
 
 # url
-/src/services/api-base-url.js
+# /src/services/api-base-url.js
 
 # misc
 .DS_Store
