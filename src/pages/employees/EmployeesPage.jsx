@@ -214,22 +214,24 @@ const EmployeesPage = () => {
                         {coursePlan ? "Печать" : "Создать график"}
                     </LoadingButton>
 
-                    <Button
-                        disabled={!employeeId}
-                        variant="contained"
-                        component="span"
-                        endIcon={<PersonSearchIcon />}
-                        style={{
-                            backgroundColor: !employeeId ? grey : green,
-                            color: "white",
-                            fontWeight: "600",
-                            height: "40px",
-                            width: "160px",
-                        }}
-                        onClick={goToEmployeeView}
-                    >
-                        Показать
-                    </Button>
+                    {!coursePlan && (
+                        <Button
+                            disabled={!employeeId}
+                            variant="contained"
+                            component="span"
+                            endIcon={<PersonSearchIcon />}
+                            style={{
+                                backgroundColor: !employeeId ? grey : green,
+                                color: "white",
+                                fontWeight: "600",
+                                height: "40px",
+                                width: "160px",
+                            }}
+                            onClick={goToEmployeeView}
+                        >
+                            Показать
+                        </Button>
+                    )}
                 </div>
 
                 <EmployeesTable
@@ -245,7 +247,7 @@ const EmployeesPage = () => {
                     setEmployeesIdsForCoursePlan={setEmployeesIdsForCoursePlan}
                 />
 
-                {/* <div className="upload-btn">
+                <div className="upload-btn">
                     {isFilePicked && file ? (
                         <Button
                             variant="contained"
@@ -293,7 +295,7 @@ const EmployeesPage = () => {
                             ? "Выбран файл: " + file.name
                             : "Отправьте файл .csv, импортированный из 1С"}
                     </span>
-                </div> */}
+                </div>
             </div>
         </div>
     );
