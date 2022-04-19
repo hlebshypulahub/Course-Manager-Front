@@ -1,11 +1,5 @@
 //// React
-import {
-    Switch,
-    BrowserRouter as Router,
-    Route,
-    useHistory,
-    useLocation,
-} from "react-router-dom";
+import { Switch, Route, useHistory, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 //// Pages
@@ -79,6 +73,15 @@ export const Dashboard = () => {
         />
     );
 
+    if (!currentUser) {
+        return (
+            <div className="Dashboard">
+                <header style={{ background: green }} />
+                <LoginPage />
+            </div>
+        );
+    }
+
     return (
         <div className="Dashboard">
             {snackBar}
@@ -99,7 +102,10 @@ export const Dashboard = () => {
                                 {currentUser.company}
                             </span>
                             <span
-                                style={{ marginLeft: "15px", marginTop: "5px" }}
+                                style={{
+                                    marginLeft: "15px",
+                                    marginTop: "5px",
+                                }}
                             >
                                 <img src={snake} alt="Медицина" />
                             </span>
@@ -139,48 +145,43 @@ export const Dashboard = () => {
                 )}
             </header>
 
-            {/* <Router> */}
-                <Switch>
-                    <Route exact path="/" component={EmployeesPage} />
-                    <Route path="/login" component={LoginPage} />
-                    <Route path="/edit-profile" component={EditProfilePage} />
-                    <Route exact path="/employees" component={EmployeesPage} />
-                    <Route
-                        exact
-                        path="/employees/:id"
-                        component={EmployeeViewPage}
-                    />
-                    <Route
-                        path="/employees/:id/edit-edu"
-                        component={EditEducationPage}
-                    />
-                    <Route
-                        path="/employees/:id/edit-category"
-                        component={EditCategoryPage}
-                    />
-                    <Route
-                        path="/employees/:id/add-course"
-                        component={AddCoursePage}
-                    />
-                    <Route
-                        path="/employees/:id/edit-category-deadline"
-                        component={EditCategoryDeadlinePage}
-                    />
-                    <Route
-                        path="/employees/:id/edit-exemption"
-                        component={EditExemptionPage}
-                    />
-                    <Route
-                        path="/employees/:id/note"
-                        component={EditNotePage}
-                    />
-                    <Route
-                        path="/employees/:id/documents"
-                        component={EmployeeDocumentsPage}
-                    />
-                    <Route component={NotFoundPage} />
-                </Switch>
-            {/* </Router> */}
+            <Switch>
+                <Route exact path="/" component={EmployeesPage} />
+                <Route path="/login" component={LoginPage} />
+                <Route path="/edit-profile" component={EditProfilePage} />
+                <Route exact path="/employees" component={EmployeesPage} />
+                <Route
+                    exact
+                    path="/employees/:id"
+                    component={EmployeeViewPage}
+                />
+                <Route
+                    path="/employees/:id/edit-edu"
+                    component={EditEducationPage}
+                />
+                <Route
+                    path="/employees/:id/edit-category"
+                    component={EditCategoryPage}
+                />
+                <Route
+                    path="/employees/:id/add-course"
+                    component={AddCoursePage}
+                />
+                <Route
+                    path="/employees/:id/edit-category-deadline"
+                    component={EditCategoryDeadlinePage}
+                />
+                <Route
+                    path="/employees/:id/edit-exemption"
+                    component={EditExemptionPage}
+                />
+                <Route path="/employees/:id/note" component={EditNotePage} />
+                <Route
+                    path="/employees/:id/documents"
+                    component={EmployeeDocumentsPage}
+                />
+                <Route component={NotFoundPage} />
+            </Switch>
         </div>
     );
 };
