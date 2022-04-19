@@ -1,6 +1,12 @@
 //// React
-
-import { Switch, Route, useHistory, useLocation } from "react-router-dom";
+import {
+    Switch,
+    BrowserRouter as Router,
+    Route,
+    useHistory,
+    useLocation,
+    Link,
+} from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 //// Pages
@@ -96,7 +102,7 @@ export const Dashboard = () => {
                             <span
                                 style={{ marginLeft: "15px", marginTop: "5px" }}
                             >
-                                <img src={snake} alt="Медицина"/>
+                                <img src={snake} alt="Медицина" />
                             </span>
                         </a>
 
@@ -134,43 +140,48 @@ export const Dashboard = () => {
                 )}
             </header>
 
-            <Switch>
-                <Route exact path="/" component={EmployeesPage} />
-                <Route path="/login" component={LoginPage} />
-                <Route path="/edit-profile" component={EditProfilePage} />
-                <Route exact path="/employees" component={EmployeesPage} />
-                <Route
-                    exact
-                    path="/employees/:id"
-                    component={EmployeeViewPage}
-                />
-                <Route
-                    path="/employees/:id/edit-edu"
-                    component={EditEducationPage}
-                />
-                <Route
-                    path="/employees/:id/edit-category"
-                    component={EditCategoryPage}
-                />
-                <Route
-                    path="/employees/:id/add-course"
-                    component={AddCoursePage}
-                />
-                <Route
-                    path="/employees/:id/edit-category-deadline"
-                    component={EditCategoryDeadlinePage}
-                />
-                <Route
-                    path="/employees/:id/edit-exemption"
-                    component={EditExemptionPage}
-                />
-                <Route path="/employees/:id/note" component={EditNotePage} />
-                <Route
-                    path="/employees/:id/documents"
-                    component={EmployeeDocumentsPage}
-                />
-                <Route component={NotFoundPage} />
-            </Switch>
+            <Router>
+                <Switch>
+                    <Route exact path="/" component={EmployeesPage} />
+                    <Route path="/login" component={LoginPage} />
+                    <Route path="/edit-profile" component={EditProfilePage} />
+                    <Route exact path="/employees" component={EmployeesPage} />
+                    <Route
+                        exact
+                        path="/employees/:id"
+                        component={EmployeeViewPage}
+                    />
+                    <Route
+                        path="/employees/:id/edit-edu"
+                        component={EditEducationPage}
+                    />
+                    <Route
+                        path="/employees/:id/edit-category"
+                        component={EditCategoryPage}
+                    />
+                    <Route
+                        path="/employees/:id/add-course"
+                        component={AddCoursePage}
+                    />
+                    <Route
+                        path="/employees/:id/edit-category-deadline"
+                        component={EditCategoryDeadlinePage}
+                    />
+                    <Route
+                        path="/employees/:id/edit-exemption"
+                        component={EditExemptionPage}
+                    />
+                    <Route
+                        path="/employees/:id/note"
+                        component={EditNotePage}
+                    />
+                    <Route
+                        path="/employees/:id/documents"
+                        component={EmployeeDocumentsPage}
+                    />
+                    <Route component={NotFoundPage} />
+                </Switch>
+            </Router>
         </div>
     );
 };

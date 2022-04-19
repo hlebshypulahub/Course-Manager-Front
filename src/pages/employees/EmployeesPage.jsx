@@ -245,7 +245,7 @@ const EmployeesPage = () => {
                     setEmployeesIdsForCoursePlan={setEmployeesIdsForCoursePlan}
                 />
 
-                <div className="upload-btn">
+                {/* <div className="upload-btn">
                     {isFilePicked && file ? (
                         <Button
                             variant="contained"
@@ -293,7 +293,7 @@ const EmployeesPage = () => {
                             ? "Выбран файл: " + file.name
                             : "Отправьте файл .csv, импортированный из 1С"}
                     </span>
-                </div>
+                </div> */}
             </div>
         </div>
     );

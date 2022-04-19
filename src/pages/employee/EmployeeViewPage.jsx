@@ -61,11 +61,8 @@ const EmployeeViewPage = (props) => {
     }, [fetchCourses]);
 
     useEffect(() => {
-        console.log(
-            employee && employee.shortName && (employee.shortName || "")
-        );
-        document.title =
-            employee && employee.shortName && (employee.shortName || "");
+        if (employee !== undefined && employee.shortName !== undefined)
+            document.title = employee.shortName;
     }, [employee]);
 
     useEffect(() => {

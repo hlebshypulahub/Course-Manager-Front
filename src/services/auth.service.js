@@ -1,7 +1,7 @@
 import { API_BASE_URL as baseUrl } from "./api-base-url";
 import authHeader from "./auth-header";
 
-const API_BASE_URL = baseUrl + "/api/v1/auth";
+const API_BASE_URL = baseUrl + "/api/auth";
 
 export const login = (username, password) => {
     return fetch(API_BASE_URL + "/signin", {
