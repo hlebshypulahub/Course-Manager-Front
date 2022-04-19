@@ -28,7 +28,8 @@ import { convertMapToArray as mapToArray } from "../../helpers/convert-map-to-ar
 import "../../pages/edit-pages/Form.scss";
 
 const QualificationSheetForm = ({ employee, categories, principalCompany, fetchDocument, fetching }) => {
-    const uuidv4 = require("uuid/v4");
+    // const uuidv4 = require("uuid/v4");
+    const { v4: uuidV4 } = require("uuid");
 
     const [category, setCategory] = useState({});
     const [qualification, setQualification] = useState(
@@ -50,7 +51,7 @@ const QualificationSheetForm = ({ employee, categories, principalCompany, fetchD
     const [pastJobs, setPastJobs] = useState(
         new Map([
             [
-                uuidv4(),
+                uuidV4(),
                 {
                     pastJob: "",
                     startDate: null,
@@ -84,7 +85,7 @@ const QualificationSheetForm = ({ employee, categories, principalCompany, fetchD
             });
             setPastJobs(tempPastJobs);
         } else {
-            setPastJobs([...pastJobs, [uuidv4(), { pastJob: newPastJob }]]);
+            setPastJobs([...pastJobs, [uuidV4(), { pastJob: newPastJob }]]);
         }
     };
 
@@ -99,7 +100,7 @@ const QualificationSheetForm = ({ employee, categories, principalCompany, fetchD
         } else {
             setPastJobs([
                 ...pastJobs,
-                [uuidv4(), { startDate: format(newStartDate) }],
+                [uuidV4(), { startDate: format(newStartDate) }],
             ]);
         }
     };
@@ -115,14 +116,14 @@ const QualificationSheetForm = ({ employee, categories, principalCompany, fetchD
         } else {
             setPastJobs([
                 ...pastJobs,
-                [uuidv4(), { endDate: format(newEndDate) }],
+                [uuidV4(), { endDate: format(newEndDate) }],
             ]);
         }
     };
 
     const extendPastJobs = () => {
         let tempPastJobs = new Map(pastJobs);
-        tempPastJobs.set(uuidv4(), {
+        tempPastJobs.set(uuidV4(), {
             pastJob: "",
             startDate: null,
             endDate: null,
