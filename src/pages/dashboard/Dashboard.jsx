@@ -5,7 +5,6 @@ import {
     Route,
     useHistory,
     useLocation,
-    Link,
 } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -89,7 +88,7 @@ export const Dashboard = () => {
             <header style={{ background: green }}>
                 {currentUser && (
                     <>
-                        <a href="/employees" style={{ textDecoration: "none" }}>
+                        <a href="/" style={{ textDecoration: "none" }}>
                             <span
                                 style={{
                                     color: white,
@@ -140,7 +139,7 @@ export const Dashboard = () => {
                 )}
             </header>
 
-            <Router>
+            {/* <Router> */}
                 <Switch>
                     <Route exact path="/" component={EmployeesPage} />
                     <Route path="/login" component={LoginPage} />
@@ -181,7 +180,7 @@ export const Dashboard = () => {
                     />
                     <Route component={NotFoundPage} />
                 </Switch>
-            </Router>
+            {/* </Router> */}
         </div>
     );
 };

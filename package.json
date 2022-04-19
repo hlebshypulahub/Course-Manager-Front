@@ -40,7 +40,7 @@
     },
     "scripts": {
         "start": "react-scripts start",
-        "build": "react-scripts build && xcopy .\\build\\* C:\\Users\\hlebs\\Desktop\\Ledikom\\Course-Manager-Back\\src\\main\\resources\\public /s /y",
+        "build": "react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject"
     },
