@@ -15,7 +15,7 @@ function App() {
 
     useEffect(() => {
         dispatch(getUserFromAPI());
-    }, [dispatch])
+    }, [dispatch]);
 
     return (
         <div className="App">

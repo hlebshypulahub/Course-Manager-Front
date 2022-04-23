@@ -9,7 +9,7 @@ import {
 const user = JSON.parse(localStorage.getItem("user"));
 
 const initialState = user
-    ? { isLoggedIn: true, user: null, fetching: false }
+    ? { isLoggedIn: true, user, fetching: false }
     : { isLoggedIn: false, user: null, fetching: false };
 
 export default function reducer(state = initialState, action) {
