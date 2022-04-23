@@ -3,12 +3,13 @@ import {
     LOGIN_FAIL,
     EDIT_USER,
     LOGIN_FETCHING,
+    USER_FETCHED
 } from "./user-types";
 
 const user = JSON.parse(localStorage.getItem("user"));
 
 const initialState = user
-    ? { isLoggedIn: true, user, fetching: false }
+    ? { isLoggedIn: true, user: null, fetching: false }
     : { isLoggedIn: false, user: null, fetching: false };
 
 export default function reducer(state = initialState, action) {
@@ -16,6 +17,7 @@ export default function reducer(state = initialState, action) {
 
     switch (type) {
         case LOGIN_SUCCESS:
+        case USER_FETCHED:
             return {
                 ...state,
                 isLoggedIn: true,

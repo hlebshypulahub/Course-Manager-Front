@@ -1,5 +1,5 @@
 //// React
-import { Switch, Route, useHistory, useLocation } from "react-router-dom";
+import { Switch, Route, useHistory} from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 //// Pages
@@ -18,6 +18,7 @@ import EditProfilePage from "../edit-pages/EditProfilePage";
 
 //// Components
 import MyModal from "../../components/modals/MyModal";
+import Spinner from "../../components/spinner/Spinner";
 
 //// CSS
 import "./Dashboard.scss";
@@ -37,22 +38,13 @@ import snake from "../../img/snake.png";
 
 export const Dashboard = () => {
     const history = useHistory();
-    const location = useLocation();
     const dispatch = useDispatch();
 
-    const { user: currentUser } = useSelector((state) => state.user);
+    const { user: currentUser, fetching } = useSelector((state) => state.user);
     const { message: snackMessage } = useSelector((state) => state.message);
     const { showModal, message: modalMessage } = useSelector(
         (state) => state.error
     );
-
-    // const toEmployeesPage = () => {
-    //     if (location.pathname === "/employees") {
-    //         window.location.reload();
-    //     } else {
-    //         history.push("/");
-    //     }
-    // };
 
     const snackBar = (
         <SnackBar
@@ -72,6 +64,10 @@ export const Dashboard = () => {
             }}
         />
     );
+
+    if (fetching) {
+        return <Spinner />;
+    }
 
     if (!currentUser) {
         return (

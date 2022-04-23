@@ -1,12 +1,28 @@
-import { LOGIN_SUCCESS, LOGIN_FAIL, EDIT_USER, LOGIN_FETCHING } from "./user-types";
+import {
+    LOGIN_SUCCESS,
+    LOGIN_FAIL,
+    EDIT_USER,
+    LOGIN_FETCHING,
+    USER_FETCHED,
+} from "./user-types";
 
 import { setError, clearError } from "../error/error-actions";
 
-import { login as serviceLogin } from "../../services/auth.service";
+import {
+    login as serviceLogin,
+    getUserFromAPI as getUser,
+} from "../../services/auth.service";
 
 const loginSuccess = (user) => {
     return {
         type: LOGIN_SUCCESS,
+        payload: user,
+    };
+};
+
+const userFetched = (user) => {
+    return {
+        type: USER_FETCHED,
         payload: user,
     };
 };
@@ -30,8 +46,29 @@ export const editUser = (patch) => {
     };
 };
 
+export const getUserFromAPI = (username) => (dispatch) => {
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    if (user) {
+        dispatch(loginFetching());
+
+        return getUser(username)
+            .then((data) => {
+                if (data.accessToken) {
+                    localStorage.setItem("user", JSON.stringify(data));
+
+                    dispatch(userFetched(data));
+                    dispatch(clearError());
+                }
+            })
+            .catch((error) => {
+                dispatch(setError(error.message));
+            });
+    }
+};
+
 export const login = (username, password) => (dispatch) => {
-    dispatch(loginFetching())
+    dispatch(loginFetching());
 
     return serviceLogin(username, password)
         .then((data) => {

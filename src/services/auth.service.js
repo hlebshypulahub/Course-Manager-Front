@@ -26,6 +26,30 @@ export const login = (username, password) => {
     });
 };
 
+export const getUserFromAPI = () => {
+    return fetch(API_BASE_URL + "/user", {
+        method: "GET",
+        headers: Object.assign(
+            {},
+            { "Content-type": "application/json" },
+            authHeader()
+        ),
+    }).then((response) => {
+        if (response.ok) {
+            return response.json().then((data) => {
+                if (data.accessToken) {
+                    localStorage.setItem("user", JSON.stringify(data));
+                }
+
+                return data;
+            });
+        } else {
+            localStorage.removeItem("user");
+            throw new Error(response.status);
+        }
+    });
+};
+
 export const edit = (patch) => {
     return fetch(API_BASE_URL + "/edit", {
         method: "POST",
