@@ -24,6 +24,8 @@ const CategoryCard = ({
         categoryPossiblePromotionDate,
         docsSubmitDeadlineDate,
     },
+    withActions,
+    toggleEmployeePharmacyModalShown,
     categoryIsValid,
     educationIsValid,
     showCardActions,
@@ -100,26 +102,42 @@ const CategoryCard = ({
         </CardActions>
     );
 
+    const categoryPin = (
+        <span
+            className="pin"
+            style={
+                !category
+                    ? {
+                          backgroundColor: red,
+                      }
+                    : {
+                          backgroundColor: green,
+                      }
+            }
+            onClick={toggleEmployeePharmacyModalShown}
+        >
+            {!category ? "Необходимо указать" : category.label}
+        </span>
+    );
+
+    const pharmacyPinTooltip = withActions ? (
+        <Tooltip
+            title="Нажмите, чтобы изменить состояние сотрудника"
+            placement="top"
+        >
+            {categoryPin}
+        </Tooltip>
+    ) : (
+        categoryPin
+    );
+
     return (
         <Card className="card">
             <CardContent className="card-content">
                 <div className="card-label-card">
                     <span className="header-label-card">Категория</span>
 
-                    <span
-                        className="pin"
-                        style={
-                            !category
-                                ? {
-                                      backgroundColor: red,
-                                  }
-                                : {
-                                      backgroundColor: green,
-                                  }
-                        }
-                    >
-                        {!category ? "Необходимо указать" : category.label}
-                    </span>
+                    {pharmacyPinTooltip}
                 </div>
 
                 <div>

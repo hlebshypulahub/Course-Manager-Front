@@ -36,6 +36,8 @@ const EmployeeViewPage = (props) => {
     const [educationIsValid, setEducationIsValid] = useState(false);
     const [employeeStateModalShown, setEmployeeStateModalShown] =
         useState(false);
+    const [employeePharmacyModalShown, setEmployeePharmacyModalShown] =
+        useState(false);
     const [courses, setCourses] = useState();
     const [isCoursesLoading, setCoursesLoading] = useState(false);
     const [modalSubmitting, setModalSubmitting] = useState(false);
@@ -139,6 +141,35 @@ const EmployeeViewPage = (props) => {
         [id, employee, dispatch, fetchEmployee]
     );
 
+    const toggleEmployeePharmacyModalShown = () => {
+        setEmployeePharmacyModalShown(!employeePharmacyModalShown);
+    };
+
+    const handleToggleEmployeePharmacySubmit = useCallback(
+        (e) => {
+            e.preventDefault();
+
+            const patch = {
+                type: "pharmacy",
+                pharmacy: false,
+            };
+
+            setModalSubmitting(true);
+
+            patchEmployee(id, patch)
+                .then(() => {
+                    dispatch(setMessage("Сотрудник удалён"));
+                    history.push(`/employees`);
+                })
+                .catch(() => {
+                    dispatch(
+                        setError("Отсутствует соединение с сервером...", true)
+                    );
+                });
+        },
+        [id, dispatch, history]
+    );
+
     const deleteExemption = useCallback(() => {
         const patch = {
             type: "exemption",
@@ -181,6 +212,17 @@ const EmployeeViewPage = (props) => {
         />
     );
 
+    const employeePharmacyModal = employeePharmacyModalShown && (
+        <MyAcceptModal
+            submitting={modalSubmitting}
+            message={`Подтвердите, что сотрудник ${
+                employee.fullName
+            } не является мед. работником, и его можно удалить из списка учёта!`}
+            submitFunc={handleToggleEmployeePharmacySubmit}
+            cancelFunc={toggleEmployeePharmacyModalShown}
+        />
+    );
+
     if (isLoading) {
         return <Spinner />;
     }
@@ -192,6 +234,7 @@ const EmployeeViewPage = (props) => {
     return (
         <div>
             {employeeStateModal}
+            {employeePharmacyModal}
 
             <div className="EmployeeView">
                 <div className="first-row">
@@ -206,7 +249,11 @@ const EmployeeViewPage = (props) => {
                     />
 
                     <CategoryCard
+                        withActions
                         employee={employee}
+                        toggleEmployeePharmacyModalShown={
+                            toggleEmployeePharmacyModalShown
+                        }
                         categoryIsValid={categoryIsValid}
                         educationIsValid={educationIsValid}
                         showCardActions={true}

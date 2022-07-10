@@ -8,10 +8,7 @@ import EmployeesTable from "../../components/tables/EmployeesTable";
 import Spinner from "../../components/spinner/Spinner";
 
 //// Mui
-import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
-import UploadFileIcon from "@mui/icons-material/UploadFile";
-import SendIcon from "@mui/icons-material/Send";
 import PrintIcon from "@mui/icons-material/Print";
 import LoadingButton from "@mui/lab/LoadingButton";
 
@@ -23,12 +20,11 @@ import {
 } from "../../services/employee.service";
 import ArticleIcon from "@mui/icons-material/Article";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
-import { uploadFile } from "../../services/file.service";
 import { setError } from "../../redux";
 import { legend } from "../../components/tables/TableColumns";
 
 //// Utils
-import { green, sky_blue, grey, white, font_grey } from "../../helpers/color";
+import { green, grey, white, font_grey } from "../../helpers/color";
 
 //// CSS
 import "./EmployeesPage.scss";
@@ -37,8 +33,6 @@ const EmployeesPage = () => {
     const [employees, setEmployees] = useState();
     const [employeesByGroups, setEmployeesByGroups] = useState([]);
     const [isLoading, setLoading] = useState(true);
-    const [file, setFile] = useState();
-    const [isFilePicked, setFilePicked] = useState(false);
     const [isEmployeesByGroupsLoading, setEmployeesByGroupsLoading] =
         useState(true);
     const [employeeId, setEmployeeId] = useState();
@@ -55,33 +49,6 @@ const EmployeesPage = () => {
     const dispatch = useDispatch();
 
     useEffect(() => (document.title = "Сотрудники"), []);
-
-    const Input = styled("input")({
-        display: "none",
-    });
-
-    const onChangeFile = (e) => {
-        setFile(e.target.files[0]);
-        setFilePicked(true);
-    };
-
-    const onFileUpload = (e) => {
-        e.preventDefault();
-
-        const formData = new FormData();
-
-        formData.append("file", file);
-
-        uploadFile(formData)
-            .then(() => {
-                window.location.reload(true);
-            })
-            .catch(() => {
-                dispatch(
-                    setError("Отсутствует соединение с сервером...", true)
-                );
-            });
-    };
 
     useEffect(() => {
         const fetchEmployees = () => {
@@ -246,56 +213,6 @@ const EmployeesPage = () => {
                     employeesIdsForCoursePlan={employeesIdsForCoursePlan}
                     setEmployeesIdsForCoursePlan={setEmployeesIdsForCoursePlan}
                 />
-
-                {/* <div className="upload-btn">
-                    {isFilePicked && file ? (
-                        <Button
-                            variant="contained"
-                            component="span"
-                            endIcon={<SendIcon />}
-                            style={{
-                                backgroundColor: green,
-                                color: "white",
-                                fontWeight: "bold",
-                                height: "40px",
-                                width: "150px",
-                            }}
-                            onClick={onFileUpload}
-                        >
-                            Отправить
-                        </Button>
-                    ) : (
-                        <label htmlFor="contained-button-file">
-                            <Input
-                                accept=".csv"
-                                id="contained-button-file"
-                                type="file"
-                                onChange={onChangeFile}
-                            />
-                            <Button
-                                variant="contained"
-                                component="span"
-                                startIcon={<UploadFileIcon />}
-                                style={{
-                                    fontFamily: "'Roboto', sans-serif",
-                                    backgroundColor: sky_blue,
-                                    color: "black",
-                                    fontWeight: "bold",
-                                    height: "40px",
-                                    width: "150px",
-                                }}
-                            >
-                                Добавить
-                            </Button>
-                        </label>
-                    )}
-
-                    <span className="value-text">
-                        {isFilePicked && file && file.name
-                            ? "Выбран файл: " + file.name
-                            : "Отправьте файл .csv, импортированный из 1С"}
-                    </span>
-                </div> */}
             </div>
         </div>
     );
