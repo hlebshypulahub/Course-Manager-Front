@@ -217,7 +217,7 @@ const EmployeeViewPage = (props) => {
             submitting={modalSubmitting}
             message={`Подтвердите, что сотрудник ${
                 employee.fullName
-            } не является мед. работником, и его можно удалить из списка учёта!`}
+            } не является мед./фарм. работником, и его можно удалить из списка учёта!`}
             submitFunc={handleToggleEmployeePharmacySubmit}
             cancelFunc={toggleEmployeePharmacyModalShown}
         />
