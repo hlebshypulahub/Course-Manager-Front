@@ -176,6 +176,7 @@ const EmployeesTable = ({
                     scrollProps={scrollProps}
                     shareSpaceOnResize
                     i18n={i18n}
+                    defaultLimit={100}
                 />
 
                 <div className="settingsBtns">
