@@ -7,14 +7,14 @@ import "./CoursesTable.scss";
 
 //// Functions
 import { parseDates as parse } from "../../helpers/parse-dates";
-import {scrollProps, i18n} from "./TableProps";
-import {courseColumns as columns} from "./TableColumns";
+import { scrollProps, i18n } from "./TableProps";
+import { courseColumns as columns } from "./TableColumns";
 
 //// ReactDataGrid
 import ReactDataGrid from "@inovua/reactdatagrid-community";
 import "@inovua/reactdatagrid-community/index.css";
 
-const CoursesTable = ({courses, isCoursesLoading}) => {
+const CoursesTable = ({ courses, isCoursesLoading }) => {
     window.moment = moment;
 
     const rows = courses
@@ -39,6 +39,11 @@ const CoursesTable = ({courses, isCoursesLoading}) => {
                     idProperty="name"
                     columns={columns}
                     dataSource={rows}
+                    defaultSortInfo={{
+                        name: "startDate",
+                        dir: -1,
+                        type: "date",
+                    }}
                     loading={isCoursesLoading}
                     rowHeight={50}
                     scrollProps={scrollProps}

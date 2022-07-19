@@ -272,13 +272,7 @@ export const legend = [
 ];
 
 export const courseColumns = [
-    { name: "name", header: "Название", defaultFlex: 1 },
-    {
-        name: "description",
-        header: "Описание",
-        defaultFlex: 1,
-        ...everyColumnProps,
-    },
+    { name: "name", header: "Наименование", defaultFlex: 3 },
     {
         name: "hours",
         header: "Количество часов",
@@ -298,6 +292,12 @@ export const courseColumns = [
         header: "Дата окончания",
         defaultFlex: 1,
         ...dateColumnProps,
+        ...everyColumnProps,
+    },
+    {
+        name: "description",
+        header: "Описание",
+        defaultFlex: 4,
         ...everyColumnProps,
     },
 ];
