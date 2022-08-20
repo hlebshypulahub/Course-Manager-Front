@@ -11,7 +11,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { pink, white, font_grey } from "../../helpers/color";
 
 const CoursesInfoCard = ({
-    employee: { id, courseHoursLeft, categoryAssignmentDeadlineDate },
+    employee: { id, courseHoursLeft, courseDeadlineDate },
 }) => {
     const history = useHistory();
 
@@ -35,8 +35,7 @@ const CoursesInfoCard = ({
 
                 <div className="course-date-label">
                     <span>
-                        {categoryAssignmentDeadlineDate &&
-                            "до " + categoryAssignmentDeadlineDate}
+                        {courseDeadlineDate && "до " + courseDeadlineDate}
                     </span>
                 </div>
 

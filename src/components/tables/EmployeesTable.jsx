@@ -46,6 +46,7 @@ const EmployeesTable = ({
             categoryNumber,
             categoryAssignmentDate,
             categoryAssignmentDeadlineDate,
+            courseDeadlineDate,
             docsSubmitDeadlineDate,
             categoryPossiblePromotionDate,
             courseHoursSum,
@@ -68,6 +69,7 @@ const EmployeesTable = ({
                 categoryAssignmentDeadlineDate: parse(
                     categoryAssignmentDeadlineDate
                 ),
+                courseDeadlineDate: parse(courseDeadlineDate),
                 docsSubmitDeadlineDate: parse(docsSubmitDeadlineDate),
                 categoryPossiblePromotionDate: parse(
                     categoryPossiblePromotionDate

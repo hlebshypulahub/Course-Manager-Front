@@ -21,6 +21,7 @@ const CategoryCard = ({
         categoryAssignmentDate,
         categoryNumber,
         categoryAssignmentDeadlineDate,
+        courseDeadlineDate,
         categoryPossiblePromotionDate,
         docsSubmitDeadlineDate,
     },
@@ -167,6 +168,13 @@ const CategoryCard = ({
                     <span className="value-text">
                         {categoryAssignmentDeadlineDate}
                     </span>
+                </div>
+
+                <div>
+                    <span className="label-text-large">
+                        Срок прохож. курса:
+                    </span>
+                    <span className="value-text">{courseDeadlineDate}</span>
                 </div>
 
                 <div>

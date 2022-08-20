@@ -165,7 +165,7 @@ const AddCoursePage = (props) => {
                             <MyTextField
                                 error={errors.name.length > 0}
                                 helperText={errors.name}
-                                label="Название"
+                                label="Организация"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 onBlur={() => {
@@ -178,7 +178,7 @@ const AddCoursePage = (props) => {
                             <MyTextField
                                 error={errors.description.length > 0}
                                 helperText={errors.description}
-                                label="Описание"
+                                label="Название курса"
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
                                 onBlur={() => {

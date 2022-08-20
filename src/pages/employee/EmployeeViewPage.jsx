@@ -279,6 +279,7 @@ const EmployeeViewPage = (props) => {
                 <CoursesTable
                     courses={courses}
                     isCoursesLoading={isCoursesLoading}
+                    fetchEmployee={fetchEmployee}
                 />
             </div>
         </div>

@@ -8,15 +8,17 @@ import {
     everyColumnProps,
 } from "./TableProps";
 import NumberFilter from "@inovua/reactdatagrid-community/NumberFilter";
+import Button from "@inovua/reactdatagrid-community/packages/Button";
 import { tableColor } from "../../helpers/color";
 import Checkbox from "@mui/material/Checkbox";
+import { deleteCourseFromEmployee } from "../../services/course.service";
 
 export class EmployeeColumns {
     constructor(
         employees,
         coursePlan,
         addEmployeeToCoursePlan,
-        isEmployeeChecked,
+        isEmployeeChecked
     ) {
         this.dependentProps = new DependentProps(employees);
 
@@ -108,14 +110,13 @@ export class EmployeeColumns {
                         cellProps.style.background = colors[0];
                     }
 
-                    // #b5b5b5
                     cellProps.style.borderColor = "#fff";
                 },
             },
             {
                 name: "shortName",
                 header: "ФИО",
-                defaultFlex: 1,
+                defaultFlex: 0.9,
                 ...everyColumnProps,
             },
             {
@@ -151,7 +152,7 @@ export class EmployeeColumns {
             {
                 name: "category",
                 header: "Категория",
-                defaultFlex: 1,
+                defaultFlex: 0.5,
                 ...this.dependentProps.selectColumnPropsEnum("category"),
                 ...everyColumnProps,
             },
@@ -172,7 +173,14 @@ export class EmployeeColumns {
             },
             {
                 name: "categoryAssignmentDeadlineDate",
-                header: "Срок подтверждения категории",
+                header: "Срок аттестации",
+                defaultFlex: 1,
+                ...dateColumnProps,
+                ...everyColumnProps,
+            },
+            {
+                name: "courseDeadlineDate",
+                header: "Срок прохож. курса",
                 defaultFlex: 1,
                 ...dateColumnProps,
                 ...everyColumnProps,
@@ -271,8 +279,72 @@ export const legend = [
     },
 ];
 
+// export class CourseColumns {
+//     constructor(fetchEmployee) {
+//         this.columns = [
+//             { name: "name", header: "Организация", defaultFlex: 3 },
+//             {
+//                 name: "hours",
+//                 header: "Количество часов",
+//                 defaultFlex: 1,
+//                 filterEditor: NumberFilter,
+//                 ...everyColumnProps,
+//             },
+//             {
+//                 name: "startDate",
+//                 header: "Дата начала",
+//                 defaultFlex: 1,
+//                 ...dateColumnProps,
+//                 ...everyColumnProps,
+//             },
+//             {
+//                 name: "endDate",
+//                 header: "Дата окончания",
+//                 defaultFlex: 1,
+//                 ...dateColumnProps,
+//                 ...everyColumnProps,
+//             },
+//             {
+//                 name: "description",
+//                 header: "Название курса",
+//                 defaultFlex: 4,
+//                 ...everyColumnProps,
+//             },
+//             {
+//                 name: "action",
+//                 header: "",
+//                 defaultFlex: 1,
+//                 ...everyColumnProps,
+//                 render: ({ _, data }) => {
+//                     const deleteCourse = () => {
+//                         deleteCourseFromEmployee(data.id).then(() =>
+//                             fetchEmployee()
+//                         );
+//                     };
+
+//                     return (
+//                         <div
+//                             style={{
+//                                 display: "inline-block",
+//                                 textAlign: "center",
+//                             }}
+//                         >
+//                             <Button
+//                                 style={{ margin: "0 auto" }}
+//                                 onClick={deleteCourse}
+//                             >
+//                                 Удалить
+//                             </Button>
+//                         </div>
+//                     );
+//                 },
+//             },
+//         ];
+//     }
+// }
+
 export const courseColumns = [
-    { name: "name", header: "Наименование", defaultFlex: 3 },
+    { name: "name", header: "Организация", defaultFlex: 3 },
     {
         name: "hours",
         header: "Количество часов",
@@ -296,9 +368,28 @@ export const courseColumns = [
     },
     {
         name: "description",
-        header: "Описание",
+        header: "Название курса",
         defaultFlex: 4,
         ...everyColumnProps,
+    },
+    {
+        name: "action",
+        header: "",
+        defaultFlex: 1,
+        ...everyColumnProps,
+        render: ({ _, data }) => {
+            const deleteCourse = () => {
+                deleteCourseFromEmployee(data.id);
+            };
+
+            return (
+                <div style={{ display: "inline-block", textAlign: "center" }}>
+                    <Button style={{ margin: "0 auto" }} onClick={deleteCourse}>
+                        Удалить
+                    </Button>
+                </div>
+            );
+        },
     },
 ];
 

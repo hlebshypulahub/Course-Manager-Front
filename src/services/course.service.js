@@ -14,3 +14,9 @@ export const addCourseToEmployee = (employeeId, course) => {
         JSON.stringify(course)
     );
 };
+
+export const deleteCourseFromEmployee = (courseId) => {
+    return fetchData(API_BASE_URL + "/delete/" + courseId, "DELETE").then(() =>
+        window.location.reload(false)
+    );
+};
