@@ -1,9 +1,5 @@
 import {
     dateColumnProps,
-    dateFilterProps,
-    stringFilterProps,
-    numberFilterProps,
-    selectFilterProps,
     DependentProps,
     everyColumnProps,
 } from "./TableProps";
@@ -120,6 +116,14 @@ export class EmployeeColumns {
                 ...everyColumnProps,
             },
             {
+                name: "dob",
+                header: "Дата рождения",
+                defaultVisible: false,
+                defaultFlex: 1,
+                ...dateColumnProps,
+                ...everyColumnProps,
+            },
+            {
                 name: "hiringDate",
                 header: "Дата приема на работу",
                 defaultVisible: false,
@@ -134,6 +138,16 @@ export class EmployeeColumns {
                 defaultFlex: 1,
                 ...this.dependentProps.selectColumnProps("jobFacility"),
                 ...everyColumnProps,
+            },
+            {
+                name: "partTime",
+                header: "По совмес-ву",
+                defaultVisible: false,
+                defaultFlex: 0.5,
+                ...everyColumnProps,
+                render: ({ _, data }) => {
+                    return <p>{data.partTime ? "Да" : "Нет"}</p>;
+                },
             },
             {
                 name: "position",
@@ -279,70 +293,6 @@ export const legend = [
     },
 ];
 
-// export class CourseColumns {
-//     constructor(fetchEmployee) {
-//         this.columns = [
-//             { name: "name", header: "Организация", defaultFlex: 3 },
-//             {
-//                 name: "hours",
-//                 header: "Количество часов",
-//                 defaultFlex: 1,
-//                 filterEditor: NumberFilter,
-//                 ...everyColumnProps,
-//             },
-//             {
-//                 name: "startDate",
-//                 header: "Дата начала",
-//                 defaultFlex: 1,
-//                 ...dateColumnProps,
-//                 ...everyColumnProps,
-//             },
-//             {
-//                 name: "endDate",
-//                 header: "Дата окончания",
-//                 defaultFlex: 1,
-//                 ...dateColumnProps,
-//                 ...everyColumnProps,
-//             },
-//             {
-//                 name: "description",
-//                 header: "Название курса",
-//                 defaultFlex: 4,
-//                 ...everyColumnProps,
-//             },
-//             {
-//                 name: "action",
-//                 header: "",
-//                 defaultFlex: 1,
-//                 ...everyColumnProps,
-//                 render: ({ _, data }) => {
-//                     const deleteCourse = () => {
-//                         deleteCourseFromEmployee(data.id).then(() =>
-//                             fetchEmployee()
-//                         );
-//                     };
-
-//                     return (
-//                         <div
-//                             style={{
-//                                 display: "inline-block",
-//                                 textAlign: "center",
-//                             }}
-//                         >
-//                             <Button
-//                                 style={{ margin: "0 auto" }}
-//                                 onClick={deleteCourse}
-//                             >
-//                                 Удалить
-//                             </Button>
-//                         </div>
-//                     );
-//                 },
-//             },
-//         ];
-//     }
-// }
-
 export const courseColumns = [
     { name: "name", header: "Организация", defaultFlex: 3 },
     {
@@ -393,39 +343,43 @@ export const courseColumns = [
     },
 ];
 
-export const employeeDefaultFilterValue = [
-    {
-        name: "hiringDate",
-        ...dateFilterProps,
-    },
-    {
-        name: "categoryAssignmentDate",
-        ...dateFilterProps,
-    },
-    {
-        name: "categoryAssignmentDeadlineDate",
-        ...dateFilterProps,
-    },
-    {
-        name: "docsSubmitDeadlineDate",
-        ...dateFilterProps,
-    },
-    {
-        name: "categoryPossiblePromotionDate",
-        ...dateFilterProps,
-    },
-    {
-        name: "eduGraduationDate",
-        ...dateFilterProps,
-    },
-    { name: "shortName", ...stringFilterProps },
-    { name: "jobFacility", ...selectFilterProps },
-    { name: "position", ...selectFilterProps },
-    { name: "qualification", ...selectFilterProps },
-    { name: "category", ...selectFilterProps },
-    { name: "categoryNumber", ...stringFilterProps },
-    { name: "courseHoursSum", ...numberFilterProps },
-    { name: "courseHoursLeft", ...numberFilterProps },
-    { name: "education", ...selectFilterProps },
-    { name: "eduName", ...selectFilterProps },
-];
+// export const employeeDefaultFilterValue = [
+//     {
+//         name: "hiringDate",
+//         ...dateFilterProps,
+//     },
+//     {
+//         name: "categoryAssignmentDate",
+//         ...dateFilterProps,
+//     },
+//     {
+//         name: "categoryAssignmentDeadlineDate",
+//         ...dateFilterProps,
+//     },
+//     {
+//         name: "courseDeadlineDate",
+//         ...dateFilterProps,
+//     },
+//     {
+//         name: "docsSubmitDeadlineDate",
+//         ...dateFilterProps,
+//     },
+//     {
+//         name: "categoryPossiblePromotionDate",
+//         ...dateFilterProps,
+//     },
+//     {
+//         name: "eduGraduationDate",
+//         ...dateFilterProps,
+//     },
+//     { name: "shortName", ...stringFilterProps },
+//     { name: "jobFacility", ...selectFilterProps },
+//     { name: "position", ...selectFilterProps },
+//     { name: "qualification", ...selectFilterProps },
+//     { name: "category", ...selectFilterProps },
+//     { name: "categoryNumber", ...stringFilterProps },
+//     { name: "courseHoursSum", ...numberFilterProps },
+//     { name: "courseHoursLeft", ...numberFilterProps },
+//     { name: "education", ...selectFilterProps },
+//     { name: "eduName", ...selectFilterProps },
+// ];

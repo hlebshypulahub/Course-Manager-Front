@@ -9,22 +9,40 @@
 
     font-family: "Exo 2", sans-serif;
 
-    .header-label-card {
-        display: inline-block;
-        padding-bottom: 5px;
-        font-size: 26px;
-        font-weight: 700;
+    .card-label-card,
+    .job-row {
+        display: flex;
+        flex-wrap: wrap;
+
+        display: -webkit-flex;
+        -webkit-flex-wrap: wrap;
+
+        width: 100%;
     }
 
     .card-label-card {
-        overflow: auto;
-        :first-child {
-            float: left;
-        }
+        justify-content: space-between;
+    }
 
-        :nth-child(2) {
-            float: right;
-        }
+    .header-label-card,
+    .pin,
+    .label-text-job,
+    .value-text-job,
+    .checkbox-job {
+        flex: 0 1 auto;
+        -webkit-flex: 0 1 auto;
+        -ms-flex: 0 1 auto;
+    }
+
+    .checkbox-job {
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .header-label-card {
+        padding-bottom: 5px;
+        font-size: 26px;
+        font-weight: 700;
     }
 
     .pin {
@@ -33,7 +51,6 @@
         font-weight: 500;
         border-radius: 5px;
         padding: 5px;
-        display: inline-block;
     }
 
     .first-row {

@@ -141,6 +141,35 @@ const EmployeeViewPage = (props) => {
         [id, employee, dispatch, fetchEmployee]
     );
 
+    const handleToggleEmployeePartTimeSubmit = useCallback(
+        (e) => {
+            e.preventDefault();
+
+            const patch = {
+                type: "partTime",
+                partTime: e.target.checked,
+            };
+
+            patchEmployee(id, patch)
+                .then(() => {
+                    fetchEmployee();
+                    dispatch(
+                        setMessage(
+                            "По совместительству: ".concat(
+                                e.target.checked ? "Нет" : "Да"
+                            )
+                        )
+                    );
+                })
+                .catch(() => {
+                    dispatch(
+                        setError("Отсутствует соединение с сервером...", true)
+                    );
+                });
+        },
+        [id, dispatch, fetchEmployee]
+    );
+
     const toggleEmployeePharmacyModalShown = () => {
         setEmployeePharmacyModalShown(!employeePharmacyModalShown);
     };
@@ -215,9 +244,7 @@ const EmployeeViewPage = (props) => {
     const employeePharmacyModal = employeePharmacyModalShown && (
         <MyAcceptModal
             submitting={modalSubmitting}
-            message={`Подтвердите, что сотрудник ${
-                employee.fullName
-            } не является мед./фарм. работником, и его можно удалить из списка учёта!`}
+            message={`Подтвердите, что сотрудник ${employee.fullName} не является мед./фарм. работником, и его можно удалить из списка учёта!`}
             submitFunc={handleToggleEmployeePharmacySubmit}
             cancelFunc={toggleEmployeePharmacyModalShown}
         />
@@ -246,6 +273,9 @@ const EmployeeViewPage = (props) => {
                         }
                         showCardActions={true}
                         categoryIsValid={categoryIsValid}
+                        handleToggleEmployeePartTimeSubmit={
+                            handleToggleEmployeePartTimeSubmit
+                        }
                     />
 
                     <CategoryCard

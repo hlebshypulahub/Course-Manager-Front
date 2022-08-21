@@ -40,6 +40,7 @@ const EmployeesTable = ({
             shortName,
             hiringDate,
             jobFacility,
+            partTime,
             position,
             qualification,
             category,
@@ -51,6 +52,7 @@ const EmployeesTable = ({
             categoryPossiblePromotionDate,
             courseHoursSum,
             courseHoursLeft,
+            dob,
             education,
             eduName,
             eduGraduationDate,
@@ -61,6 +63,7 @@ const EmployeesTable = ({
                 shortName,
                 hiringDate: parse(hiringDate),
                 jobFacility,
+                partTime,
                 position,
                 qualification,
                 category: category ? category.label : "",
@@ -76,6 +79,7 @@ const EmployeesTable = ({
                 ),
                 courseHoursSum,
                 courseHoursLeft,
+                dob: parse(dob),
                 education: education ? education.label : "",
                 eduName,
                 eduGraduationDate: parse(eduGraduationDate),
@@ -123,7 +127,8 @@ const EmployeesTable = ({
                         onClick={() => showFilteredEmployees(l.name)}
                     >
                         <div className="color-box">
-                            <div className="fill"
+                            <div
+                                className="fill"
                                 style={{
                                     background: l.color,
                                 }}

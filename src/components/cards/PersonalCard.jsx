@@ -1,5 +1,4 @@
 //// React
-
 import { useHistory } from "react-router-dom";
 
 //// Mui
@@ -8,16 +7,29 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Tooltip from "@mui/material/Tooltip";
 import Button from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
 
 //// Utils
 import { green, red } from "../../helpers/color";
 
 const PersonalCard = ({
     withActions,
-    employee,
+    employee: {
+        id,
+        fullName,
+        hiringDate,
+        jobFacility,
+        position,
+        dob,
+        note,
+        notificationDate,
+        active,
+        partTime,
+    },
     categoryIsValid,
     showCardActions,
     toggleEmployeeStateModalShown,
+    handleToggleEmployeePartTimeSubmit,
 }) => {
     const history = useHistory();
 
@@ -25,7 +37,7 @@ const PersonalCard = ({
         <span
             className="pin"
             style={
-                employee.active
+                active
                     ? {
                           backgroundColor: green,
                       }
@@ -35,7 +47,7 @@ const PersonalCard = ({
             }
             onClick={toggleEmployeeStateModalShown}
         >
-            {employee.active ? "Активный" : "Неактивный"}
+            {active ? "Активный" : "Неактивный"}
         </span>
     );
 
@@ -59,7 +71,7 @@ const PersonalCard = ({
             }}
             size="large"
             onClick={() => {
-                history.push(`/employees/${employee.id}/note`);
+                history.push(`/employees/${id}/note`);
             }}
         >
             Заметки
@@ -67,17 +79,17 @@ const PersonalCard = ({
     );
 
     const noteButtonWithTooltip =
-        !!employee.note || !!employee.notificationDate ? (
+        !!note || !!notificationDate ? (
             <Tooltip
                 title={
                     <div style={{ fontSize: "15px" }}>
-                        {!!employee.note &&
-                            employee.note
+                        {!!note &&
+                            note
                                 .split("\n")
                                 .map((line) => <div key={line}>{line}</div>)}
                         <div style={{ marginTop: "10px" }}>
                             <span>Дата уведомления: </span>
-                            <span>{employee.notificationDate}</span>
+                            <span>{notificationDate}</span>
                         </div>
                     </div>
                 }
@@ -104,7 +116,7 @@ const PersonalCard = ({
                         }}
                         size="large"
                         onClick={() => {
-                            history.push(`/employees/${employee.id}/documents`);
+                            history.push(`/employees/${id}/documents`);
                         }}
                     >
                         Документы
@@ -114,6 +126,16 @@ const PersonalCard = ({
 
             {noteButtonWithTooltip}
         </CardActions>
+    );
+
+    const dobSpan = (
+        <span
+            className="value-text"
+            onClick={() => history.push(`/employees/${id}/edit-dob`)}
+            style={{ cursor: "pointer" }}
+        >
+            {dob ? dob : "Указать"}
+        </span>
     );
 
     return (
@@ -129,22 +151,61 @@ const PersonalCard = ({
 
                 <div>
                     <span className="label-text">ФИО:</span>
-                    <span className="value-text">{employee.fullName}</span>
+                    <span className="value-text">{fullName}</span>
                 </div>
 
                 <div>
                     <span className="label-text">Дата приема на работу:</span>
-                    <span className="value-text">{employee.hiringDate}</span>
+                    <span className="value-text">{hiringDate}</span>
                 </div>
 
-                <div>
-                    <span className="label-text">Место работы:</span>
-                    <span className="value-text">{employee.jobFacility}</span>
+                <div className="job-row">
+                    <span className="label-text label-text-job">
+                        Место работы:
+                    </span>
+                    <span
+                        className="value-text value-text-job"
+                        style={{ marginRight: "20px" }}
+                    >
+                        {jobFacility}
+                    </span>
+                    <span className="checkbox-job">
+                        <Checkbox
+                            style={{
+                                width: "20px",
+                                height: "20px",
+                                marginTop: "1px",
+                            }}
+                            checked={partTime}
+                            onChange={(e) =>
+                                handleToggleEmployeePartTimeSubmit(e)
+                            }
+                            inputProps={{ "aria-label": "controlled" }}
+                        />
+                        <span
+                            style={{
+                                fontSize: "18px",
+                                fontWeight: "500",
+                                marginLeft: "5px",
+                                // marginTop: "10px",
+                                display: "inline-flex",
+                                alignItems: "center",
+                            }}
+                            className="value-text"
+                        >
+                            По совмес-ву
+                        </span>
+                    </span>
                 </div>
 
                 <div>
                     <span className="label-text">Должность:</span>
-                    <span className="value-text">{employee.position}</span>
+                    <span className="value-text">{position}</span>
+                </div>
+
+                <div>
+                    <span className="label-text">Дата рождения:</span>
+                    {dobSpan}
                 </div>
 
                 {cardActions}

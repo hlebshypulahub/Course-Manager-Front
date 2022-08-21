@@ -1,5 +1,5 @@
 //// React
-import { Switch, Route, useHistory} from "react-router-dom";
+import { Switch, Route, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 //// Pages
@@ -15,6 +15,7 @@ import EmployeeDocumentsPage from "../documents/EmployeeDocumentsPage";
 import NotFoundPage from "../not-found/NotFoundPage";
 import EditNotePage from "../edit-pages/EditNotePage";
 import EditProfilePage from "../edit-pages/EditProfilePage";
+import EditDobPage from "../edit-pages/EditDobPage";
 
 //// Components
 import MyModal from "../../components/modals/MyModal";
@@ -159,6 +160,7 @@ export const Dashboard = () => {
                     path="/employees/:id/edit-category"
                     component={EditCategoryPage}
                 />
+                <Route path="/employees/:id/edit-dob" component={EditDobPage} />
                 <Route
                     path="/employees/:id/add-course"
                     component={AddCoursePage}

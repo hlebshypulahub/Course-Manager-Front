@@ -87,12 +87,14 @@ export const defaultSortInfo = [
     { name: "shortName", dir: 0 },
     { name: "hiringDate", dir: 0 },
     { name: "jobFacility", dir: 0 },
+    { name: "partTime", dir: 0 },
     { name: "position", dir: 0 },
     { name: "qualification", dir: 0 },
     { name: "category", dir: 0 },
     { name: "categoryNumber", dir: 0 },
     { name: "categoryAssignmentDate", dir: 0 },
     { name: "categoryAssignmentDeadlineDate", dir: 0 },
+    { name: "courseDeadlineDate", dir: 0 },
     { name: "docsSubmitDeadlineDate", dir: 0 },
     { name: "categoryPossiblePromotionDate", dir: 0 },
     { name: "courseHoursSum", dir: 0 },
@@ -147,6 +149,10 @@ export const employeeDefaultFilterValue = [
     },
     {
         name: "categoryAssignmentDeadlineDate",
+        ...dateFilterProps,
+    },
+    {
+        name: "courseDeadlineDate",
         ...dateFilterProps,
     },
     {
